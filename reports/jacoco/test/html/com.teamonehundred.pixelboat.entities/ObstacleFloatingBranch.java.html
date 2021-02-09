@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObstacleFloatingBranch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">ObstacleFloatingBranch.java</span></div><h1>ObstacleFloatingBranch.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  * Represents a floating branch obstacle.
  *
@@ -17,11 +19,26 @@ public class ObstacleFloatingBranch extends ObstacleBranch {
    * @author William Walton
    */
   public ObstacleFloatingBranch(float x, float y) {
-<span class="fc" id="L20">    super(x, y);</span>
+<span class="nc" id="L22">    super(x, y);</span>
     // have the branch move at a constant speed
-<span class="fc" id="L22">    drag = 0;</span>
-<span class="fc" id="L23">    speed = 0.3f;</span>
-<span class="fc" id="L24">    sprite.setRotation(-180);</span>
-<span class="fc" id="L25">  }</span>
+<span class="nc" id="L24">    drag = 0;</span>
+<span class="nc" id="L25">    speed = 0.3f;</span>
+<span class="nc" id="L26">    sprite.setRotation(-180);</span>
+<span class="nc" id="L27">  }</span>
+
+  /**
+   * Create a floating branch with a texture.
+   *
+   * @param x coordinate
+   * @param y coordinate
+   * @param texture texture
+   */
+  public ObstacleFloatingBranch(float x, float y, Texture texture) {
+<span class="fc" id="L37">    super(x, y, texture);</span>
+    // have the branch move at a constant speed
+<span class="fc" id="L39">    drag = 0;</span>
+<span class="fc" id="L40">    speed = 0.3f;</span>
+<span class="fc" id="L41">    sprite.setRotation(-180);</span>
+<span class="fc" id="L42">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

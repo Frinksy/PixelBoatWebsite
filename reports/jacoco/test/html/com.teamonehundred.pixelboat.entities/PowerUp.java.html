@@ -21,9 +21,9 @@ public abstract class PowerUp extends MovableObject implements CollisionObject {
    * @author Ben Dunbar
    */
   PowerUp(float x, float y, int w, int h, String texturePath) {
-<span class="fc" id="L24">    super(x, y, w, h, texturePath);</span>
+<span class="nc" id="L24">    super(x, y, w, h, texturePath);</span>
     //todo implement this
-<span class="fc" id="L26">  }</span>
+<span class="nc" id="L26">  }</span>
 
   /**
    * A constructor for a Power-Up taking its position (x and y) and width and height.
@@ -33,9 +33,9 @@ public abstract class PowerUp extends MovableObject implements CollisionObject {
    *
    * @author Ben Dunbar
    */
-  PowerUp(int x, int y, int w, int h, String texturePath, int frameCount) {
-<span class="nc" id="L37">    super(x, y, w, h, texturePath, frameCount);</span>
-<span class="nc" id="L38">  }</span>
+  PowerUp(float x, float y, int w, int h, Texture texture, int frameCount) {
+<span class="fc" id="L37">    super(x, y, w, h, texture, frameCount);</span>
+<span class="fc" id="L38">  }</span>
 
   /**
    * A constructor for a Power-Up taking its position (x and y) and width and height.

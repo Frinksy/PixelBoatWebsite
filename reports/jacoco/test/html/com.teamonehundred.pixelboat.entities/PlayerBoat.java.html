@@ -47,6 +47,19 @@ public class PlayerBoat extends Boat {
 <span class="fc" id="L47">  }</span>
 
   /**
+   * Create a PlayerBoat with a Texture.
+   *
+   * @param x coordinate
+   * @param y coordinate
+   * @param texture the texture
+   */
+  public PlayerBoat(float x, float y, Texture texture) {
+<span class="fc" id="L57">    super(x, y, texture);</span>
+
+<span class="fc" id="L59">    initialise();</span>
+<span class="fc" id="L60">  }</span>
+
+  /**
    * Construct a PlayerBoat object with at point (x,y) with width and height and texture path
    * with default stats (stamina usage, durability, etc).
    *
@@ -58,10 +71,10 @@ public class PlayerBoat extends Boat {
    * @author William Walton
    */
   PlayerBoat(int x, int y, int w, int h, String texturePath) {
-<span class="nc" id="L61">    super(x, y, w, h, texturePath);</span>
+<span class="nc" id="L74">    super(x, y, w, h, texturePath);</span>
 
-<span class="nc" id="L63">    initialise();</span>
-<span class="nc" id="L64">  }</span>
+<span class="nc" id="L76">    initialise();</span>
+<span class="nc" id="L77">  }</span>
 
   /**
    * Construct a PlayerBoat object with all parameters specified.
@@ -79,10 +92,10 @@ public class PlayerBoat extends Boat {
    */
   PlayerBoat(int x, int y, int w, int h, String texturePath, String name,
              float durabilityPerHit, float staminaUsage, float staminaRegen) {
-<span class="nc" id="L82">    super(x, y, w, h, texturePath, name, durabilityPerHit, staminaUsage, staminaRegen);</span>
+<span class="nc" id="L95">    super(x, y, w, h, texturePath, name, durabilityPerHit, staminaUsage, staminaRegen);</span>
 
-<span class="nc" id="L84">    initialise();</span>
-<span class="nc" id="L85">  }</span>
+<span class="nc" id="L97">    initialise();</span>
+<span class="nc" id="L98">  }</span>
 
   /*
    * Destructor disposes of this texture once it is no longer referenced.
@@ -104,23 +117,23 @@ public class PlayerBoat extends Boat {
    * Initialises camera position.
    */
   public void initialise() {
-<span class="fc" id="L107">    staminaTexture = new Texture(&quot;stamina_texture.png&quot;);</span>
-<span class="fc" id="L108">    durabilityTexture = new Texture(&quot;durability_texture.png&quot;);</span>
+<span class="fc" id="L120">    staminaTexture = new Texture(&quot;stamina_texture.png&quot;);</span>
+<span class="fc" id="L121">    durabilityTexture = new Texture(&quot;durability_texture.png&quot;);</span>
 
-<span class="fc" id="L110">    staminaBar = new Sprite(staminaTexture);</span>
-<span class="fc" id="L111">    durabilityBar = new Sprite(durabilityTexture);</span>
+<span class="fc" id="L123">    staminaBar = new Sprite(staminaTexture);</span>
+<span class="fc" id="L124">    durabilityBar = new Sprite(durabilityTexture);</span>
 
-<span class="fc" id="L113">    staminaBar.setSize(uiBarWidth, 10);</span>
-<span class="fc" id="L114">    durabilityBar.setSize(uiBarWidth, 10);</span>
+<span class="fc" id="L126">    staminaBar.setSize(uiBarWidth, 10);</span>
+<span class="fc" id="L127">    durabilityBar.setSize(uiBarWidth, 10);</span>
 
 
-<span class="fc" id="L117">    staminaBar.setPosition(-uiBarWidth / 2, 5);</span>
-<span class="fc" id="L118">    durabilityBar.setPosition(-uiBarWidth / 2, 20);</span>
+<span class="fc" id="L130">    staminaBar.setPosition(-uiBarWidth / 2, 5);</span>
+<span class="fc" id="L131">    durabilityBar.setPosition(-uiBarWidth / 2, 20);</span>
 
-<span class="fc" id="L120">    camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
-<span class="fc" id="L121">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3 + sprite.getY(), 0);</span>
-<span class="fc" id="L122">    camera.update();</span>
-<span class="fc" id="L123">  }</span>
+<span class="fc" id="L133">    camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="fc" id="L134">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3 + sprite.getY(), 0);</span>
+<span class="fc" id="L135">    camera.update();</span>
+<span class="fc" id="L136">  }</span>
 
   /**
    * Sets the spec type of boat.
@@ -133,24 +146,24 @@ public class PlayerBoat extends Boat {
    * @param specId int for boat spec
    */
   public void setSpec(int specId) {
-<span class="nc bnc" id="L136" title="All 4 branches missed.">    switch (specId) {</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">    switch (specId) {</span>
       case 0:
         // debug
-<span class="nc" id="L139">        staminaUsage = 0f;</span>
-<span class="nc" id="L140">        durabilityPerHit = 0f;</span>
-<span class="nc" id="L141">        break;</span>
+<span class="nc" id="L152">        staminaUsage = 0f;</span>
+<span class="nc" id="L153">        durabilityPerHit = 0f;</span>
+<span class="nc" id="L154">        break;</span>
       case 1:
         // default
-<span class="nc" id="L144">        break;</span>
+<span class="nc" id="L157">        break;</span>
       case 2:
         // fast low durability
-<span class="nc" id="L147">        maxSpeed = 20;</span>
-<span class="nc" id="L148">        durabilityPerHit = .2f;</span>
-<span class="nc" id="L149">        break;</span>
+<span class="nc" id="L160">        maxSpeed = 20;</span>
+<span class="nc" id="L161">        durabilityPerHit = .2f;</span>
+<span class="nc" id="L162">        break;</span>
       default:
         break;
     }
-<span class="nc" id="L153">  }</span>
+<span class="nc" id="L166">  }</span>
 
   /**
    * Change player stats according to difficulty level.
@@ -158,17 +171,17 @@ public class PlayerBoat extends Boat {
    * @param diffLevel difficulty level
    */
   public void setDiff(int diffLevel) {
-<span class="fc bfc" id="L161" title="All 2 branches covered.">    if (diffLevel == 2) {</span>
-<span class="fc" id="L162">      staminaRegen *= 0.7f; </span>
-<span class="fc" id="L163">      staminaUsage *= 1.3f; </span>
-<span class="fc" id="L164">      durabilityPerHit *= 2.0f; </span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">    if (diffLevel == 2) {</span>
+<span class="fc" id="L175">      staminaRegen *= 0.7f; </span>
+<span class="fc" id="L176">      staminaUsage *= 1.3f; </span>
+<span class="fc" id="L177">      durabilityPerHit *= 2.0f; </span>
     }
-<span class="fc bfc" id="L166" title="All 2 branches covered.">    if (diffLevel == 3) {</span>
-<span class="fc" id="L167">      staminaRegen *= 0.4f;</span>
-<span class="fc" id="L168">      staminaUsage *= 1.7f;</span>
-<span class="fc" id="L169">      durabilityPerHit *= 2.5f;</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">    if (diffLevel == 3) {</span>
+<span class="fc" id="L180">      staminaRegen *= 0.4f;</span>
+<span class="fc" id="L181">      staminaUsage *= 1.7f;</span>
+<span class="fc" id="L182">      durabilityPerHit *= 2.5f;</span>
     }
-<span class="fc" id="L171">  }</span>
+<span class="fc" id="L184">  }</span>
 
   /**
    * Updates the position based on the user's input.
@@ -185,30 +198,30 @@ public class PlayerBoat extends Boat {
    */
   @Override
   public void updatePosition() {
-<span class="nc bnc" id="L188" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.W)) {</span>
-<span class="nc" id="L189">      this.accelerate();</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.W)) {</span>
+<span class="nc" id="L202">      this.accelerate();</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {</span>
       // nothing atm
     }
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.A)) {</span>
-<span class="nc" id="L195">      this.turn(1);</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {</span>
-<span class="nc" id="L197">      this.turn(-1);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.A)) {</span>
+<span class="nc" id="L208">      this.turn(1);</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {</span>
+<span class="nc" id="L210">      this.turn(-1);</span>
     }
 
-<span class="nc" id="L200">    float oldX = sprite.getX();</span>
-<span class="nc" id="L201">    float oldY = sprite.getY();</span>
+<span class="nc" id="L213">    float oldX = sprite.getX();</span>
+<span class="nc" id="L214">    float oldY = sprite.getY();</span>
 
-<span class="nc" id="L203">    super.updatePosition();</span>
+<span class="nc" id="L216">    super.updatePosition();</span>
 
     // only follow player in x axis if they go off screen
-<span class="nc bnc" id="L206" title="All 2 branches missed.">    float dx = Math.abs(sprite.getX()) &gt; Gdx.graphics.getWidth() / 3 ? sprite.getX() - oldX : 0;</span>
-<span class="nc" id="L207">    float dy = sprite.getY() - oldY;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">    float dx = Math.abs(sprite.getX()) &gt; Gdx.graphics.getWidth() / 3 ? sprite.getX() - oldX : 0;</span>
+<span class="nc" id="L220">    float dy = sprite.getY() - oldY;</span>
 
     // move camera to follow player
-<span class="nc" id="L210">    camera.translate(dx, dy, 0);</span>
-<span class="nc" id="L211">  }</span>
+<span class="nc" id="L223">    camera.translate(dx, dy, 0);</span>
+<span class="nc" id="L224">  }</span>
 
   /**
    * Returns the all sprites for PlayerBoat UI.
@@ -218,12 +231,12 @@ public class PlayerBoat extends Boat {
    * @return List of Sprites
    */
   public List&lt;Sprite&gt; getUiSprites() {
-<span class="nc" id="L221">    updateUiSprites();  // TODO: probably move this to only when they change rather than every frame</span>
+<span class="nc" id="L234">    updateUiSprites();  // TODO: probably move this to only when they change rather than every frame</span>
 
-<span class="nc" id="L223">    List&lt;Sprite&gt; ret = new ArrayList&lt;Sprite&gt;();</span>
-<span class="nc" id="L224">    ret.add(staminaBar);</span>
-<span class="nc" id="L225">    ret.add(durabilityBar);</span>
-<span class="nc" id="L226">    return ret;</span>
+<span class="nc" id="L236">    List&lt;Sprite&gt; ret = new ArrayList&lt;Sprite&gt;();</span>
+<span class="nc" id="L237">    ret.add(staminaBar);</span>
+<span class="nc" id="L238">    ret.add(durabilityBar);</span>
+<span class="nc" id="L239">    return ret;</span>
   }
 
   /**
@@ -232,16 +245,16 @@ public class PlayerBoat extends Boat {
    * @return OrthographicCamera
    */
   public OrthographicCamera getCamera() {
-<span class="nc" id="L235">    return camera;</span>
+<span class="nc" id="L248">    return camera;</span>
   }
 
   /**
    * Resets PlayerBoat Camera position.
    */
   public void resetCameraPos() {
-<span class="fc" id="L242">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3, 0);</span>
-<span class="fc" id="L243">    camera.update();</span>
-<span class="fc" id="L244">  }</span>
+<span class="fc" id="L255">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3, 0);</span>
+<span class="fc" id="L256">    camera.update();</span>
+<span class="fc" id="L257">  }</span>
 
   /**
    * Update the position and size of the UI elements
@@ -254,14 +267,14 @@ public class PlayerBoat extends Boat {
    * based on the PlayerBoat attributes as they change.
    */
   private void updateUiSprites() {
-<span class="nc" id="L257">    staminaBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
-<span class="nc" id="L258">                           -50 + sprite.getY());</span>
-<span class="nc" id="L259">    durabilityBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
-<span class="nc" id="L260">                              -35 + sprite.getY());</span>
+<span class="nc" id="L270">    staminaBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
+<span class="nc" id="L271">                           -50 + sprite.getY());</span>
+<span class="nc" id="L272">    durabilityBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
+<span class="nc" id="L273">                              -35 + sprite.getY());</span>
 
-<span class="nc" id="L262">    staminaBar.setSize((int) (uiBarWidth * stamina), 10);</span>
-<span class="nc" id="L263">    durabilityBar.setSize((int) (uiBarWidth * durability), 10);</span>
-<span class="nc" id="L264">  }</span>
+<span class="nc" id="L275">    staminaBar.setSize((int) (uiBarWidth * stamina), 10);</span>
+<span class="nc" id="L276">    durabilityBar.setSize((int) (uiBarWidth * durability), 10);</span>
+<span class="nc" id="L277">  }</span>
 
   /**
    * getter for staminaRegain.
@@ -269,7 +282,7 @@ public class PlayerBoat extends Boat {
    * @return staminaRegain
    */
   public float getStaminaRegain() {
-<span class="fc" id="L272">    return staminaRegen;</span>
+<span class="fc" id="L285">    return staminaRegen;</span>
   }
 
   /**
@@ -278,7 +291,7 @@ public class PlayerBoat extends Boat {
    * @return staminaUsage
    */
   public float getStaminaUsage() {
-<span class="fc" id="L281">    return staminaUsage;</span>
+<span class="fc" id="L294">    return staminaUsage;</span>
   }
 
   /**
@@ -287,7 +300,7 @@ public class PlayerBoat extends Boat {
    * @return durabilityPerHit
    */
   public float getDurabilityPerHit() {
-<span class="fc" id="L290">    return durabilityPerHit;</span>
+<span class="fc" id="L303">    return durabilityPerHit;</span>
   }
 
 }

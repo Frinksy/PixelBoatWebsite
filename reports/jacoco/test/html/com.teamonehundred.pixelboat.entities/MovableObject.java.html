@@ -16,7 +16,7 @@ public abstract class MovableObject extends GameObject {
 <span class="fc" id="L16">  public float maxSpeed = 15;</span>
 <span class="fc" id="L17">  public float speed = 0;</span>
 <span class="fc" id="L18">  public float drag = .04f;  // amount speed is reduced by every frame naturally</span>
-<span class="fc" id="L19">  protected float acceleration = .2f;</span>
+<span class="fc" id="L19">  public float acceleration = .2f;</span>
 <span class="fc" id="L20">  public float rotationSpeed = 2.f;</span>
 
   /* ################################### //
@@ -36,6 +36,9 @@ public abstract class MovableObject extends GameObject {
 <span class="fc" id="L36">    super(x, y, w, h, texturePath);</span>
 <span class="fc" id="L37">  }</span>
 
+  MovableObject(float x, float y, int w, int h, Texture texture) {
+<span class="fc" id="L40">    super(x, y, w, h, texture);</span>
+<span class="fc" id="L41">  }</span>
 
   /**
    * A constructor for MovableObject.
@@ -48,8 +51,8 @@ public abstract class MovableObject extends GameObject {
    * @param frameCount  int frame count
    */
   MovableObject(float x, float y, int w, int h, String texturePath, int frameCount) {
-<span class="fc" id="L51">    super(x, y, w, h, texturePath, frameCount);</span>
-<span class="fc" id="L52">  }</span>
+<span class="fc" id="L54">    super(x, y, w, h, texturePath, frameCount);</span>
+<span class="fc" id="L55">  }</span>
 
   /**
    * A constructor for MovableObject.
@@ -62,8 +65,8 @@ public abstract class MovableObject extends GameObject {
    * @param frameCount int frame count
    */
   MovableObject(float x, float y, int w, int h, Texture t, int frameCount) {
-<span class="fc" id="L65">    super(x, y, w, h, t, frameCount);</span>
-<span class="fc" id="L66">  }</span>
+<span class="fc" id="L68">    super(x, y, w, h, t, frameCount);</span>
+<span class="fc" id="L69">  }</span>
 
   /* ################################### //
           METHODS
@@ -79,8 +82,8 @@ public abstract class MovableObject extends GameObject {
    * @author William Walton
    */
   public void turn(int amount) {
-<span class="nc" id="L82">    sprite.rotate(amount * rotationSpeed);</span>
-<span class="nc" id="L83">  }</span>
+<span class="nc" id="L85">    sprite.rotate(amount * rotationSpeed);</span>
+<span class="nc" id="L86">  }</span>
 
 
   /**
@@ -91,11 +94,11 @@ public abstract class MovableObject extends GameObject {
    * @author William Walton
    */
   private void move(float distance) {
-<span class="nc" id="L94">    double dy = Math.cos((Math.toRadians(sprite.getRotation()))) * distance;</span>
-<span class="nc" id="L95">    double dx = Math.sin((Math.toRadians(sprite.getRotation()))) * distance;</span>
+<span class="nc" id="L97">    double dy = Math.cos((Math.toRadians(sprite.getRotation()))) * distance;</span>
+<span class="nc" id="L98">    double dx = Math.sin((Math.toRadians(sprite.getRotation()))) * distance;</span>
 
-<span class="nc" id="L97">    sprite.translate((float) (-dx), (float) dy);</span>
-<span class="nc" id="L98">  }</span>
+<span class="nc" id="L100">    sprite.translate((float) (-dx), (float) dy);</span>
+<span class="nc" id="L101">  }</span>
 
   /**
    * Updates position of movable object based on speed and decreases
@@ -105,9 +108,9 @@ public abstract class MovableObject extends GameObject {
    * @author William Walton
    */
   public void updatePosition() {
-<span class="nc" id="L108">    move(speed);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">    speed -= speed - drag &lt; 0 ? speed : drag;</span>
-<span class="nc" id="L110">  }</span>
+<span class="nc" id="L111">    move(speed);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">    speed -= speed - drag &lt; 0 ? speed : drag;</span>
+<span class="nc" id="L113">  }</span>
 
   /**
    * Increase speed based on current acceleration attribute.
@@ -119,15 +122,15 @@ public abstract class MovableObject extends GameObject {
    * @author William Walton
    */
   public void accelerate() {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">    speed += speed &gt;= maxSpeed ? 0 : acceleration;</span>
-<span class="nc" id="L123">  }</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    speed += speed &gt;= maxSpeed ? 0 : acceleration;</span>
+<span class="nc" id="L126">  }</span>
 
   /**
    * Resets speed to 0 and rotation to 0.
    */
   public void reset_motion() {
-<span class="fc" id="L129">    speed = 0;</span>
-<span class="fc" id="L130">    sprite.setRotation(0);</span>
-<span class="fc" id="L131">  }</span>
+<span class="fc" id="L132">    speed = 0;</span>
+<span class="fc" id="L133">    sprite.setRotation(0);</span>
+<span class="fc" id="L134">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

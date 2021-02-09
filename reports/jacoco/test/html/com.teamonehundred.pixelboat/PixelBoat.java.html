@@ -2,7 +2,10 @@
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.teamonehundred.pixelboat.scenes.Scene;
 import com.teamonehundred.pixelboat.scenes.SceneBoatSelection;
 import com.teamonehundred.pixelboat.scenes.SceneDifficulty;
@@ -24,7 +27,7 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
  * @author James Frost
  * @author Umer Fakher JavaDoc by Umer Fakher
  */
-<span class="nc" id="L27">public class PixelBoat extends ApplicationAdapter {</span>
+<span class="nc" id="L30">public class PixelBoat extends ApplicationAdapter {</span>
 
 
   public Scene[] allScenes;  // stores all game scenes and their data
@@ -38,17 +41,19 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
   // 4 = results
   // 5 =boat selection
   // 6 = difficulty options
-<span class="nc" id="L41">  protected int sceneId = 0;</span>
+<span class="nc" id="L44">  protected int sceneId = 0;</span>
 
-<span class="nc" id="L43">  public static int MAIN_MENU = 0;</span>
-<span class="nc" id="L44">  public static int GAME_SCENE = 1;</span>
-<span class="nc" id="L45">  public static int OPTIONS_SCENE = 2;</span>
-<span class="nc" id="L46">  public static int TUTORIAL_SCENE = 3;</span>
-<span class="nc" id="L47">  public static int RESULTS_SCENE = 4;</span>
-<span class="nc" id="L48">  public static int BOAT_SELECT = 5;</span>
-<span class="nc" id="L49">  public static int DIFFICULTY_SELECT = 6;</span>
-<span class="nc" id="L50">  public static int LOAD_SCENE = 7;</span>
-<span class="nc" id="L51">  public static int SAVE_SCENE = 8;</span>
+<span class="fc" id="L46">  public static int MAIN_MENU = 0;</span>
+<span class="fc" id="L47">  public static int GAME_SCENE = 1;</span>
+<span class="fc" id="L48">  public static int OPTIONS_SCENE = 2;</span>
+<span class="fc" id="L49">  public static int TUTORIAL_SCENE = 3;</span>
+<span class="fc" id="L50">  public static int RESULTS_SCENE = 4;</span>
+<span class="fc" id="L51">  public static int BOAT_SELECT = 5;</span>
+<span class="fc" id="L52">  public static int DIFFICULTY_SELECT = 6;</span>
+<span class="fc" id="L53">  public static int LOAD_SCENE = 7;</span>
+<span class="fc" id="L54">  public static int SAVE_SCENE = 8;</span>
+
+  public AssetManager assets;
 
   /**
    * Create method runs when the game starts.
@@ -57,18 +62,23 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
    */
   @Override
   public void create() {
-<span class="nc" id="L60">    allScenes = new Scene[9];</span>
-<span class="nc" id="L61">    allScenes[MAIN_MENU] = new SceneStartScreen();</span>
-<span class="nc" id="L62">    allScenes[GAME_SCENE] = new SceneMainGame();</span>
-<span class="nc" id="L63">    allScenes[OPTIONS_SCENE] = new SceneOptionsMenu();</span>
-<span class="nc" id="L64">    allScenes[TUTORIAL_SCENE] = new SceneTutorial();</span>
-<span class="nc" id="L65">    allScenes[RESULTS_SCENE] = new SceneResultsScreen();</span>
-<span class="nc" id="L66">    allScenes[BOAT_SELECT] = new SceneBoatSelection();</span>
-<span class="nc" id="L67">    allScenes[DIFFICULTY_SELECT] = new SceneDifficulty();</span>
-<span class="nc" id="L68">    allScenes[LOAD_SCENE] = new SceneLoadScreen(this);</span>
-<span class="nc" id="L69">    allScenes[SAVE_SCENE] = new SceneSaveScreen(this);</span>
-<span class="nc" id="L70">    batch = new SpriteBatch();</span>
-<span class="nc" id="L71">  }</span>
+
+<span class="nc" id="L66">    assets = new AssetManager();</span>
+<span class="nc" id="L67">    loadAssets();</span>
+<span class="nc" id="L68">    assets.finishLoading();</span>
+
+<span class="nc" id="L70">    allScenes = new Scene[9];</span>
+<span class="nc" id="L71">    allScenes[MAIN_MENU] = new SceneStartScreen();</span>
+<span class="nc" id="L72">    allScenes[GAME_SCENE] = new SceneMainGame(this);</span>
+<span class="nc" id="L73">    allScenes[OPTIONS_SCENE] = new SceneOptionsMenu();</span>
+<span class="nc" id="L74">    allScenes[TUTORIAL_SCENE] = new SceneTutorial();</span>
+<span class="nc" id="L75">    allScenes[RESULTS_SCENE] = new SceneResultsScreen();</span>
+<span class="nc" id="L76">    allScenes[BOAT_SELECT] = new SceneBoatSelection();</span>
+<span class="nc" id="L77">    allScenes[DIFFICULTY_SELECT] = new SceneDifficulty();</span>
+<span class="nc" id="L78">    allScenes[LOAD_SCENE] = new SceneLoadScreen(this);</span>
+<span class="nc" id="L79">    allScenes[SAVE_SCENE] = new SceneSaveScreen(this);</span>
+<span class="nc" id="L80">    batch = new SpriteBatch();</span>
+<span class="nc" id="L81">  }</span>
 
   /**
    * Render function runs every frame.
@@ -78,26 +88,26 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
   @Override
   public void render() {
     // run the current scene
-<span class="nc" id="L81">    int newSceneId = allScenes[sceneId].update();</span>
-<span class="nc" id="L82">    allScenes[sceneId].draw(batch);</span>
+<span class="nc" id="L91">    int newSceneId = allScenes[sceneId].update();</span>
+<span class="nc" id="L92">    allScenes[sceneId].draw(batch);</span>
 
-<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (sceneId != newSceneId) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">    if (sceneId != newSceneId) {</span>
       // special case updates
-<span class="nc bnc" id="L86" title="All 2 branches missed.">      if (newSceneId == RESULTS_SCENE) {</span>
-<span class="nc" id="L87">        ((SceneResultsScreen) allScenes[RESULTS_SCENE]).setBoats(</span>
-<span class="nc" id="L88">            ((SceneMainGame) allScenes[GAME_SCENE]).getAllBoats());</span>
-<span class="nc bnc" id="L89" title="All 4 branches missed.">      } else if (newSceneId == TUTORIAL_SCENE &amp;&amp; sceneId == DIFFICULTY_SELECT) {</span>
-<span class="nc" id="L90">        ((SceneMainGame) allScenes[GAME_SCENE]).setPlayerStats(</span>
-<span class="nc" id="L91">            ((SceneBoatSelection) allScenes[BOAT_SELECT]).getSpecId(),</span>
-<span class="nc" id="L92">            ((SceneDifficulty) allScenes[DIFFICULTY_SELECT]).getdiffLevel());</span>
-<span class="nc" id="L93">        ((SceneMainGame) allScenes[GAME_SCENE]).initialize();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">      if (newSceneId == RESULTS_SCENE) {</span>
+<span class="nc" id="L97">        ((SceneResultsScreen) allScenes[RESULTS_SCENE]).setBoats(</span>
+<span class="nc" id="L98">            ((SceneMainGame) allScenes[GAME_SCENE]).getAllBoats());</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">      } else if (newSceneId == TUTORIAL_SCENE &amp;&amp; sceneId == DIFFICULTY_SELECT) {</span>
+<span class="nc" id="L100">        ((SceneMainGame) allScenes[GAME_SCENE]).setPlayerStats(</span>
+<span class="nc" id="L101">            ((SceneBoatSelection) allScenes[BOAT_SELECT]).getSpecId(),</span>
+<span class="nc" id="L102">            ((SceneDifficulty) allScenes[DIFFICULTY_SELECT]).getdiffLevel());</span>
+<span class="nc" id="L103">        ((SceneMainGame) allScenes[GAME_SCENE]).initialize();</span>
       }
 
 
       // check if we need to change scene
-<span class="nc" id="L98">      sceneId = newSceneId;</span>
+<span class="nc" id="L108">      sceneId = newSceneId;</span>
     }
-<span class="nc" id="L100">  }</span>
+<span class="nc" id="L110">  }</span>
 
   /**
    * Disposes unneeded SpriteBatch and exits application.
@@ -106,11 +116,12 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
    */
   @Override
   public void dispose() {
-<span class="nc" id="L109">    batch.dispose();</span>
+<span class="nc" id="L119">    batch.dispose();</span>
+<span class="nc" id="L120">    assets.dispose();</span>
 
-<span class="nc" id="L111">    Gdx.app.exit();</span>
-<span class="nc" id="L112">    System.exit(0);</span>
-<span class="nc" id="L113">  }</span>
+<span class="nc" id="L122">    Gdx.app.exit();</span>
+<span class="nc" id="L123">    System.exit(0);</span>
+<span class="nc" id="L124">  }</span>
 
   /**
    * Resize used and passed to resize method of each scene based on width and height attributes.
@@ -120,7 +131,63 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
    */
   @Override
   public void resize(int width, int height) {
-<span class="nc" id="L123">    allScenes[sceneId].resize(width, height);</span>
-<span class="nc" id="L124">  }</span>
+<span class="nc" id="L134">    allScenes[sceneId].resize(width, height);</span>
+<span class="nc" id="L135">  }</span>
+
+  private void loadAssets() {
+
+    // Load textures
+<span class="nc" id="L140">    assets.load(&quot;bleachers_l.png&quot;, Texture.class);</span>
+<span class="nc" id="L141">    assets.load(&quot;bleachers_r.png&quot;, Texture.class);</span>
+<span class="nc" id="L142">    assets.load(&quot;boat_body.png&quot;, Texture.class);</span>
+<span class="nc" id="L143">    assets.load(&quot;boat_people.png&quot;, Texture.class);</span>
+<span class="nc" id="L144">    assets.load(&quot;boat_selection_debug.png&quot;, Texture.class);</span>
+<span class="nc" id="L145">    assets.load(&quot;boat_selection_default.png&quot;, Texture.class);</span>
+<span class="nc" id="L146">    assets.load(&quot;boat_selection_fastlowdurability.png&quot;, Texture.class);</span>
+<span class="nc" id="L147">    assets.load(&quot;boat_selection_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L148">    assets.load(&quot;boat.png&quot;, Texture.class);</span>
+<span class="nc" id="L149">    assets.load(&quot;difficulty_options_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L150">    assets.load(&quot;durability_texture.png&quot;, Texture.class);</span>
+<span class="nc" id="L151">    assets.load(&quot;easy_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L152">    assets.load(&quot;easy.png&quot;, Texture.class);</span>
+<span class="nc" id="L153">    assets.load(&quot;easyButton.png&quot;, Texture.class);</span>
+<span class="nc" id="L154">    assets.load(&quot;hard_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L155">    assets.load(&quot;hard.png&quot;, Texture.class);</span>
+<span class="nc" id="L156">    assets.load(&quot;lane_buoy.png&quot;, Texture.class);</span>
+<span class="nc" id="L157">    assets.load(&quot;load_game_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L158">    assets.load(&quot;load_game.png&quot;, Texture.class);</span>
+<span class="nc" id="L159">    assets.load(&quot;medium_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L160">    assets.load(&quot;medium.png&quot;, Texture.class);</span>
+<span class="nc" id="L161">    assets.load(&quot;object_placeholder.png&quot;, Texture.class);</span>
+<span class="nc" id="L162">    assets.load(&quot;obstacle_branch.png&quot;, Texture.class);</span>
+<span class="nc" id="L163">    assets.load(&quot;obstacle_duck.png&quot;, Texture.class);</span>
+<span class="nc" id="L164">    assets.load(&quot;obstacle.png&quot;, Texture.class);</span>
+<span class="nc" id="L165">    assets.load(&quot;options_menu_back_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L166">    assets.load(&quot;options_menu_back.png&quot;, Texture.class);</span>
+<span class="nc" id="L167">    assets.load(&quot;options_menu_checkbox_no.png&quot;, Texture.class);</span>
+<span class="nc" id="L168">    assets.load(&quot;options_menu_checkbox_yes.png&quot;, Texture.class);</span>
+<span class="nc" id="L169">    assets.load(&quot;options_menu_fullscreen.png&quot;, Texture.class);</span>
+<span class="nc" id="L170">    assets.load(&quot;power_up_drag.png&quot;, Texture.class);</span>
+<span class="nc" id="L171">    assets.load(&quot;power_up_energy.png&quot;, Texture.class);</span>
+<span class="nc" id="L172">    assets.load(&quot;power_up_health.png&quot;, Texture.class);</span>
+<span class="nc" id="L173">    assets.load(&quot;power_up_rotation.png&quot;, Texture.class);</span>
+<span class="nc" id="L174">    assets.load(&quot;power_up_speed.png&quot;, Texture.class);</span>
+<span class="nc" id="L175">    assets.load(&quot;ready_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L176">    assets.load(&quot;ready.png&quot;, Texture.class);</span>
+<span class="nc" id="L177">    assets.load(&quot;readyButton.png&quot;, Texture.class);</span>
+<span class="nc" id="L178">    assets.load(&quot;select_arrow.png&quot;, Texture.class);</span>
+<span class="nc" id="L179">    assets.load(&quot;stamina_texture.png&quot;, Texture.class);</span>
+<span class="nc" id="L180">    assets.load(&quot;start_banner.png&quot;, Texture.class);</span>
+<span class="nc" id="L181">    assets.load(&quot;start_menu_options_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L182">    assets.load(&quot;start_menu_options.png&quot;, Texture.class);</span>
+<span class="nc" id="L183">    assets.load(&quot;start_menu_play_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L184">    assets.load(&quot;start_menu_play.png&quot;, Texture.class);</span>
+<span class="nc" id="L185">    assets.load(&quot;start_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L186">    assets.load(&quot;temp_background.png&quot;, Texture.class);</span>
+<span class="nc" id="L187">    assets.load(&quot;tutorial_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L188">    assets.load(&quot;water_background.png&quot;, Texture.class);</span>
+
+<span class="nc" id="L190">  }</span>
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -51,6 +51,7 @@ public class BoatRace {
 <span class="fc" id="L51">  public long totalFrames = 0;</span>
 
 <span class="fc" id="L53">  public int legNo = 0;</span>
+  protected PixelBoat game;
 
   /**
    * Main constructor for a BoatRace.
@@ -61,105 +62,128 @@ public class BoatRace {
    * @author William Walton
    * @author Umer Fakher JavaDoc by Umer Fakher
    */
-<span class="fc" id="L64">  public BoatRace(List&lt;Boat&gt; raceBoats) {</span>
-<span class="fc" id="L65">    laneSep = new Texture(&quot;lane_buoy.png&quot;);</span>
-<span class="fc" id="L66">    startBanner = new Texture(&quot;start_banner.png&quot;);</span>
-<span class="fc" id="L67">    bleachersL = new Texture(&quot;bleachers_l.png&quot;);</span>
-<span class="fc" id="L68">    bleacherR = new Texture(&quot;bleachers_r.png&quot;);</span>
+<span class="fc" id="L65">  public BoatRace(List&lt;Boat&gt; raceBoats, PixelBoat game) {</span>
+<span class="fc" id="L66">    this.game = game;</span>
+<span class="fc" id="L67">    laneSep = game.assets.get(&quot;lane_buoy.png&quot;, Texture.class);</span>
+<span class="fc" id="L68">    startBanner = game.assets.get(&quot;start_banner.png&quot;, Texture.class);</span>
+<span class="fc" id="L69">    bleachersL = game.assets.get(&quot;bleachers_l.png&quot;, Texture.class);</span>
+<span class="fc" id="L70">    bleacherR = game.assets.get(&quot;bleachers_r.png&quot;, Texture.class);</span>
 
-<span class="fc" id="L70">    boats = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L71">    boats.addAll(raceBoats);</span>
+<span class="fc" id="L72">    boats = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L73">    boats.addAll(raceBoats);</span>
 
-<span class="fc bfc" id="L73" title="All 2 branches covered.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
-<span class="fc" id="L74">      boats.get(i).hasStartedLeg = false;</span>
-<span class="fc" id="L75">      boats.get(i).hasFinishedLeg = false;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
+<span class="fc" id="L76">      boats.get(i).hasStartedLeg = false;</span>
+<span class="fc" id="L77">      boats.get(i).hasFinishedLeg = false;</span>
 
-<span class="fc" id="L77">      boats.get(i).reset_motion();</span>
-<span class="fc" id="L78">      boats.get(i).sprite.setPosition(getLaneCentre(i), 40);  // reset boats y and place in lane</span>
-<span class="fc" id="L79">      boats.get(i).setFramesRaced(0);</span>
-<span class="fc" id="L80">      boats.get(i).reset();</span>
+<span class="fc" id="L79">      boats.get(i).reset_motion();</span>
+<span class="fc" id="L80">      boats.get(i).sprite.setPosition(getLaneCentre(i), 40);  // reset boats y and place in lane</span>
+<span class="fc" id="L81">      boats.get(i).setFramesRaced(0);</span>
+<span class="fc" id="L82">      boats.get(i).reset();</span>
 
-<span class="fc bfc" id="L82" title="All 2 branches covered.">      if (boats.get(i) instanceof PlayerBoat) {</span>
-<span class="fc" id="L83">        ((PlayerBoat) boats.get(i)).resetCameraPos();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">      if (boats.get(i) instanceof PlayerBoat) {</span>
+<span class="fc" id="L85">        ((PlayerBoat) boats.get(i)).resetCameraPos();</span>
       }
     }
 
-<span class="fc" id="L87">    obstacles = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L89">    obstacles = new ArrayList&lt;&gt;();</span>
 
+<span class="fc" id="L91">    Texture branchTexture = game.assets.get(&quot;obstacle_branch.png&quot;, Texture.class);</span>
     // add some random obstacles
-<span class="fc bfc" id="L90" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L91">      obstacles.add(new ObstacleBranch(</span>
-<span class="fc" id="L92">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L93">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L94">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L94">      obstacles.add(new ObstacleBranch(</span>
+<span class="fc" id="L95">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L96">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L97">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              branchTexture
+      ));
     }
 
-<span class="fc bfc" id="L97" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L98">      obstacles.add(new ObstacleFloatingBranch(</span>
-<span class="fc" id="L99">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L100">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L101">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L103">      obstacles.add(new ObstacleFloatingBranch(</span>
+<span class="fc" id="L104">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L105">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L106">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              branchTexture
+      ));
     }
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L105">      obstacles.add(new ObstacleDuck(</span>
-<span class="fc" id="L106">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L107">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L108">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L111">    Texture duckTexture = game.assets.get(&quot;obstacle_duck.png&quot;, Texture.class);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L113">      obstacles.add(new ObstacleDuck(</span>
+<span class="fc" id="L114">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L115">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L116">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              duckTexture
+      ));
     }
 
     // add the lane separators
-<span class="fc bfc" id="L112" title="All 2 branches covered.">    for (int lane = 0; lane &lt;= boats.size(); lane++) {</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">      for (int height = 0; height &lt;= endY; height += ObstacleLaneWall.texture_height) {</span>
-<span class="fc" id="L114">        obstacles.add(new ObstacleLaneWall(getLaneCentre(lane) - laneWidth / 2, height, laneSep));</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">    for (int lane = 0; lane &lt;= boats.size(); lane++) {</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">      for (int height = 0; height &lt;= endY; height += ObstacleLaneWall.texture_height) {</span>
+<span class="fc" id="L124">        obstacles.add(new ObstacleLaneWall(getLaneCentre(lane) - laneWidth / 2, height, laneSep));</span>
       }
     }
 
-<span class="fc" id="L118">    powerups = new ArrayList&lt;&gt;();</span>
-
-<span class="fc bfc" id="L120" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L121">      powerups.add(new PowerUpSpeed(</span>
-<span class="fc" id="L122">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L123">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L124">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L128">    powerups = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L129">    Texture powerUpSpeedTexture = (Texture) game.assets.get(&quot;power_up_speed.png&quot;);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L131">      powerups.add(new PowerUpSpeed(</span>
+<span class="fc" id="L132">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L133">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L134">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              powerUpSpeedTexture
+      ));
     }
 
-<span class="fc bfc" id="L127" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L128">      powerups.add(new PowerUpHealth(</span>
-<span class="fc" id="L129">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L130">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L131">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L139">    Texture powerUpHealthTexture = (Texture) game.assets.get(&quot;power_up_health.png&quot;);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L141">      powerups.add(new PowerUpHealth(</span>
+<span class="fc" id="L142">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L143">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L144">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              powerUpHealthTexture
+      ));
     }
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L135">      powerups.add(new PowerUpEnergy(</span>
-<span class="fc" id="L136">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L137">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L138">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L149">    Texture powerUpEnergyTexture = (Texture) game.assets.get(&quot;power_up_energy.png&quot;);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L151">      powerups.add(new PowerUpEnergy(</span>
+<span class="fc" id="L152">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L153">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L154">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              powerUpEnergyTexture
+      ));
     }
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L142">      powerups.add(new PowerUpRotation(</span>
-<span class="fc" id="L143">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L144">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L145">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L159">    Texture powerUpRotationTexture = (Texture) game.assets.get(&quot;power_up_rotation.png&quot;);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L161">      powerups.add(new PowerUpRotation(</span>
+<span class="fc" id="L162">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L163">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L164">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              powerUpRotationTexture
+      ));
     }
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
-<span class="fc" id="L149">      powerups.add(new PowerUpDrag(</span>
-<span class="fc" id="L150">              (int) (-(laneWidth * boats.size() / 2)</span>
-<span class="fc" id="L151">                    + Math.random() * (laneWidth * boats.size())),</span>
-<span class="fc" id="L152">              (int) (startY + 50 + Math.random() * (endY - startY - 50))));</span>
+<span class="fc" id="L169">    Texture powerUpDragTexture = (Texture) game.assets.get(&quot;power_up_drag.png&quot;);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">    for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L171">      powerups.add(new PowerUpDrag(</span>
+<span class="fc" id="L172">              (int) (-(laneWidth * boats.size() / 2)</span>
+<span class="fc" id="L173">                    + Math.random() * (laneWidth * boats.size())),</span>
+<span class="fc" id="L174">              (int) (startY + 50 + Math.random() * (endY - startY - 50)),</span>
+              powerUpDragTexture
+      ));
     }
 
     // Initialise colour of Time Elapsed Overlay
-<span class="fc" id="L156">    font = new BitmapFont();</span>
-<span class="fc" id="L157">    font.setColor(Color.RED);</span>
-<span class="fc" id="L158">  }</span>
+<span class="fc" id="L180">    font = new BitmapFont();</span>
+<span class="fc" id="L181">    font.setColor(Color.RED);</span>
+<span class="fc" id="L182">  }</span>
 
   private int getLaneCentre(int boatIndex) {
-<span class="fc" id="L161">    int raceWidth = boats.size() * laneWidth;</span>
-<span class="fc" id="L162">    return (-raceWidth / 2) + (laneWidth * (boatIndex + 1)) - (laneWidth / 2);</span>
+<span class="fc" id="L185">    int raceWidth = boats.size() * laneWidth;</span>
+<span class="fc" id="L186">    return (-raceWidth / 2) + (laneWidth * (boatIndex + 1)) - (laneWidth / 2);</span>
   }
 
   /**
@@ -174,93 +198,93 @@ public class BoatRace {
    */
   public void runStep() {
     // dnf after 5 mins
-<span class="nc bnc" id="L177" title="All 2 branches missed.">    if (totalFrames++ &gt; 60 * 60 * 5) {</span>
-<span class="nc" id="L178">      isFinished = true;</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">      for (Boat b : boats) {</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (!b.hasFinishedLeg()) {</span>
-<span class="nc" id="L181">          b.setStartTime(0);</span>
-<span class="nc" id="L182">          b.setEndTime((long) (b.getStartTime(false) + ((1000.0 / 60.0) * b.getFramesRaced())));</span>
-<span class="nc" id="L183">          b.setLegTime();</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">    if (totalFrames++ &gt; 60 * 60 * 5) {</span>
+<span class="nc" id="L202">      isFinished = true;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">      for (Boat b : boats) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (!b.hasFinishedLeg()) {</span>
+<span class="nc" id="L205">          b.setStartTime(0);</span>
+<span class="nc" id="L206">          b.setEndTime((long) (b.getStartTime(false) + ((1000.0 / 60.0) * b.getFramesRaced())));</span>
+<span class="nc" id="L207">          b.setLegTime();</span>
         }
-<span class="nc" id="L185">      }</span>
+<span class="nc" id="L209">      }</span>
     }
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">    for (CollisionObject c : obstacles) {</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">      if (c instanceof Obstacle) {</span>
-<span class="nc" id="L190">        ((Obstacle) c).updatePosition();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">    for (CollisionObject c : obstacles) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">      if (c instanceof Obstacle) {</span>
+<span class="nc" id="L214">        ((Obstacle) c).updatePosition();</span>
       }
-<span class="nc bnc" id="L192" title="All 2 branches missed.">      if (c instanceof ObstacleLaneWall) {</span>
-<span class="nc" id="L193">        ((ObstacleLaneWall) c).setAnimationFrame(0);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">      if (c instanceof ObstacleLaneWall) {</span>
+<span class="nc" id="L217">        ((ObstacleLaneWall) c).setAnimationFrame(0);</span>
       }
-<span class="nc" id="L195">    }</span>
+<span class="nc" id="L219">    }</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">    for (CollisionObject c : powerups) {</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">      if (c instanceof PowerUp) {</span>
-<span class="nc" id="L199">        ((PowerUp) c).updatePosition();</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">    for (CollisionObject c : powerups) {</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">      if (c instanceof PowerUp) {</span>
+<span class="nc" id="L223">        ((PowerUp) c).updatePosition();</span>
       }
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L225">    }</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">    for (Boat boat : boats) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">    for (Boat boat : boats) {</span>
       // check if any boats have finished
-<span class="nc bnc" id="L205" title="All 4 branches missed.">      if (!boat.hasFinishedLeg() &amp;&amp; boat.getSprite().getY() &gt; endY) {</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">      if (!boat.hasFinishedLeg() &amp;&amp; boat.getSprite().getY() &gt; endY) {</span>
         // store the leg time in the object
-<span class="nc" id="L207">        boat.setStartTime(0);</span>
-<span class="nc" id="L208">        boat.setEndTime(</span>
-<span class="nc" id="L209">            (long) (boat.getStartTime(false) + ((1000.0 / 60.0) * boat.getFramesRaced())));</span>
-<span class="nc" id="L210">        boat.setLegTime();</span>
+<span class="nc" id="L231">        boat.setStartTime(0);</span>
+<span class="nc" id="L232">        boat.setEndTime(</span>
+<span class="nc" id="L233">            (long) (boat.getStartTime(false) + ((1000.0 / 60.0) * boat.getFramesRaced())));</span>
+<span class="nc" id="L234">        boat.setLegTime();</span>
         
 
-<span class="nc" id="L213">        boat.setHasFinishedLeg(true);</span>
-<span class="nc bnc" id="L214" title="All 4 branches missed.">      } else if (!boat.hasStartedLeg() &amp;&amp; boat.getSprite().getY() &gt; startY) {</span>
+<span class="nc" id="L237">        boat.setHasFinishedLeg(true);</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">      } else if (!boat.hasStartedLeg() &amp;&amp; boat.getSprite().getY() &gt; startY) {</span>
         // if any boats have started
-<span class="nc" id="L216">        boat.setStartTime(System.currentTimeMillis());</span>
-<span class="nc" id="L217">        boat.setHasStartedLeg(true);</span>
-<span class="nc" id="L218">        boat.setFramesRaced(0);</span>
+<span class="nc" id="L240">        boat.setStartTime(System.currentTimeMillis());</span>
+<span class="nc" id="L241">        boat.setHasStartedLeg(true);</span>
+<span class="nc" id="L242">        boat.setFramesRaced(0);</span>
       } else {
         // if not start or end, must be racing
-<span class="nc" id="L221">        boat.addFrameRaced();</span>
+<span class="nc" id="L245">        boat.addFrameRaced();</span>
       }
-<span class="nc" id="L223">    }</span>
+<span class="nc" id="L247">    }</span>
 
-<span class="nc" id="L225">    boolean notFinished = false;</span>
+<span class="nc" id="L249">    boolean notFinished = false;</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
       // all boats
-<span class="nc bnc" id="L229" title="All 2 branches missed.">      if (!boats.get(i).hasFinishedLeg()) {</span>
-<span class="nc" id="L230">        notFinished = true;</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">      if (!boats.get(i).hasFinishedLeg()) {</span>
+<span class="nc" id="L254">        notFinished = true;</span>
       }
 
       // update boat (handles inputs if player, etc)
-<span class="nc bnc" id="L234" title="All 2 branches missed.">      if (boats.get(i) instanceof AiBoat) {</span>
-<span class="nc" id="L235">        ((AiBoat) boats.get(i)).updatePosition(obstacles);</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">      } else if (boats.get(i) instanceof PlayerBoat) {</span>
-<span class="nc" id="L237">        boats.get(i).updatePosition();</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">      if (boats.get(i) instanceof AiBoat) {</span>
+<span class="nc" id="L259">        ((AiBoat) boats.get(i)).updatePosition(obstacles);</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">      } else if (boats.get(i) instanceof PlayerBoat) {</span>
+<span class="nc" id="L261">        boats.get(i).updatePosition();</span>
       }
 
       // check for collisions
-<span class="nc bnc" id="L241" title="All 2 branches missed.">      for (CollisionObject obstacle : obstacles) {</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (obstacle.isShown()) {</span>
-<span class="nc" id="L243">          boats.get(i).checkCollisions(obstacle);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">      for (CollisionObject obstacle : obstacles) {</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (obstacle.isShown()) {</span>
+<span class="nc" id="L267">          boats.get(i).checkCollisions(obstacle);</span>
         }
-<span class="nc" id="L245">      }</span>
+<span class="nc" id="L269">      }</span>
 
-<span class="nc bnc" id="L247" title="All 2 branches missed.">      for (CollisionObject powerup : powerups) {</span>
-<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (powerup.isShown()) {</span>
-<span class="nc" id="L249">          boats.get(i).checkCollisions(powerup);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">      for (CollisionObject powerup : powerups) {</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">        if (powerup.isShown()) {</span>
+<span class="nc" id="L273">          boats.get(i).checkCollisions(powerup);</span>
         }
-<span class="nc" id="L251">      }</span>
+<span class="nc" id="L275">      }</span>
 
       // check if out of lane
-<span class="nc bnc" id="L254" title="All 2 branches missed.">      if (boats.get(i).getSprite().getX() &gt; getLaneCentre(i) + laneWidth / 2</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">              || boats.get(i).getSprite().getX() &lt; getLaneCentre(i) - laneWidth / 2) {</span>
-<span class="nc" id="L256">        boats.get(i).setTimeToAdd(boats.get(i).getTimeToAdd() + penaltyPerFrame);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">      if (boats.get(i).getSprite().getX() &gt; getLaneCentre(i) + laneWidth / 2</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">              || boats.get(i).getSprite().getX() &lt; getLaneCentre(i) - laneWidth / 2) {</span>
+<span class="nc" id="L280">        boats.get(i).setTimeToAdd(boats.get(i).getTimeToAdd() + penaltyPerFrame);</span>
       }
     }
-<span class="nc bnc" id="L259" title="All 2 branches missed.">    isFinished = !notFinished;</span>
-<span class="nc" id="L260">  }</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">    isFinished = !notFinished;</span>
+<span class="nc" id="L284">  }</span>
 
   public boolean isFinished() {
-<span class="fc" id="L263">    return isFinished;</span>
+<span class="fc" id="L287">    return isFinished;</span>
   }
 
   /**
@@ -272,30 +296,30 @@ public class BoatRace {
    * @author Umer Fakher
    */
   public List&lt;Sprite&gt; getSprites() {
-<span class="nc" id="L275">    List&lt;Sprite&gt; allSprites = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L299">    List&lt;Sprite&gt; allSprites = new ArrayList&lt;&gt;();</span>
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">    for (CollisionObject obs : obstacles) {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">    for (CollisionObject obs : obstacles) {</span>
       // check if can be cast back up
-<span class="nc bnc" id="L279" title="All 4 branches missed.">      if (obs instanceof Obstacle &amp;&amp; obs.isShown()) {</span>
-<span class="nc" id="L280">        allSprites.add(((Obstacle) obs).getSprite());</span>
+<span class="nc bnc" id="L303" title="All 4 branches missed.">      if (obs instanceof Obstacle &amp;&amp; obs.isShown()) {</span>
+<span class="nc" id="L304">        allSprites.add(((Obstacle) obs).getSprite());</span>
       }
-<span class="nc" id="L282">    }</span>
+<span class="nc" id="L306">    }</span>
 
-<span class="nc bnc" id="L284" title="All 2 branches missed.">    for (CollisionObject pus : powerups) {</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">    for (CollisionObject pus : powerups) {</span>
       // check if can be cast back up
-<span class="nc bnc" id="L286" title="All 4 branches missed.">      if (pus instanceof PowerUp &amp;&amp; pus.isShown()) {</span>
-<span class="nc" id="L287">        allSprites.add(((PowerUp) pus).getSprite());</span>
+<span class="nc bnc" id="L310" title="All 4 branches missed.">      if (pus instanceof PowerUp &amp;&amp; pus.isShown()) {</span>
+<span class="nc" id="L311">        allSprites.add(((PowerUp) pus).getSprite());</span>
       }
-<span class="nc" id="L289">    }</span>
+<span class="nc" id="L313">    }</span>
 
-<span class="nc bnc" id="L291" title="All 2 branches missed.">    for (Boat b : boats) {</span>
-<span class="nc" id="L292">      allSprites.add(b.getSprite());</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
-<span class="nc" id="L294">        allSprites.addAll(((PlayerBoat) b).getUiSprites());</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">    for (Boat b : boats) {</span>
+<span class="nc" id="L316">      allSprites.add(b.getSprite());</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
+<span class="nc" id="L318">        allSprites.addAll(((PlayerBoat) b).getUiSprites());</span>
       }
-<span class="nc" id="L296">    }</span>
+<span class="nc" id="L320">    }</span>
 
-<span class="nc" id="L298">    return allSprites;</span>
+<span class="nc" id="L322">    return allSprites;</span>
   }
 
   /**
@@ -311,47 +335,47 @@ public class BoatRace {
   public void draw(SpriteBatch batch) {
 
     // Retrieves sprites and calls function recursively.
-<span class="nc bnc" id="L314" title="All 2 branches missed.">    for (Sprite sp : getSprites()) {</span>
-<span class="nc" id="L315">      sp.draw(batch);</span>
-<span class="nc" id="L316">    }</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">    for (Sprite sp : getSprites()) {</span>
+<span class="nc" id="L339">      sp.draw(batch);</span>
+<span class="nc" id="L340">    }</span>
 
-<span class="nc bnc" id="L318" title="All 2 branches missed.">    for (Boat b : boats) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">    for (Boat b : boats) {</span>
       // If current boat b is the player's boat then can display hud for this boat
-<span class="nc bnc" id="L320" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
-<span class="nc bnc" id="L321" title="All 2 branches missed.">        if (((PlayerBoat) b).hasStartedLeg()) {</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">        if (((PlayerBoat) b).hasStartedLeg()) {</span>
           // Calculate time elapsed from the start in milliseconds
-<span class="nc" id="L323">          long i = (System.currentTimeMillis() - ((PlayerBoat) b).getStartTime(false));</span>
+<span class="nc" id="L347">          long i = (System.currentTimeMillis() - ((PlayerBoat) b).getStartTime(false));</span>
 
           // Displays and updates the time elapsed overlay and keeps position consistent
           // with player's boat
-<span class="nc" id="L327">          drawTimeDisplay(batch, b, &quot;&quot;, i, -((PlayerBoat) b).uiBarWidth / 2,</span>
-<span class="nc" id="L328">                  500 + ((PlayerBoat) b).getSprite().getY());</span>
+<span class="nc" id="L351">          drawTimeDisplay(batch, b, &quot;&quot;, i, -((PlayerBoat) b).uiBarWidth / 2,</span>
+<span class="nc" id="L352">                  500 + ((PlayerBoat) b).getSprite().getY());</span>
 
           // Draws a leg time display on the screen when the given boat has completed a
           // leg of the race.
-<span class="nc" id="L332">          drawLegTimeDisplay(batch, b);</span>
+<span class="nc" id="L356">          drawLegTimeDisplay(batch, b);</span>
         }
       }
-<span class="nc" id="L335">    }</span>
+<span class="nc" id="L359">    }</span>
 
-<span class="nc" id="L337">    int raceWidth = boats.size() * laneWidth;</span>
+<span class="nc" id="L361">    int raceWidth = boats.size() * laneWidth;</span>
     
-<span class="nc bnc" id="L339" title="All 2 branches missed.">    for (int i = -1000; i &lt; endY + 1000; i += 800) {</span>
-<span class="nc" id="L340">      batch.draw(bleacherR, raceWidth / 2 + 400, i, 400, 800);</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">    for (int i = -1000; i &lt; endY + 1000; i += 800) {</span>
+<span class="nc" id="L364">      batch.draw(bleacherR, raceWidth / 2 + 400, i, 400, 800);</span>
     }
-<span class="nc bnc" id="L342" title="All 2 branches missed.">    for (int i = -1000; i &lt; endY + 1000; i += 800) {</span>
-<span class="nc" id="L343">      batch.draw(bleachersL, -raceWidth / 2 - 800, i, 400, 800);</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">    for (int i = -1000; i &lt; endY + 1000; i += 800) {</span>
+<span class="nc" id="L367">      batch.draw(bleachersL, -raceWidth / 2 - 800, i, 400, 800);</span>
     }
-<span class="nc bnc" id="L345" title="All 2 branches missed.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
-<span class="nc" id="L346">      batch.draw(startBanner, </span>
-<span class="nc" id="L347">                (getLaneCentre(i)) - (laneWidth / 2),</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">    for (int i = 0; i &lt; boats.size(); i++) {</span>
+<span class="nc" id="L370">      batch.draw(startBanner, </span>
+<span class="nc" id="L371">                (getLaneCentre(i)) - (laneWidth / 2),</span>
                 startY, laneWidth, laneWidth / 2);
     }
-<span class="nc" id="L350">    Texture temp = new Texture(&quot;object_placeholder.png&quot;);</span>
-<span class="nc" id="L351">    batch.draw(temp, -raceWidth / 2, endY, raceWidth, 5);</span>
+<span class="nc" id="L374">    Texture temp = new Texture(&quot;object_placeholder.png&quot;);</span>
+<span class="nc" id="L375">    batch.draw(temp, -raceWidth / 2, endY, raceWidth, 5);</span>
     
-<span class="nc" id="L353">    temp.dispose();</span>
-<span class="nc" id="L354">  }</span>
+<span class="nc" id="L377">    temp.dispose();</span>
+<span class="nc" id="L378">  }</span>
 
   /**
    * Draws the a time display on the screen.
@@ -366,11 +390,11 @@ public class BoatRace {
    */
   public void drawTimeDisplay(SpriteBatch batch, Boat b, String labelText,
                               long time, float x, float y) {
-<span class="nc bnc" id="L369" title="All 2 branches missed.">    if (labelText.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L370">      labelText = &quot;Time (min:sec) = %02d:%02d&quot;;</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">    if (labelText.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L394">      labelText = &quot;Time (min:sec) = %02d:%02d&quot;;</span>
     }
-<span class="nc" id="L372">    font.draw(batch, String.format(labelText, time / 60000, time / 1000 % 60), x, y);</span>
-<span class="nc" id="L373">  }</span>
+<span class="nc" id="L396">    font.draw(batch, String.format(labelText, time / 60000, time / 1000 % 60), x, y);</span>
+<span class="nc" id="L397">  }</span>
 
   /**
    * Draws a leg time display on the screen when the given boat has completed a leg of the race.
@@ -385,18 +409,18 @@ public class BoatRace {
    * @author Umer Fakher
    */
   public void drawLegTimeDisplay(SpriteBatch batch, Boat b) {
-<span class="nc bnc" id="L388" title="All 2 branches missed.">    if (b.getEndTime(false) != -1) {</span>
-<span class="nc bnc" id="L389" title="All 2 branches missed.">      for (long l : b.getLegTimes()) {</span>
-<span class="nc" id="L390">        String label = String.format(</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">    if (b.getEndTime(false) != -1) {</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">      for (long l : b.getLegTimes()) {</span>
+<span class="nc" id="L414">        String label = String.format(</span>
             &quot;Leg Time %d (min:sec) = &quot;,
-<span class="nc" id="L392">            b.getLegTimes().indexOf(l) + 1) + &quot;%02d:%02d&quot;;</span>
-<span class="nc" id="L393">        drawTimeDisplay(batch, b, label, l, -((PlayerBoat) b).uiBarWidth / 2,</span>
-<span class="nc" id="L394">                500 - ((b.getLegTimes().indexOf(l) + 1) * 20) + ((PlayerBoat) b)</span>
-<span class="nc" id="L395">                .getSprite().getY());</span>
-<span class="nc" id="L396">      }</span>
+<span class="nc" id="L416">            b.getLegTimes().indexOf(l) + 1) + &quot;%02d:%02d&quot;;</span>
+<span class="nc" id="L417">        drawTimeDisplay(batch, b, label, l, -((PlayerBoat) b).uiBarWidth / 2,</span>
+<span class="nc" id="L418">                500 - ((b.getLegTimes().indexOf(l) + 1) * 20) + ((PlayerBoat) b)</span>
+<span class="nc" id="L419">                .getSprite().getY());</span>
+<span class="nc" id="L420">      }</span>
 
     }
-<span class="nc" id="L399">  }</span>
+<span class="nc" id="L423">  }</span>
   
   /**
    * Estimates the times for all boats at the end of a race. 
@@ -408,37 +432,37 @@ public class BoatRace {
 
     // Loop through all the boats that haven't finished the leg
 
-<span class="nc bnc" id="L411" title="All 2 branches missed.">    for (Boat boat : boats) {</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">    for (Boat boat : boats) {</span>
 
-<span class="nc bnc" id="L413" title="All 2 branches missed.">      if (!boat.hasFinishedLeg()) {</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">      if (!boat.hasFinishedLeg()) {</span>
 
-<span class="nc" id="L415">        boat.setStartTime(0);</span>
+<span class="nc" id="L439">        boat.setStartTime(0);</span>
         
         // TODO: make sure this is accurate enough
         // Estimate the remaining time: using 50% of max speed as an estimate
-<span class="nc" id="L419">        float distanceToFinish = endY - boat.getSprite().getY();</span>
+<span class="nc" id="L443">        float distanceToFinish = endY - boat.getSprite().getY();</span>
 
-<span class="nc" id="L421">        double cruiseSpeed = boat.maxSpeed * 0.5;</span>
+<span class="nc" id="L445">        double cruiseSpeed = boat.maxSpeed * 0.5;</span>
 
-<span class="nc" id="L423">        float remainingTime = (float) (distanceToFinish / cruiseSpeed);</span>
+<span class="nc" id="L447">        float remainingTime = (float) (distanceToFinish / cruiseSpeed);</span>
 
         // Set the time for the boat and then set the boat as finished
-<span class="nc" id="L426">        boat.setEndTime(</span>
-<span class="nc" id="L427">            (long) (boat.getStartTime(false)</span>
-<span class="nc" id="L428">            + ((1000.0 / 60.0) * boat.getFramesRaced())</span>
+<span class="nc" id="L450">        boat.setEndTime(</span>
+<span class="nc" id="L451">            (long) (boat.getStartTime(false)</span>
+<span class="nc" id="L452">            + ((1000.0 / 60.0) * boat.getFramesRaced())</span>
             + remainingTime));
-<span class="nc" id="L430">        boat.setLegTime();</span>
+<span class="nc" id="L454">        boat.setLegTime();</span>
 
-<span class="nc" id="L432">        boat.setHasFinishedLeg(true);</span>
+<span class="nc" id="L456">        boat.setHasFinishedLeg(true);</span>
 
       }
 
-<span class="nc" id="L436">    }</span>
+<span class="nc" id="L460">    }</span>
     // Set the race as finished
 
-<span class="nc" id="L439">    this.isFinished = true;</span>
+<span class="nc" id="L463">    this.isFinished = true;</span>
 
-<span class="nc" id="L441">  }</span>
+<span class="nc" id="L465">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

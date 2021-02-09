@@ -27,6 +27,10 @@ public abstract class Obstacle extends MovableObject implements CollisionObject 
     //todo implement this
 <span class="fc" id="L28">  }</span>
 
+  Obstacle(float x, float y, int w, int h, Texture texture) {
+<span class="fc" id="L31">    super(x, y, w, h, texture);</span>
+<span class="fc" id="L32">  }</span>
+
   /**
    * A constructor for an Obstacle taking its position (x and y) and width and height.
    *
@@ -36,8 +40,8 @@ public abstract class Obstacle extends MovableObject implements CollisionObject 
    * @author William Walton
    */
   Obstacle(float x, float y, int w, int h, String texturePath, int frameCount) {
-<span class="nc" id="L39">    super(x, y, w, h, texturePath, frameCount);</span>
-<span class="nc" id="L40">  }</span>
+<span class="nc" id="L43">    super(x, y, w, h, texturePath, frameCount);</span>
+<span class="nc" id="L44">  }</span>
 
   /**
    * A constructor for an Obstacle taking its position (x and y) and width and height.
@@ -48,8 +52,8 @@ public abstract class Obstacle extends MovableObject implements CollisionObject 
    * @author William Walton
    */
   Obstacle(float x, float y, int w, int h, Texture t, int frameCount) {
-<span class="fc" id="L51">    super(x, y, w, h, t, frameCount);</span>
-<span class="fc" id="L52">  }</span>
+<span class="fc" id="L55">    super(x, y, w, h, t, frameCount);</span>
+<span class="fc" id="L56">  }</span>
 
   /* ################################### //
           METHODS
@@ -62,7 +66,7 @@ public abstract class Obstacle extends MovableObject implements CollisionObject 
    * @author William Walton
    */
   public void hasCollided() {
-<span class="nc" id="L65">    isShown = false;</span>
-<span class="nc" id="L66">  }</span>
+<span class="nc" id="L69">    isShown = false;</span>
+<span class="nc" id="L70">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerUpSpeed.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">PowerUpSpeed.java</span></div><h1>PowerUpSpeed.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,9 +20,21 @@ public class PowerUpSpeed extends PowerUp {
    * @author Ben Dunbar
    */
   public PowerUpSpeed(float x, float y) {
-<span class="fc" id="L22">    super(x, y, 60, 60, &quot;power_up_speed.png&quot;);</span>
-<span class="fc" id="L23">    sprite.setRotation(0);</span>
-<span class="fc" id="L24">  }</span>
+<span class="nc" id="L23">    super(x, y, 60, 60, &quot;power_up_speed.png&quot;);</span>
+<span class="nc" id="L24">    sprite.setRotation(0);</span>
+<span class="nc" id="L25">  }</span>
+
+  /**
+   * A constructor for an PowerUp.
+   *
+   * @param x coordinate
+   * @param y coordinate
+   * @param texture the texture 
+   */
+  public PowerUpSpeed(float x, float y, Texture texture) {
+<span class="fc" id="L35">    super(x, y, 60, 60, texture, 1);</span>
+<span class="fc" id="L36">    sprite.setRotation(0);</span>
+<span class="fc" id="L37">  }</span>
 
   /**
    * Returns a new collision bounds object for the drag power-up.
@@ -34,20 +47,20 @@ public class PowerUpSpeed extends PowerUp {
    */
   @Override
   public CollisionBounds getBounds() {
-<span class="nc" id="L37">    CollisionBounds myBounds = new CollisionBounds();</span>
-<span class="nc" id="L38">    Rectangle mainRect = new Rectangle(</span>
-<span class="nc" id="L39">        sprite.getX() + (0.31f * sprite.getWidth()),</span>
-<span class="nc" id="L40">        sprite.getY() + (0.06f * sprite.getHeight()),</span>
-<span class="nc" id="L41">        0.31f * sprite.getWidth(),</span>
-<span class="nc" id="L42">        0.88f * sprite.getHeight());</span>
-<span class="nc" id="L43">    myBounds.addBound(mainRect);</span>
+<span class="nc" id="L50">    CollisionBounds myBounds = new CollisionBounds();</span>
+<span class="nc" id="L51">    Rectangle mainRect = new Rectangle(</span>
+<span class="nc" id="L52">        sprite.getX() + (0.31f * sprite.getWidth()),</span>
+<span class="nc" id="L53">        sprite.getY() + (0.06f * sprite.getHeight()),</span>
+<span class="nc" id="L54">        0.31f * sprite.getWidth(),</span>
+<span class="nc" id="L55">        0.88f * sprite.getHeight());</span>
+<span class="nc" id="L56">    myBounds.addBound(mainRect);</span>
 
-<span class="nc" id="L45">    myBounds.setOrigin(new Vector2(</span>
-<span class="nc" id="L46">        sprite.getX() + (sprite.getWidth() / 2),</span>
-<span class="nc" id="L47">        sprite.getY() + (sprite.getHeight() / 2)));</span>
-<span class="nc" id="L48">    myBounds.setRotation(sprite.getRotation());</span>
+<span class="nc" id="L58">    myBounds.setOrigin(new Vector2(</span>
+<span class="nc" id="L59">        sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L60">        sprite.getY() + (sprite.getHeight() / 2)));</span>
+<span class="nc" id="L61">    myBounds.setRotation(sprite.getRotation());</span>
 
-<span class="nc" id="L50">    return myBounds;</span>
+<span class="nc" id="L63">    return myBounds;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

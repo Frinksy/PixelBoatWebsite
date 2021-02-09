@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AiBoat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">AiBoat.java</span></div><h1>AiBoat.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
 import java.util.List;
@@ -33,10 +34,23 @@ public class AiBoat extends Boat {
    * @author James Frost
    */
   public AiBoat(float x, float y) {
-<span class="fc" id="L36">    super(x, y);</span>
+<span class="nc" id="L37">    super(x, y);</span>
 
-<span class="fc" id="L38">    initialise();</span>
-<span class="fc" id="L39">  }</span>
+<span class="nc" id="L39">    initialise();</span>
+<span class="nc" id="L40">  }</span>
+
+  /**
+   * Construct a AiBoat at point (x, y) with default size and with chosen texture.
+   *
+   * @param x bottom left X coordinate 
+   * @param y bottom left Y coordinate
+   * @param texture texture for boat
+   */
+  public AiBoat(float x, float y, Texture texture) {
+<span class="fc" id="L50">    super(x, y, texture);</span>
+
+<span class="fc" id="L52">    initialise();</span>
+<span class="fc" id="L53">  }</span>
 
   /**
    * Construct a AIBoat object with at point (x,y) with width and height and texture path
@@ -52,10 +66,10 @@ public class AiBoat extends Boat {
   AiBoat(int x, int y, int w, int h, String texturePath) { 
     // So this section will just initialise the AI boat, it doesn't need the intialise method of
     // playerboat due to the fact it doesn't have any textures for durability / stamina
-<span class="nc" id="L55">    super(x, y, w, h, texturePath);</span>
+<span class="nc" id="L69">    super(x, y, w, h, texturePath);</span>
 
-<span class="nc" id="L57">    initialise();</span>
-<span class="nc" id="L58">  }</span>
+<span class="nc" id="L71">    initialise();</span>
+<span class="nc" id="L72">  }</span>
 
   /**
    * Construct a AIBoat object with all parameters specified.
@@ -74,14 +88,14 @@ public class AiBoat extends Boat {
    */
   AiBoat(int x, int y, int w, int h, String texturePath, String name,
       float durabilityPerHit, float staminaUsage, float staminaRegen) {
-<span class="nc" id="L77">    super(x, y, w, h, texturePath, name,</span>
+<span class="nc" id="L91">    super(x, y, w, h, texturePath, name,</span>
         durabilityPerHit, staminaUsage, staminaRegen); 
     // This should be the init that is used mostly 
     // (but the other one is needed incase someone messes up)
 
-<span class="nc" id="L82">    initialise();</span>
+<span class="nc" id="L96">    initialise();</span>
 
-<span class="nc" id="L84">  }</span>
+<span class="nc" id="L98">  }</span>
 
   /**
    * Shared initialisation functionality among all constructors.
@@ -93,12 +107,12 @@ public class AiBoat extends Boat {
    * @author James Frost
    */
   public void initialise() {
-<span class="fc" id="L96">    numberOfRays = 4; // how many rays are fired from the boat</span>
-<span class="fc" id="L97">    rayAngleRange = 145; // the range of the angles that the boat will fire rays out at</span>
-<span class="fc" id="L98">    rayRage = 30; // the range of each ray</span>
-<span class="fc" id="L99">    rayStepSize = (float) 10;</span>
-<span class="fc" id="L100">    regen = false;</span>
-<span class="fc" id="L101">  }</span>
+<span class="fc" id="L110">    numberOfRays = 4; // how many rays are fired from the boat</span>
+<span class="fc" id="L111">    rayAngleRange = 145; // the range of the angles that the boat will fire rays out at</span>
+<span class="fc" id="L112">    rayRage = 30; // the range of each ray</span>
+<span class="fc" id="L113">    rayStepSize = (float) 10;</span>
+<span class="fc" id="L114">    regen = false;</span>
+<span class="fc" id="L115">  }</span>
 
   /**
    * Updates position of objects AIBoat based on acceleration and stamina.
@@ -113,21 +127,21 @@ public class AiBoat extends Boat {
     // TODO: Make this a method, and neaten it up
     // TODO: Link Acc w/ turning for better AI (that one may take a bit of time though)
     // TODO: Visible stamina for AI (maybe as debug option)
-<span class="nc bnc" id="L116" title="All 2 branches missed.">    if (!regen) {</span>
-<span class="nc" id="L117">      this.accelerate();</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">      if (stamina &lt;= 0.1) {</span>
-<span class="nc" id="L119">        regen = true;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">    if (!regen) {</span>
+<span class="nc" id="L131">      this.accelerate();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">      if (stamina &lt;= 0.1) {</span>
+<span class="nc" id="L133">        regen = true;</span>
       }
     } else {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">      if (stamina &gt;= 0.5) {</span>
-<span class="nc" id="L123">        regen = false;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">      if (stamina &gt;= 0.5) {</span>
+<span class="nc" id="L137">        regen = false;</span>
       }
     }
     // todo fix this, it takes too long
-<span class="nc" id="L127">    this.check_turn(collidables);</span>
-<span class="nc" id="L128">    super.updatePosition();</span>
+<span class="nc" id="L141">    this.check_turn(collidables);</span>
+<span class="nc" id="L142">    super.updatePosition();</span>
 
-<span class="nc" id="L130">  }</span>
+<span class="nc" id="L144">  }</span>
 
   /**
    * Returns true if AIBoat should exist on the screen.
@@ -137,7 +151,7 @@ public class AiBoat extends Boat {
    */
   @Override
   public boolean isShown() {
-<span class="fc" id="L140">    return super.isShown();</span>
+<span class="fc" id="L154">    return super.isShown();</span>
   }
 
   /**
@@ -147,16 +161,16 @@ public class AiBoat extends Boat {
    * @author James Frost
    */
   protected Vector2 get_ray_fire_point() {
-<span class="nc" id="L150">    Vector2 p = new Vector2(</span>
-<span class="nc" id="L151">            sprite.getX() + (sprite.getWidth() / 2),</span>
-<span class="nc" id="L152">            sprite.getY() + (sprite.getHeight()));</span>
+<span class="nc" id="L164">    Vector2 p = new Vector2(</span>
+<span class="nc" id="L165">            sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L166">            sprite.getY() + (sprite.getHeight()));</span>
 
-<span class="nc" id="L154">    Vector2 p1 = p.rotateAround(new Vector2(</span>
-<span class="nc" id="L155">                    sprite.getX() + (sprite.getWidth() / 2),</span>
-<span class="nc" id="L156">                    sprite.getY() + (sprite.getHeight() / 2)),</span>
-<span class="nc" id="L157">            sprite.getRotation());</span>
+<span class="nc" id="L168">    Vector2 p1 = p.rotateAround(new Vector2(</span>
+<span class="nc" id="L169">                    sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L170">                    sprite.getY() + (sprite.getHeight() / 2)),</span>
+<span class="nc" id="L171">            sprite.getRotation());</span>
 
-<span class="nc" id="L159">    return p1;</span>
+<span class="nc" id="L173">    return p1;</span>
   }
 
   /**
@@ -174,50 +188,50 @@ public class AiBoat extends Boat {
 
     //select an area of 180 degrees (pi radians)
     // this is a very cheeky way of solving the problem, but has a few benefits
-<span class="nc" id="L177">    boolean cheekyBitOfCoding = true;</span>
+<span class="nc" id="L191">    boolean cheekyBitOfCoding = true;</span>
     //TODO: Explain the cheeky_bit_of_coding better
-<span class="nc" id="L179">    Vector2 startPoint = get_ray_fire_point();</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">    for (int ray = 0; ray &lt;= numberOfRays; ray++) {</span>
-<span class="nc bnc" id="L181" title="All 2 branches missed.">      if (cheekyBitOfCoding) {</span>
-<span class="nc" id="L182">        ray--;</span>
-<span class="nc" id="L183">        float rayAngle = sprite.getRotation() + ((rayAngleRange / (numberOfRays / 2)) * ray);</span>
-<span class="nc" id="L184">        cheekyBitOfCoding = false;</span>
-<span class="nc" id="L185">      } else {</span>
-<span class="nc" id="L186">        float rayAngle = sprite.getRotation() - ((rayAngleRange / (numberOfRays / 2)) * ray);</span>
-<span class="nc" id="L187">        cheekyBitOfCoding = true;</span>
+<span class="nc" id="L193">    Vector2 startPoint = get_ray_fire_point();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">    for (int ray = 0; ray &lt;= numberOfRays; ray++) {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">      if (cheekyBitOfCoding) {</span>
+<span class="nc" id="L196">        ray--;</span>
+<span class="nc" id="L197">        float rayAngle = sprite.getRotation() + ((rayAngleRange / (numberOfRays / 2)) * ray);</span>
+<span class="nc" id="L198">        cheekyBitOfCoding = false;</span>
+<span class="nc" id="L199">      } else {</span>
+<span class="nc" id="L200">        float rayAngle = sprite.getRotation() - ((rayAngleRange / (numberOfRays / 2)) * ray);</span>
+<span class="nc" id="L201">        cheekyBitOfCoding = true;</span>
       }
 
-<span class="nc" id="L190">      float rayAngle = ((rayAngleRange / numberOfRays) * ray) + sprite.getRotation();</span>
+<span class="nc" id="L204">      float rayAngle = ((rayAngleRange / numberOfRays) * ray) + sprite.getRotation();</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">      for (float dist = 0; dist &lt;= rayRage; dist += rayStepSize) {</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">      for (float dist = 0; dist &lt;= rayRage; dist += rayStepSize) {</span>
 
-<span class="nc" id="L194">        double tempx = (Math.cos(Math.toRadians(rayAngle)) * dist) + (startPoint.x);</span>
-<span class="nc" id="L195">        double tempy = (Math.sin(Math.toRadians(rayAngle)) * dist) + (startPoint.y);</span>
+<span class="nc" id="L208">        double tempx = (Math.cos(Math.toRadians(rayAngle)) * dist) + (startPoint.x);</span>
+<span class="nc" id="L209">        double tempy = (Math.sin(Math.toRadians(rayAngle)) * dist) + (startPoint.y);</span>
         //check if there is a collision hull (other than self) at (tempx, tempy)
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (CollisionObject collideable : collidables) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        for (CollisionObject collideable : collidables) {</span>
           // very lazy way of optimising this code. will break if the collidable isn't an obstacle
-<span class="nc bnc" id="L199" title="All 2 branches missed.">          if (collideable.isShown()</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getY() &gt; sprite.getY() - 200 </span>
-<span class="nc bnc" id="L201" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getY() &lt; sprite.getY() + 200 </span>
-<span class="nc bnc" id="L202" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getX() &gt; sprite.getX() - 200 </span>
-<span class="nc bnc" id="L203" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getX() &lt; sprite.getX() + 200) {</span>
-<span class="nc bnc" id="L204" title="All 2 branches missed.">            for (Shape2D bound : collideable.getBounds().getShapes()) {</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">              if (bound.contains((float) tempx, (float) tempy)) {</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (cheekyBitOfCoding) {</span>
-<span class="nc" id="L207">                  turn(-1);</span>
-<span class="nc" id="L208">                  return;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">          if (collideable.isShown()</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getY() &gt; sprite.getY() - 200 </span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getY() &lt; sprite.getY() + 200 </span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getX() &gt; sprite.getX() - 200 </span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                  &amp;&amp; ((Obstacle) collideable).getSprite().getX() &lt; sprite.getX() + 200) {</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            for (Shape2D bound : collideable.getBounds().getShapes()) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">              if (bound.contains((float) tempx, (float) tempy)) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                if (cheekyBitOfCoding) {</span>
+<span class="nc" id="L221">                  turn(-1);</span>
+<span class="nc" id="L222">                  return;</span>
                 } else {
-<span class="nc" id="L210">                  turn(1);</span>
-<span class="nc" id="L211">                  return;</span>
+<span class="nc" id="L224">                  turn(1);</span>
+<span class="nc" id="L225">                  return;</span>
                 }
 
               }
-<span class="nc" id="L215">            }</span>
+<span class="nc" id="L229">            }</span>
           }
 
-<span class="nc" id="L218">        }</span>
+<span class="nc" id="L232">        }</span>
       }
     }
-<span class="nc" id="L221">  }</span>
+<span class="nc" id="L235">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

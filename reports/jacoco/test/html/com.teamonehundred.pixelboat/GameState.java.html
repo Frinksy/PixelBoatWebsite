@@ -160,7 +160,7 @@ public class GameState implements Serializable {
 <span class="fc" id="L160">      obj.durabilityPerHit = boat.durabilityPerHit;</span>
 <span class="fc" id="L161">      obj.stamina = boat.stamina;</span>
 <span class="fc" id="L162">      obj.staminaUsage = boat.staminaUsage;</span>
-<span class="fc" id="L163">      obj.staminaUsage = boat.staminaRegen;</span>
+<span class="fc" id="L163">      obj.staminaRegen = boat.staminaRegen;</span>
 
 <span class="fc" id="L165">      obj.legTimes.addAll(boat.getLegTimes());</span>
 <span class="fc" id="L166">      obj.startTime = boat.getStartTime(false);</span>
@@ -282,85 +282,86 @@ public class GameState implements Serializable {
    *
    * @return the list of boats from the GameState
    */
-  public List&lt;Boat&gt; getBoatList() {
+  public List&lt;Boat&gt; getBoatList(PixelBoat game) {
     
 <span class="fc" id="L287">    List&lt;Boat&gt; output = new ArrayList&lt;Boat&gt;();</span>
-<span class="fc" id="L288">    int i = 0;</span>
-<span class="fc bfc" id="L289" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
+<span class="fc" id="L288">    Texture boatTexture = game.assets.get(&quot;boat.png&quot;, Texture.class);</span>
+<span class="fc" id="L289">    int i = 0;</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
 
-<span class="fc bfc" id="L291" title="All 2 branches covered.">      if (obj.type.equals(ObjectType.BOAT)) {</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">      if (obj.type.equals(ObjectType.BOAT)) {</span>
         
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        if (i == playerBoatIndex) { // Create a PlayerBoat object instead</span>
-<span class="fc" id="L294">          PlayerBoat player = new PlayerBoat(obj.posX, obj.posY);</span>
-<span class="fc" id="L295">          player.speed = obj.speed;</span>
-<span class="fc" id="L296">          player.isShown = obj.isShown;</span>
-<span class="fc" id="L297">          player.getSprite().setRotation(obj.rotation);</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        if (i == playerBoatIndex) { // Create a PlayerBoat object instead</span>
+<span class="fc" id="L295">          PlayerBoat player = new PlayerBoat(obj.posX, obj.posY, boatTexture);</span>
+<span class="fc" id="L296">          player.speed = obj.speed;</span>
+<span class="fc" id="L297">          player.isShown = obj.isShown;</span>
+<span class="fc" id="L298">          player.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L299">          player.name = obj.name;</span>
-<span class="fc" id="L300">          player.durability = obj.durability;</span>
-<span class="fc" id="L301">          player.durabilityPerHit = obj.durabilityPerHit;</span>
-<span class="fc" id="L302">          player.stamina = obj.stamina;</span>
-<span class="fc" id="L303">          player.staminaUsage = obj.staminaUsage;</span>
-<span class="fc" id="L304">          player.staminaUsage = obj.staminaRegen;</span>
+<span class="fc" id="L300">          player.name = obj.name;</span>
+<span class="fc" id="L301">          player.durability = obj.durability;</span>
+<span class="fc" id="L302">          player.durabilityPerHit = obj.durabilityPerHit;</span>
+<span class="fc" id="L303">          player.stamina = obj.stamina;</span>
+<span class="fc" id="L304">          player.staminaUsage = obj.staminaUsage;</span>
+<span class="fc" id="L305">          player.staminaRegen = obj.staminaRegen;</span>
 
-<span class="fc" id="L306">          player.legTimes = obj.legTimes;</span>
+<span class="fc" id="L307">          player.legTimes = obj.legTimes;</span>
 
 
           // Deal with time deltas
-<span class="fc" id="L310">          player.startTime = System.currentTimeMillis() - obj.timeSinceStart;</span>
-<span class="pc bpc" id="L311" title="1 of 2 branches missed.">          if (obj.hasFinishedLeg) {</span>
-<span class="nc" id="L312">            player.endTime =  player.startTime + obj.timeLeg;</span>
+<span class="fc" id="L311">          player.startTime = System.currentTimeMillis() - obj.timeSinceStart;</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">          if (obj.hasFinishedLeg) {</span>
+<span class="nc" id="L313">            player.endTime =  player.startTime + obj.timeLeg;</span>
           }
           
-<span class="fc" id="L315">          player.framesRaced = obj.framesRaced;</span>
-<span class="fc" id="L316">          player.timeToAdd = obj.timeToAdd;</span>
+<span class="fc" id="L316">          player.framesRaced = obj.framesRaced;</span>
+<span class="fc" id="L317">          player.timeToAdd = obj.timeToAdd;</span>
           
-<span class="fc" id="L318">          player.framesToAnimate = obj.framesToAnimate;</span>
-<span class="fc" id="L319">          player.currentAnimationFrame = obj.currentAnimationFrame;</span>
-<span class="fc" id="L320">          player.framesElapsed = obj.framesElapsed;</span>
+<span class="fc" id="L319">          player.framesToAnimate = obj.framesToAnimate;</span>
+<span class="fc" id="L320">          player.currentAnimationFrame = obj.currentAnimationFrame;</span>
+<span class="fc" id="L321">          player.framesElapsed = obj.framesElapsed;</span>
 
-<span class="fc" id="L322">          player.hasFinishedLeg = obj.hasFinishedLeg;</span>
-<span class="fc" id="L323">          player.hasStartedLeg = obj.hasStartedLeg;</span>
+<span class="fc" id="L323">          player.hasFinishedLeg = obj.hasFinishedLeg;</span>
+<span class="fc" id="L324">          player.hasStartedLeg = obj.hasStartedLeg;</span>
 
-<span class="fc" id="L325">          output.add(player);</span>
+<span class="fc" id="L326">          output.add(player);</span>
 
-<span class="fc" id="L327">        } else {</span>
+<span class="fc" id="L328">        } else {</span>
           // Create an AIBoat
-<span class="fc" id="L329">          AiBoat ai = new AiBoat(obj.posX, obj.posY);</span>
-<span class="fc" id="L330">          ai.speed = obj.speed;</span>
-<span class="fc" id="L331">          ai.isShown = obj.isShown;</span>
-<span class="fc" id="L332">          ai.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L330">          AiBoat ai = new AiBoat(obj.posX, obj.posY, boatTexture);</span>
+<span class="fc" id="L331">          ai.speed = obj.speed;</span>
+<span class="fc" id="L332">          ai.isShown = obj.isShown;</span>
+<span class="fc" id="L333">          ai.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L334">          ai.name = obj.name;</span>
-<span class="fc" id="L335">          ai.durability = obj.durability;</span>
-<span class="fc" id="L336">          ai.durabilityPerHit = obj.durabilityPerHit;</span>
-<span class="fc" id="L337">          ai.stamina = obj.stamina;</span>
-<span class="fc" id="L338">          ai.staminaUsage = obj.staminaUsage;</span>
-<span class="fc" id="L339">          ai.staminaUsage = obj.staminaRegen;</span>
+<span class="fc" id="L335">          ai.name = obj.name;</span>
+<span class="fc" id="L336">          ai.durability = obj.durability;</span>
+<span class="fc" id="L337">          ai.durabilityPerHit = obj.durabilityPerHit;</span>
+<span class="fc" id="L338">          ai.stamina = obj.stamina;</span>
+<span class="fc" id="L339">          ai.staminaUsage = obj.staminaUsage;</span>
+<span class="fc" id="L340">          ai.staminaRegen = obj.staminaRegen;</span>
 
-<span class="fc" id="L341">          ai.legTimes = obj.legTimes;</span>
-<span class="fc" id="L342">          ai.startTime = obj.startTime;</span>
-<span class="fc" id="L343">          ai.endTime = obj.endTime;</span>
-<span class="fc" id="L344">          ai.framesRaced = obj.framesRaced;</span>
-<span class="fc" id="L345">          ai.timeToAdd = obj.timeToAdd;</span>
+<span class="fc" id="L342">          ai.legTimes = obj.legTimes;</span>
+<span class="fc" id="L343">          ai.startTime = obj.startTime;</span>
+<span class="fc" id="L344">          ai.endTime = obj.endTime;</span>
+<span class="fc" id="L345">          ai.framesRaced = obj.framesRaced;</span>
+<span class="fc" id="L346">          ai.timeToAdd = obj.timeToAdd;</span>
           
-<span class="fc" id="L347">          ai.framesToAnimate = obj.framesToAnimate;</span>
-<span class="fc" id="L348">          ai.currentAnimationFrame = obj.currentAnimationFrame;</span>
-<span class="fc" id="L349">          ai.framesElapsed = obj.framesElapsed;</span>
+<span class="fc" id="L348">          ai.framesToAnimate = obj.framesToAnimate;</span>
+<span class="fc" id="L349">          ai.currentAnimationFrame = obj.currentAnimationFrame;</span>
+<span class="fc" id="L350">          ai.framesElapsed = obj.framesElapsed;</span>
 
-<span class="fc" id="L351">          ai.hasFinishedLeg = obj.hasFinishedLeg;</span>
-<span class="fc" id="L352">          ai.hasStartedLeg = obj.hasStartedLeg;</span>
+<span class="fc" id="L352">          ai.hasFinishedLeg = obj.hasFinishedLeg;</span>
+<span class="fc" id="L353">          ai.hasStartedLeg = obj.hasStartedLeg;</span>
 
-<span class="fc" id="L354">          output.add(ai);</span>
+<span class="fc" id="L355">          output.add(ai);</span>
 
         }
       }
-<span class="fc" id="L358">      i++;</span>
+<span class="fc" id="L359">      i++;</span>
 
-<span class="fc" id="L360">    }</span>
+<span class="fc" id="L361">    }</span>
 
 
-<span class="fc" id="L363">    return output;</span>
+<span class="fc" id="L364">    return output;</span>
 
 
   }
@@ -370,52 +371,55 @@ public class GameState implements Serializable {
    *
    * @return the list of collision objects from the GameState (non powerups)
    */
-  public List&lt;CollisionObject&gt; getCollisionObjects() {
+  public List&lt;CollisionObject&gt; getCollisionObjects(PixelBoat game) {
 
-<span class="fc" id="L375">    List&lt;CollisionObject&gt; output = new ArrayList&lt;CollisionObject&gt;();</span>
-<span class="fc" id="L376">    Texture laneWallTexture = new Texture(&quot;lane_buoy.png&quot;);</span>
+<span class="fc" id="L376">    List&lt;CollisionObject&gt; output = new ArrayList&lt;CollisionObject&gt;();</span>
+<span class="fc" id="L377">    Texture laneWallTexture = game.assets.get(&quot;lane_buoy.png&quot;, Texture.class);</span>
+<span class="fc" id="L378">    Texture duckTexture = game.assets.get(&quot;obstacle_duck.png&quot;, Texture.class);</span>
+<span class="fc" id="L379">    Texture branchTexture = game.assets.get(&quot;obstacle_branch.png&quot;, Texture.class);</span>
 
-<span class="fc bfc" id="L378" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
-<span class="fc bfc" id="L379" title="All 5 branches covered.">      switch (obj.type) {</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
+<span class="fc bfc" id="L382" title="All 5 branches covered.">      switch (obj.type) {</span>
         case DUCK:
-<span class="fc" id="L381">          ObstacleDuck duck = new ObstacleDuck(obj.posX, obj.posY);</span>
-<span class="fc" id="L382">          duck.speed = obj.speed;</span>
-<span class="fc" id="L383">          duck.isShown = obj.isShown;</span>
-<span class="fc" id="L384">          duck.getSprite().setRotation(obj.rotation);</span>
-<span class="fc" id="L385">          output.add(duck);</span>
-<span class="fc" id="L386">          break;</span>
+<span class="fc" id="L384">          ObstacleDuck duck = new ObstacleDuck(obj.posX, obj.posY, duckTexture);</span>
+<span class="fc" id="L385">          duck.speed = obj.speed;</span>
+<span class="fc" id="L386">          duck.isShown = obj.isShown;</span>
+<span class="fc" id="L387">          duck.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L388">          output.add(duck);</span>
+<span class="fc" id="L389">          break;</span>
       
         case BRANCH:
-<span class="fc" id="L389">          ObstacleBranch branch = new ObstacleBranch(obj.posX, obj.posY);</span>
-<span class="fc" id="L390">          branch.speed = obj.speed;</span>
-<span class="fc" id="L391">          branch.isShown = obj.isShown;</span>
-<span class="fc" id="L392">          branch.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L392">          ObstacleBranch branch = new ObstacleBranch(obj.posX, obj.posY, branchTexture);</span>
+<span class="fc" id="L393">          branch.speed = obj.speed;</span>
+<span class="fc" id="L394">          branch.isShown = obj.isShown;</span>
+<span class="fc" id="L395">          branch.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L394">          output.add(branch);</span>
-<span class="fc" id="L395">          break;</span>
+<span class="fc" id="L397">          output.add(branch);</span>
+<span class="fc" id="L398">          break;</span>
 
         case FLOATING_BRANCH:
-<span class="fc" id="L398">          ObstacleFloatingBranch floatingBranch = new ObstacleFloatingBranch(obj.posX, obj.posY);</span>
-<span class="fc" id="L399">          floatingBranch.speed = obj.speed;</span>
-<span class="fc" id="L400">          floatingBranch.isShown = obj.isShown;</span>
-<span class="fc" id="L401">          floatingBranch.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L401">          ObstacleFloatingBranch floatingBranch = </span>
+              new ObstacleFloatingBranch(obj.posX, obj.posY, branchTexture);
+<span class="fc" id="L403">          floatingBranch.speed = obj.speed;</span>
+<span class="fc" id="L404">          floatingBranch.isShown = obj.isShown;</span>
+<span class="fc" id="L405">          floatingBranch.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L403">          output.add(floatingBranch);</span>
-<span class="fc" id="L404">          break;</span>
+<span class="fc" id="L407">          output.add(floatingBranch);</span>
+<span class="fc" id="L408">          break;</span>
 
         case LANE_WALL:
-<span class="fc" id="L407">          ObstacleLaneWall laneWall = new ObstacleLaneWall(obj.posX, obj.posY, laneWallTexture);</span>
-<span class="fc" id="L408">          laneWall.isShown = obj.isShown;</span>
+<span class="fc" id="L411">          ObstacleLaneWall laneWall = new ObstacleLaneWall(obj.posX, obj.posY, laneWallTexture);</span>
+<span class="fc" id="L412">          laneWall.isShown = obj.isShown;</span>
 
-<span class="fc" id="L410">          output.add(laneWall);</span>
-<span class="fc" id="L411">          break;</span>
+<span class="fc" id="L414">          output.add(laneWall);</span>
+<span class="fc" id="L415">          break;</span>
         default:
           break;
       }
-<span class="fc" id="L415">    }</span>
+<span class="fc" id="L419">    }</span>
 
 
-<span class="fc" id="L418">    return output;</span>
+<span class="fc" id="L422">    return output;</span>
 
   }
 
@@ -424,67 +428,72 @@ public class GameState implements Serializable {
    *
    * @return the list of powerup objects from the GameState
    */
-  public List&lt;CollisionObject&gt; getPowerupsList() {
+  public List&lt;CollisionObject&gt; getPowerupsList(PixelBoat game) {
     
-<span class="fc" id="L429">    List&lt;CollisionObject&gt; output = new ArrayList&lt;CollisionObject&gt;();</span>
+<span class="fc" id="L433">    List&lt;CollisionObject&gt; output = new ArrayList&lt;CollisionObject&gt;();</span>
 
-
-<span class="fc bfc" id="L432" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
-<span class="fc bfc" id="L433" title="All 6 branches covered.">      switch (obj.type) {</span>
+<span class="fc" id="L435">    Texture energyTexture = game.assets.get(&quot;power_up_energy.png&quot;, Texture.class);</span>
+<span class="fc" id="L436">    Texture speedTexture = game.assets.get(&quot;power_up_speed.png&quot;, Texture.class);</span>
+<span class="fc" id="L437">    Texture healthTexture = game.assets.get(&quot;power_up_health.png&quot;, Texture.class);</span>
+<span class="fc" id="L438">    Texture dragTexture = game.assets.get(&quot;power_up_drag.png&quot;, Texture.class);</span>
+<span class="fc" id="L439">    Texture rotationTexture = game.assets.get(&quot;power_up_rotation.png&quot;, Texture.class);</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">    for (SerializableGameObject obj : gameObjects) {</span>
+<span class="fc bfc" id="L441" title="All 6 branches covered.">      switch (obj.type) {</span>
         case POWERUP_ENERGY:
           
-<span class="fc" id="L436">          PowerUpEnergy powerupEnergy = new PowerUpEnergy(obj.posX, obj.posY);</span>
-<span class="fc" id="L437">          powerupEnergy.speed = obj.speed;</span>
-<span class="fc" id="L438">          powerupEnergy.isShown = obj.isShown;</span>
-<span class="fc" id="L439">          powerupEnergy.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L444">          PowerUpEnergy powerupEnergy = new PowerUpEnergy(obj.posX, obj.posY, energyTexture);</span>
+<span class="fc" id="L445">          powerupEnergy.speed = obj.speed;</span>
+<span class="fc" id="L446">          powerupEnergy.isShown = obj.isShown;</span>
+<span class="fc" id="L447">          powerupEnergy.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L441">          output.add(powerupEnergy);</span>
+<span class="fc" id="L449">          output.add(powerupEnergy);</span>
 
-<span class="fc" id="L443">          break;</span>
+<span class="fc" id="L451">          break;</span>
 
         case POWERUP_SPEED:
-<span class="fc" id="L446">          PowerUpSpeed powerUpSpeed = new PowerUpSpeed(obj.posX, obj.posY);</span>
-<span class="fc" id="L447">          powerUpSpeed.speed = obj.speed;</span>
-<span class="fc" id="L448">          powerUpSpeed.isShown = obj.isShown;</span>
-<span class="fc" id="L449">          powerUpSpeed.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L454">          PowerUpSpeed powerUpSpeed = new PowerUpSpeed(obj.posX, obj.posY, speedTexture);</span>
+<span class="fc" id="L455">          powerUpSpeed.speed = obj.speed;</span>
+<span class="fc" id="L456">          powerUpSpeed.isShown = obj.isShown;</span>
+<span class="fc" id="L457">          powerUpSpeed.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L451">          output.add(powerUpSpeed);</span>
-<span class="fc" id="L452">          break;</span>
+<span class="fc" id="L459">          output.add(powerUpSpeed);</span>
+<span class="fc" id="L460">          break;</span>
 
         case POWERUP_HEALTH:
-<span class="fc" id="L455">          PowerUpHealth powerUpHealth = new PowerUpHealth(obj.posX, obj.posY);</span>
-<span class="fc" id="L456">          powerUpHealth.speed = obj.speed;</span>
-<span class="fc" id="L457">          powerUpHealth.isShown = obj.isShown;</span>
-<span class="fc" id="L458">          powerUpHealth.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L463">          PowerUpHealth powerUpHealth = new PowerUpHealth(obj.posX, obj.posY, healthTexture);</span>
+<span class="fc" id="L464">          powerUpHealth.speed = obj.speed;</span>
+<span class="fc" id="L465">          powerUpHealth.isShown = obj.isShown;</span>
+<span class="fc" id="L466">          powerUpHealth.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L460">          output.add(powerUpHealth);</span>
-<span class="fc" id="L461">          break;</span>
+<span class="fc" id="L468">          output.add(powerUpHealth);</span>
+<span class="fc" id="L469">          break;</span>
 
         case POWERUP_DRAG:
-<span class="fc" id="L464">          PowerUpDrag powerUpDrag = new PowerUpDrag(obj.posX, obj.posY);</span>
-<span class="fc" id="L465">          powerUpDrag.speed = obj.speed;</span>
-<span class="fc" id="L466">          powerUpDrag.isShown = obj.isShown;</span>
-<span class="fc" id="L467">          powerUpDrag.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L472">          PowerUpDrag powerUpDrag = new PowerUpDrag(obj.posX, obj.posY, dragTexture);</span>
+<span class="fc" id="L473">          powerUpDrag.speed = obj.speed;</span>
+<span class="fc" id="L474">          powerUpDrag.isShown = obj.isShown;</span>
+<span class="fc" id="L475">          powerUpDrag.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L469">          output.add(powerUpDrag);</span>
-<span class="fc" id="L470">          break;</span>
+<span class="fc" id="L477">          output.add(powerUpDrag);</span>
+<span class="fc" id="L478">          break;</span>
 
         case POWERUP_ROTATION:
-<span class="fc" id="L473">          PowerUpRotation powerUpRotation = new PowerUpRotation(obj.posX, obj.posY);</span>
-<span class="fc" id="L474">          powerUpRotation.speed = obj.speed;</span>
-<span class="fc" id="L475">          powerUpRotation.isShown = obj.isShown;</span>
-<span class="fc" id="L476">          powerUpRotation.getSprite().setRotation(obj.rotation);</span>
+<span class="fc" id="L481">          PowerUpRotation powerUpRotation =</span>
+              new PowerUpRotation(obj.posX, obj.posY, rotationTexture);
+<span class="fc" id="L483">          powerUpRotation.speed = obj.speed;</span>
+<span class="fc" id="L484">          powerUpRotation.isShown = obj.isShown;</span>
+<span class="fc" id="L485">          powerUpRotation.getSprite().setRotation(obj.rotation);</span>
 
-<span class="fc" id="L478">          output.add(powerUpRotation);</span>
-<span class="fc" id="L479">          break;</span>
+<span class="fc" id="L487">          output.add(powerUpRotation);</span>
+<span class="fc" id="L488">          break;</span>
           
         default:
           break;
       }
-<span class="fc" id="L484">    }</span>
+<span class="fc" id="L493">    }</span>
 
 
-<span class="fc" id="L487">    return output;</span>
+<span class="fc" id="L496">    return output;</span>
     
   }
 
