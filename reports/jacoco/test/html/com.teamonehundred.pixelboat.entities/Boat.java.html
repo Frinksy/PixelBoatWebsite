@@ -125,59 +125,61 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * 
    */
   public void hasCollidedSpeed() {
-<span class="nc bnc" id="L128" title="All 2 branches missed.">    if (maxSpeed &lt;= 20) {</span>
-<span class="nc" id="L129">      maxSpeed += 3;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">    if (maxSpeed &lt;= 20) {</span>
+<span class="fc" id="L129">      maxSpeed += 3;</span>
+    } else {
+<span class="nc" id="L131">      maxSpeed = 20;</span>
     }
-<span class="nc" id="L131">  }</span>
+<span class="fc" id="L133">  }</span>
 
   /**
    * Applies collision with health bonus.
    * 
    */
   public void hasCollidedHealth() {
-<span class="nc bnc" id="L138" title="All 2 branches missed.">    if (durability &lt; 0.9) {</span>
-<span class="nc" id="L139">      durability += 0.1;</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">    if (durability &lt; 0.9) {</span>
+<span class="nc" id="L141">      durability += 0.1;</span>
     } else {
-<span class="nc" id="L141">      durability = 1;</span>
+<span class="nc" id="L143">      durability = 1;</span>
     }
-<span class="nc" id="L143">  }</span>
+<span class="nc" id="L145">  }</span>
 
   /**
    * Applies collision with energy bonus.
    * 
    */
   public void hasCollidedEnergy() {
-<span class="nc bnc" id="L150" title="All 2 branches missed.">    if (stamina &lt; 0.75) {</span>
-<span class="nc" id="L151">      stamina += 0.25;</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">    if (stamina &lt; 0.75) {</span>
+<span class="nc" id="L153">      stamina += 0.25;</span>
     } else {
-<span class="nc" id="L153">      stamina = 1;</span>
+<span class="fc" id="L155">      stamina = 1;</span>
     }
-<span class="nc" id="L155">  }</span>
+<span class="fc" id="L157">  }</span>
 
   /**
    * Applies collision with rotation bonus.
    * 
    */
   public void hasCollidedRotation() {
-<span class="nc bnc" id="L162" title="All 2 branches missed.">    if (rotationSpeed &lt; 2.75) {</span>
-<span class="nc" id="L163">      rotationSpeed += 0.2;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">    if (rotationSpeed &lt; 2.75) {</span>
+<span class="fc" id="L165">      rotationSpeed += 0.2;</span>
     } else {
-<span class="nc" id="L165">      rotationSpeed = 3;</span>
+<span class="nc" id="L167">      rotationSpeed = 3;</span>
     }
-<span class="nc" id="L167">  }</span>
+<span class="fc" id="L169">  }</span>
 
   /**
    * Applies collision with rotation bonus.
    * 
    */
   public void hasCollidedDrag() {
-<span class="nc" id="L174">    System.out.println(drag);</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">    if (drag &gt; 0.022f) {</span>
-<span class="nc" id="L176">      drag -= 0.002f;</span>
+<span class="fc" id="L176">    System.out.println(drag);</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">    if (drag &gt; 0.022f) {</span>
+<span class="fc" id="L178">      drag -= 0.002f;</span>
     } else {
-<span class="nc" id="L178">      drag = 0.02f;</span>
+<span class="nc" id="L180">      drag = 0.02f;</span>
     }
-<span class="nc" id="L180">  }</span>
+<span class="fc" id="L182">  }</span>
 
 
   /**
@@ -187,27 +189,27 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    */
   @Override
   public void accelerate() {
-<span class="nc bnc" id="L190" title="All 2 branches missed.">    stamina = stamina - staminaUsage &lt;= 0 ? 0 : stamina - staminaUsage;</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">    if (stamina &gt; 0) {</span>
-<span class="nc" id="L192">      super.accelerate();</span>
-<span class="nc" id="L193">      framesToAnimate += 1;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">    stamina = stamina - staminaUsage &lt;= 0 ? 0 : stamina - staminaUsage;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">    if (stamina &gt; 0) {</span>
+<span class="nc" id="L194">      super.accelerate();</span>
+<span class="nc" id="L195">      framesToAnimate += 1;</span>
     }
 
-<span class="nc bnc" id="L196" title="All 2 branches missed.">    if (framesToAnimate &gt; 0) {</span>
-<span class="nc" id="L197">      setAnimationFrame(currentAnimationFrame);</span>
-<span class="nc" id="L198">      framesElapsed++;</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">      if (framesElapsed % 15 == 0) {</span>
-<span class="nc" id="L200">        currentAnimationFrame++;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">    if (framesToAnimate &gt; 0) {</span>
+<span class="nc" id="L199">      setAnimationFrame(currentAnimationFrame);</span>
+<span class="nc" id="L200">      framesElapsed++;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">      if (framesElapsed % 15 == 0) {</span>
+<span class="nc" id="L202">        currentAnimationFrame++;</span>
       }
-<span class="nc" id="L202">      framesToAnimate--;</span>
+<span class="nc" id="L204">      framesToAnimate--;</span>
     } else {
       // reset everything
-<span class="nc" id="L205">      setAnimationFrame(0);</span>
-<span class="nc" id="L206">      currentAnimationFrame = 0;</span>
-<span class="nc" id="L207">      framesElapsed = 0;</span>
-<span class="nc" id="L208">      framesToAnimate = 0;</span>
+<span class="nc" id="L207">      setAnimationFrame(0);</span>
+<span class="nc" id="L208">      currentAnimationFrame = 0;</span>
+<span class="nc" id="L209">      framesElapsed = 0;</span>
+<span class="nc" id="L210">      framesToAnimate = 0;</span>
     }
-<span class="nc" id="L210">  }</span>
+<span class="nc" id="L212">  }</span>
 
   /**
    * Function called every frame when the game updates all objects positions.
@@ -216,31 +218,31 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    */
   @Override
   public void updatePosition() {
-<span class="nc" id="L219">    super.updatePosition();</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">    stamina = stamina + staminaRegen &gt;= 1 ? 1.f : stamina + staminaRegen;</span>
-<span class="nc" id="L221">  }</span>
+<span class="nc" id="L221">    super.updatePosition();</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">    stamina = stamina + staminaRegen &gt;= 1 ? 1.f : stamina + staminaRegen;</span>
+<span class="nc" id="L223">  }</span>
 
   // Getter and Setter methods for attributes
 
   public long getFramesRaced() {
-<span class="fc" id="L226">    return framesRaced;</span>
+<span class="fc" id="L228">    return framesRaced;</span>
   }
 
   public void setFramesRaced(long framesRaced) {
-<span class="fc" id="L230">    this.framesRaced = framesRaced;</span>
-<span class="fc" id="L231">  }</span>
+<span class="fc" id="L232">    this.framesRaced = framesRaced;</span>
+<span class="fc" id="L233">  }</span>
 
   public void addFrameRaced() {
-<span class="nc" id="L234">    framesRaced++;</span>
-<span class="nc" id="L235">  }</span>
+<span class="nc" id="L236">    framesRaced++;</span>
+<span class="nc" id="L237">  }</span>
 
   public String getName() {
-<span class="fc" id="L238">    return name;</span>
+<span class="fc" id="L240">    return name;</span>
   }
 
   public void setName(String name) {
-<span class="fc" id="L242">    this.name = name;</span>
-<span class="fc" id="L243">  }</span>
+<span class="fc" id="L244">    this.name = name;</span>
+<span class="fc" id="L245">  }</span>
 
   /**
    * Sets the start time of a boat in milliseconds. E.g. Pass use
@@ -251,8 +253,8 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public void setStartTime(long startTime) {
-<span class="nc" id="L254">    this.startTime = startTime;</span>
-<span class="nc" id="L255">  }</span>
+<span class="nc" id="L256">    this.startTime = startTime;</span>
+<span class="nc" id="L257">  }</span>
 
   /**s
    * Returns the long value start time of the boat.
@@ -263,10 +265,10 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public long getStartTime(boolean inSeconds) {
-<span class="pc bpc" id="L266" title="1 of 2 branches missed.">    if (inSeconds) {</span>
-<span class="nc" id="L267">      return this.startTime / 1000; // Milliseconds to Seconds conversion 1000:1</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">    if (inSeconds) {</span>
+<span class="nc" id="L269">      return this.startTime / 1000; // Milliseconds to Seconds conversion 1000:1</span>
     }
-<span class="fc" id="L269">    return this.startTime;</span>
+<span class="fc" id="L271">    return this.startTime;</span>
   }
 
   /**
@@ -278,8 +280,8 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public void setEndTime(long endTime) {
-<span class="nc" id="L281">    this.endTime = endTime;</span>
-<span class="nc" id="L282">  }</span>
+<span class="nc" id="L283">    this.endTime = endTime;</span>
+<span class="nc" id="L284">  }</span>
 
   /**
    * Returns the long value end time of the boat.
@@ -290,11 +292,11 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public long getEndTime(boolean inSeconds) {
-<span class="pc bpc" id="L293" title="1 of 2 branches missed.">    if (inSeconds) {</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">    if (inSeconds) {</span>
       // Milliseconds to Seconds conversion 1000:1
-<span class="nc" id="L295">      return this.endTime / 1000;</span>
+<span class="nc" id="L297">      return this.endTime / 1000;</span>
     }
-<span class="fc" id="L297">    return this.endTime;</span>
+<span class="fc" id="L299">    return this.endTime;</span>
   }
 
   /**
@@ -304,7 +306,7 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public long getCalcTime() {
-<span class="nc" id="L307">    return timeToAdd + (this.endTime - this.startTime);</span>
+<span class="nc" id="L309">    return timeToAdd + (this.endTime - this.startTime);</span>
   }
 
   /**
@@ -314,8 +316,8 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public void setLegTime() {
-<span class="nc" id="L317">    this.legTimes.add(this.getCalcTime());</span>
-<span class="nc" id="L318">  }</span>
+<span class="nc" id="L319">    this.legTimes.add(this.getCalcTime());</span>
+<span class="nc" id="L320">  }</span>
 
   /**
    * Returns recorded leg times of this boat.
@@ -324,7 +326,7 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public List&lt;Long&gt; getLegTimes() {
-<span class="fc" id="L327">    return legTimes;</span>
+<span class="fc" id="L329">    return legTimes;</span>
   }
 
   /**
@@ -334,7 +336,7 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @return Returns a long time in milliseconds.
    */
   public long getTimeToAdd() {
-<span class="fc" id="L337">    return timeToAdd;</span>
+<span class="fc" id="L339">    return timeToAdd;</span>
   }
 
   /**
@@ -344,8 +346,8 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @param timeToAdd Recorded long time in milliseconds.
    */
   public void setTimeToAdd(long timeToAdd) {
-<span class="nc" id="L347">    this.timeToAdd = timeToAdd;</span>
-<span class="nc" id="L348">  }</span>
+<span class="nc" id="L349">    this.timeToAdd = timeToAdd;</span>
+<span class="nc" id="L350">  }</span>
 
   /**
    * Checks to see if the this boat has collided with the other CollisionObject
@@ -356,31 +358,31 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @author Umer Fakher
    */
   public void checkCollisions(CollisionObject object) {
-<span class="nc bnc" id="L359" title="All 4 branches missed.">    if (object instanceof Obstacle &amp;&amp; !(((Obstacle) object).getSprite().getY() &gt; sprite.getY() - 200</span>
-<span class="nc bnc" id="L360" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getY() &lt; sprite.getY() + 200</span>
-<span class="nc bnc" id="L361" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getX() &gt; sprite.getX() - 200</span>
-<span class="nc bnc" id="L362" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getX() &lt; sprite.getX() + 200)) {</span>
-<span class="nc" id="L363">      return;</span>
+<span class="nc bnc" id="L361" title="All 4 branches missed.">    if (object instanceof Obstacle &amp;&amp; !(((Obstacle) object).getSprite().getY() &gt; sprite.getY() - 200</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getY() &lt; sprite.getY() + 200</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getX() &gt; sprite.getX() - 200</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">            &amp;&amp; ((Obstacle) object).getSprite().getX() &lt; sprite.getX() + 200)) {</span>
+<span class="nc" id="L365">      return;</span>
     }
-<span class="nc bnc" id="L365" title="All 2 branches missed.">    if (this.getBounds().isColliding(object.getBounds())) {</span>
-<span class="nc bnc" id="L366" title="All 2 branches missed.">      if (object instanceof PowerUpSpeed) {</span>
-<span class="nc" id="L367">        hasCollidedSpeed();</span>
-<span class="nc bnc" id="L368" title="All 2 branches missed.">      } else if (object instanceof PowerUpHealth) {</span>
-<span class="nc" id="L369">        hasCollidedHealth();</span>
-<span class="nc bnc" id="L370" title="All 2 branches missed.">      } else if (object instanceof PowerUpEnergy) {</span>
-<span class="nc" id="L371">        hasCollidedEnergy();</span>
-<span class="nc bnc" id="L372" title="All 2 branches missed.">      } else if (object instanceof PowerUpDrag) {</span>
-<span class="nc" id="L373">        hasCollidedDrag();  </span>
-<span class="nc bnc" id="L374" title="All 2 branches missed.">      } else if (object instanceof PowerUpRotation) {</span>
-<span class="nc" id="L375">        hasCollidedRotation();</span>
-<span class="nc bnc" id="L376" title="All 2 branches missed.">      } else if (!(object instanceof ObstacleLaneWall)) {</span>
-<span class="nc" id="L377">        hasCollided();</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">    if (this.getBounds().isColliding(object.getBounds())) {</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">      if (object instanceof PowerUpSpeed) {</span>
+<span class="nc" id="L369">        hasCollidedSpeed();</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">      } else if (object instanceof PowerUpHealth) {</span>
+<span class="nc" id="L371">        hasCollidedHealth();</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">      } else if (object instanceof PowerUpEnergy) {</span>
+<span class="nc" id="L373">        hasCollidedEnergy();</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">      } else if (object instanceof PowerUpDrag) {</span>
+<span class="nc" id="L375">        hasCollidedDrag();  </span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">      } else if (object instanceof PowerUpRotation) {</span>
+<span class="nc" id="L377">        hasCollidedRotation();</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">      } else if (!(object instanceof ObstacleLaneWall)) {</span>
+<span class="nc" id="L379">        hasCollided();</span>
       }
       // if (object instanceof PowerUpSpeed)
       // hasCollidedSpeed();
-<span class="nc" id="L381">      object.hasCollided();</span>
+<span class="nc" id="L383">      object.hasCollided();</span>
     }
-<span class="nc" id="L383">  }</span>
+<span class="nc" id="L385">  }</span>
 
   /**
    * Used to return the CollisionBounds object representing this boat. Used for
@@ -393,45 +395,45 @@ public abstract class Boat extends MovableObject implements CollisionObject {
     // create a new collision bounds object representing my current position
     // see the collision bounds visualisation folder in assets for a visual
     // representation
-<span class="nc" id="L396">    CollisionBounds myBounds = new CollisionBounds();</span>
-<span class="nc" id="L397">    Rectangle mainRect = new Rectangle(sprite.getX() + (0.32f * sprite.getWidth()),</span>
-<span class="nc" id="L398">            sprite.getY() + (0.117f * sprite.getHeight()), 0.32f * sprite.getWidth(),</span>
-<span class="nc" id="L399">            0.77f * sprite.getHeight());</span>
-<span class="nc" id="L400">    myBounds.addBound(mainRect);</span>
+<span class="nc" id="L398">    CollisionBounds myBounds = new CollisionBounds();</span>
+<span class="nc" id="L399">    Rectangle mainRect = new Rectangle(sprite.getX() + (0.32f * sprite.getWidth()),</span>
+<span class="nc" id="L400">            sprite.getY() + (0.117f * sprite.getHeight()), 0.32f * sprite.getWidth(),</span>
+<span class="nc" id="L401">            0.77f * sprite.getHeight());</span>
+<span class="nc" id="L402">    myBounds.addBound(mainRect);</span>
 
-<span class="nc" id="L402">    myBounds.setOrigin(new Vector2(sprite.getX() + (sprite.getWidth() / 2),</span>
-<span class="nc" id="L403">                                   sprite.getY() + (sprite.getHeight() / 2)));</span>
-<span class="nc" id="L404">    myBounds.setRotation(sprite.getRotation());</span>
+<span class="nc" id="L404">    myBounds.setOrigin(new Vector2(sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L405">                                   sprite.getY() + (sprite.getHeight() / 2)));</span>
+<span class="nc" id="L406">    myBounds.setRotation(sprite.getRotation());</span>
 
-<span class="nc" id="L406">    return myBounds;</span>
+<span class="nc" id="L408">    return myBounds;</span>
   }
 
   // Getters and Setters for has_started_leg and has_finished_leg
 
   public boolean hasFinishedLeg() {
-<span class="nc" id="L412">    return hasFinishedLeg;</span>
+<span class="nc" id="L414">    return hasFinishedLeg;</span>
   }
 
   public void setHasFinishedLeg(boolean hasFinishedLeg) {
-<span class="nc" id="L416">    this.hasFinishedLeg = hasFinishedLeg;</span>
-<span class="nc" id="L417">  }</span>
+<span class="nc" id="L418">    this.hasFinishedLeg = hasFinishedLeg;</span>
+<span class="nc" id="L419">  }</span>
 
   public boolean hasStartedLeg() {
-<span class="nc" id="L420">    return hasStartedLeg;</span>
+<span class="nc" id="L422">    return hasStartedLeg;</span>
   }
 
   public void setHasStartedLeg(boolean hasStartedLeg) {
-<span class="nc" id="L424">    this.hasStartedLeg = hasStartedLeg;</span>
-<span class="nc" id="L425">  }</span>
+<span class="nc" id="L426">    this.hasStartedLeg = hasStartedLeg;</span>
+<span class="nc" id="L427">  }</span>
 
   /**
    * Reset maxSpeed, durability and stamina to defaults.
    */
   public void reset() {
-<span class="fc" id="L431">    this.maxSpeed = 15;</span>
-<span class="fc" id="L432">    this.durability = 1;</span>
-<span class="fc" id="L433">    this.stamina = 1;</span>
-<span class="fc" id="L434">  }</span>
+<span class="fc" id="L433">    this.maxSpeed = 15;</span>
+<span class="fc" id="L434">    this.durability = 1;</span>
+<span class="fc" id="L435">    this.stamina = 1;</span>
+<span class="fc" id="L436">  }</span>
 
   /**
    * Gets current best time for boat from its list of legTimes.
@@ -439,7 +441,7 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * @return long time in milliseconds.
    */
   public long getBestTime() {
-<span class="nc" id="L442">    return legTimes.get(1) + legTimes.get(2);</span>
+<span class="nc" id="L444">    return legTimes.get(1) + legTimes.get(2);</span>
   }
 
   /**
@@ -449,8 +451,8 @@ public abstract class Boat extends MovableObject implements CollisionObject {
    * 
    */
   public void setTrialLeg() {
-<span class="nc" id="L452">    legTimes.set(0, 0L);</span>
-<span class="nc" id="L453">  }</span>
+<span class="nc" id="L454">    legTimes.set(0, 0L);</span>
+<span class="nc" id="L455">  }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
