@@ -13,6 +13,7 @@ import com.teamonehundred.pixelboat.entities.Boat;
 import com.teamonehundred.pixelboat.entities.PlayerBoat;
 import java.util.List;
 
+
 /**
  * Scene Class for Results Screen. Contains all functionality
  * for Displaying results screen after each leg.
@@ -20,7 +21,7 @@ import java.util.List;
  * @author Umer Fakher, JavaDoc by Umer Fakher
  */
 public class SceneResultsScreen implements Scene {
-<span class="nc" id="L23">  protected int sceneId = 4;</span>
+<span class="nc" id="L24">  protected int sceneId = 4;</span>
 
   protected List&lt;Boat&gt; boats;
   protected BitmapFont font; // For Text Display
@@ -31,19 +32,19 @@ public class SceneResultsScreen implements Scene {
   /**
    * Create SceneResultsScreen.
    */
-<span class="nc" id="L34">  public SceneResultsScreen() {</span>
-<span class="nc" id="L35">    fillCamera = new OrthographicCamera();</span>
-<span class="nc" id="L36">    fillViewport = new FillViewport(1280, 720, fillCamera);</span>
-<span class="nc" id="L37">    fillViewport.apply();</span>
-<span class="nc" id="L38">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
-<span class="nc" id="L39">    fillViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="nc" id="L35">  public SceneResultsScreen() {</span>
+<span class="nc" id="L36">    fillCamera = new OrthographicCamera();</span>
+<span class="nc" id="L37">    fillViewport = new FillViewport(1280, 720, fillCamera);</span>
+<span class="nc" id="L38">    fillViewport.apply();</span>
+<span class="nc" id="L39">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L40">    fillViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
 
-<span class="nc" id="L41">    boats = null;</span>
+<span class="nc" id="L42">    boats = null;</span>
 
     // Initialise colour of Text Display Overlay
-<span class="nc" id="L44">    font = new BitmapFont();</span>
-<span class="nc" id="L45">    font.setColor(Color.WHITE);</span>
-<span class="nc" id="L46">  }</span>
+<span class="nc" id="L45">    font = new BitmapFont();</span>
+<span class="nc" id="L46">    font.setColor(Color.WHITE);</span>
+<span class="nc" id="L47">  }</span>
 
   /**
    * Update function for SceneResultsScreen. Ends SceneResultsScreen
@@ -59,18 +60,31 @@ public class SceneResultsScreen implements Scene {
     //Testing code for outputting results after a leg to terminal
 
     //If left mouse button is pressed end current scene (a SceneResultsScreen)
-<span class="nc bnc" id="L62" title="All 2 branches missed.">    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
       // don't leave if this is the final results screen
-<span class="nc bnc" id="L64" title="All 2 branches missed.">      for (Boat b : boats) {</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (b.getLegTimes().size() &gt; 3) {</span>
-<span class="nc" id="L66">          return sceneId;</span>
-        
+<span class="nc bnc" id="L65" title="All 2 branches missed.">      for (Boat b : boats) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (b.getLegTimes().size() &gt;= 3) {</span>
+<span class="nc" id="L67">          float lowest = 10000000000000000000000000000000f;</span>
+<span class="nc" id="L68">          boolean playerWins = false;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">          for (Boat boatyboat : boats) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (lowest &gt; boatyboat.getBestTime()) {</span>
+<span class="nc" id="L71">              lowest = boatyboat.getBestTime();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">              if (boatyboat instanceof PlayerBoat) {</span>
+<span class="nc" id="L73">                playerWins = true;</span>
+              }
+            }
+<span class="nc" id="L76">          }</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">          if (playerWins) {</span>
+<span class="nc" id="L78">            return 10;</span>
+          } else {
+<span class="nc" id="L80">            return 9;</span>
+          }
         }
-<span class="nc" id="L69">      }</span>
-<span class="nc" id="L70">      return 1;</span>
+<span class="nc" id="L83">      }</span>
+<span class="nc" id="L84">      return 1;</span>
     }
     // otherwise remain in current scene (a SceneResultsScreen)
-<span class="nc" id="L73">    return sceneId;</span>
+<span class="nc" id="L87">    return sceneId;</span>
 
   }
 
@@ -89,69 +103,76 @@ public class SceneResultsScreen implements Scene {
    */
   public void draw(SpriteBatch batch) {
     //Initialise colouring
-<span class="nc" id="L92">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
-<span class="nc" id="L93">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L106">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L107">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
     // todo draw using this camera
     //batch.setProjectionMatrix(fill_camera.combined);
 
     // Find player's boat in list of boats in order to use x and y axis
-<span class="nc" id="L98">    PlayerBoat thePlayerBoat = null;</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">    for (Boat b : boats) {</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
-<span class="nc" id="L101">        thePlayerBoat = (PlayerBoat) b;</span>
+<span class="nc" id="L112">    PlayerBoat thePlayerBoat = null;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">    for (Boat b : boats) {</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
+<span class="nc" id="L115">        thePlayerBoat = (PlayerBoat) b;</span>
       }
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L117">    }</span>
 
     // Begin a sprite batch drawing
-<span class="nc" id="L106">    batch.begin();</span>
+<span class="nc" id="L120">    batch.begin();</span>
 
     // Draw text instructions at the top of the screen
-<span class="nc" id="L109">    font.setColor(Color.ORANGE);</span>
-<span class="nc" id="L110">    font.draw(batch, &quot;Results Screen! Click on the screen to skip and start the next leg!&quot;,</span>
-<span class="nc" id="L111">        -thePlayerBoat.uiBarWidth / 2, 540 + thePlayerBoat.getSprite().getY());</span>
+<span class="nc" id="L123">    font.setColor(Color.ORANGE);</span>
+<span class="nc" id="L124">    font.draw(batch, &quot;Results Screen! Click on the screen to skip and start the next leg!&quot;,</span>
+<span class="nc" id="L125">        -thePlayerBoat.uiBarWidth / 2, 540 + thePlayerBoat.getSprite().getY());</span>
 
     // Draw text instructions for the timing format that will be displayed
-<span class="nc" id="L114">    font.setColor(Color.YELLOW);</span>
-<span class="nc" id="L115">    font.draw(batch, &quot;BoatName | Race Time in ms | Race penalty in ms&quot;,</span>
-<span class="nc" id="L116">        -thePlayerBoat.uiBarWidth / 2, 520 + thePlayerBoat.getSprite().getY());</span>
+<span class="nc" id="L128">    font.setColor(Color.YELLOW);</span>
+<span class="nc" id="L129">    font.draw(batch, &quot;BoatName | Race Time in ms | Race penalty in ms&quot;,</span>
+<span class="nc" id="L130">        -thePlayerBoat.uiBarWidth / 2, 520 + thePlayerBoat.getSprite().getY());</span>
 
 
     //&quot;A boat (%s) ended race with time (ms) %d (%d ms was penalty)&quot;;
-<span class="nc" id="L120">    String labelTemplate = &quot;%s | %d ms | %d ms&quot;;</span>
+<span class="nc" id="L134">    String labelTemplate = &quot;%s | %d ms | %d ms&quot;;</span>
 
     // Initialise values for drawing times as table in order to allow dynamic wrapping
-<span class="nc" id="L123">    int columnNum = -1;</span>
-<span class="nc" id="L124">    int columnIdx = -1;</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">    for (Boat b : boats) {</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
-<span class="nc" id="L127">        font.setColor(Color.RED); // Colour Player's time in red</span>
+<span class="nc" id="L137">    int columnNum = -1;</span>
+<span class="nc" id="L138">    int columnIdx = -1;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">    for (Boat b : boats) {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">      if (b instanceof PlayerBoat) {</span>
+<span class="nc" id="L141">        font.setColor(Color.RED); // Colour Player's time in red</span>
       } else {
-<span class="nc" id="L129">        font.setColor(Color.WHITE); // All AI-boat times in white</span>
+<span class="nc" id="L143">        font.setColor(Color.WHITE); // All AI-boat times in white</span>
       }
 
       // Shift to next column to allowing wrapping of times as table
-<span class="nc bnc" id="L133" title="All 2 branches missed.">      if (boats.indexOf(b) % 21 == 0) {</span>
-<span class="nc" id="L134">        columnNum++;</span>
-<span class="nc" id="L135">        columnIdx = 0;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">      if (boats.indexOf(b) % 21 == 0) {</span>
+<span class="nc" id="L148">        columnNum++;</span>
+<span class="nc" id="L149">        columnIdx = 0;</span>
       }
-<span class="nc" id="L137">      columnIdx++;</span>
+<span class="nc" id="L151">      columnIdx++;</span>
 
       // Using label template format draw the name of boat, time of just completed leg,
       // race penalty added
-<span class="nc" id="L141">      String labelText = String.format(labelTemplate, b.getName(),</span>
-<span class="nc" id="L142">          b.getLegTimes().get(b.getLegTimes().size() - 1), b.getTimeToAdd());</span>
+      // Sleeps so that list can be populated (Problem from previous group)
+      try {
+<span class="nc" id="L157">        Thread.sleep(1);</span>
+<span class="nc" id="L158">      } catch (InterruptedException e) {</span>
+<span class="nc" id="L159">        Thread.currentThread().interrupt();</span>
+<span class="nc" id="L160">        return;</span>
+<span class="nc" id="L161">      }</span>
+<span class="nc" id="L162">      String labelText = String.format(labelTemplate, b.getName(),</span>
+<span class="nc" id="L163">          b.getLegTimes().get(b.getLegTimes().size() - 1), b.getTimeToAdd());</span>
 
       // Draw to results display to screen using position of player's UI
       // and draw for all boats this down the
       // and wraps across screen if needed into the next column
-<span class="nc" id="L147">      font.draw(batch, labelText, -thePlayerBoat.uiBarWidth / 2 + columnNum * 210,</span>
-<span class="nc" id="L148">          500 - (columnIdx * 20) + thePlayerBoat.getSprite().getY());</span>
-<span class="nc" id="L149">    }</span>
+<span class="nc" id="L168">      font.draw(batch, labelText, -thePlayerBoat.uiBarWidth / 2 + columnNum * 210,</span>
+<span class="nc" id="L169">          500 - (columnIdx * 20) + thePlayerBoat.getSprite().getY());</span>
+<span class="nc" id="L170">    }</span>
 
     // End a sprite batch drawing
-<span class="nc" id="L152">    batch.end();</span>
+<span class="nc" id="L173">    batch.end();</span>
 
-<span class="nc" id="L154">  }</span>
+<span class="nc" id="L175">  }</span>
 
   /**
    * Temp resize method if needed for camera extension.
@@ -161,9 +182,9 @@ public class SceneResultsScreen implements Scene {
    * @author Umer Fakher
    */
   public void resize(int width, int height) {
-<span class="nc" id="L164">    fillViewport.update(width, height);</span>
-<span class="nc" id="L165">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
-<span class="nc" id="L166">  }</span>
+<span class="nc" id="L185">    fillViewport.update(width, height);</span>
+<span class="nc" id="L186">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L187">  }</span>
 
   /**
    * Setter method for list of boats for all boats in scene.
@@ -172,7 +193,7 @@ public class SceneResultsScreen implements Scene {
    * @author Umer Fakher
    */
   public void setBoats(List&lt;Boat&gt; boats) {
-<span class="nc" id="L175">    this.boats = boats;</span>
-<span class="nc" id="L176">  }</span>
+<span class="nc" id="L196">    this.boats = boats;</span>
+<span class="nc" id="L197">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

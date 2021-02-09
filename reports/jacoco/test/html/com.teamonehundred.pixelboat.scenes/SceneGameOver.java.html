@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneGameOver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneGameOver.java</span></div><h1>SceneGameOver.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+/**
+ * SceneGameOver.
+ */
+public class SceneGameOver implements Scene {
+    
+<span class="nc" id="L20">  protected int sceneId = 9;</span>
+
+  protected Texture bg;
+  protected Sprite bgSprite;
+
+  protected Texture restart;
+  protected Texture restartHovered;
+  protected Sprite restartSprite;
+
+  protected Viewport fillViewport;
+  protected OrthographicCamera fillCamera;
+
+
+  /**
+   * Create a SceneGameOver.
+   */
+<span class="nc" id="L36">  public SceneGameOver() {</span>
+<span class="nc" id="L37">    fillCamera = new OrthographicCamera();</span>
+<span class="nc" id="L38">    fillViewport = new FillViewport(1280, 720, fillCamera);</span>
+<span class="nc" id="L39">    fillViewport.apply();</span>
+<span class="nc" id="L40">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L41">    fillViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+    
+<span class="nc" id="L43">    bg = new Texture(&quot;game_over_screen.png&quot;);</span>
+<span class="nc" id="L44">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L45">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L46">    bgSprite.setSize(1280, 720); </span>
+
+<span class="nc" id="L48">    restart = new Texture(&quot;restart.png&quot;);</span>
+<span class="nc" id="L49">    restartHovered = new Texture(&quot;restart_hovered.png&quot;);</span>
+<span class="nc" id="L50">    restartSprite = new Sprite(restart);</span>
+<span class="nc" id="L51">    restartSprite.setCenter(640, 180);</span>
+<span class="nc" id="L52">    restartSprite.setSize(512, 128);</span>
+
+<span class="nc" id="L54">  }</span>
+
+  /**
+   * Update the scene.
+   */
+  public int update() {
+      
+<span class="nc" id="L61">    Vector3 mousePos = fillCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));  </span>
+    
+<span class="nc bnc" id="L63" title="All 2 branches missed.">    if (restartSprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+        
+<span class="nc" id="L65">      restartSprite.setTexture(restartHovered);</span>
+
+<span class="nc bnc" id="L67" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L68">        System.out.println(&quot;restart&quot;);</span>
+<span class="nc" id="L69">        return 0;</span>
+      }
+    } else {
+<span class="nc" id="L72">      restartSprite.setTexture(restart);</span>
+    }
+
+<span class="nc" id="L75">    return sceneId;</span>
+  }
+
+  /**
+   * Draw the scene.
+   */
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L82">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L83">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L84">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L85">    batch.begin();</span>
+<span class="nc" id="L86">    bgSprite.draw(batch);</span>
+<span class="nc" id="L87">    restartSprite.draw(batch);</span>
+<span class="nc" id="L88">    batch.end();</span>
+<span class="nc" id="L89">  }</span>
+
+  public void resize(int width, int height) {
+<span class="nc" id="L92">    fillViewport.update(width, height);</span>
+<span class="nc" id="L93">    fillCamera.position.set(fillCamera.viewportWidth / 4, fillCamera.viewportHeight / 4, 0);</span>
+<span class="nc" id="L94">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
