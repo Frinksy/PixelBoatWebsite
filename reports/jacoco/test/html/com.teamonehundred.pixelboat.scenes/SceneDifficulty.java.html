@@ -152,50 +152,47 @@ public class SceneDifficulty implements Scene {
 <span class="nc" id="L152">      hardSprite.setTexture(hardHovered);</span>
 
 <span class="nc bnc" id="L154" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
-<span class="nc" id="L155">        System.out.println(&quot;hard&quot;);</span>
-<span class="nc" id="L156">        diffLevel = 3;</span>
+<span class="nc" id="L155">        diffLevel = 3;</span>
       }
 
     } else {
-<span class="nc" id="L160">      hardSprite.setTexture(hard);</span>
+<span class="nc" id="L159">      hardSprite.setTexture(hard);</span>
     }
     
-<span class="nc bnc" id="L163" title="All 2 branches missed.">    if (medSprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">    if (medSprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
 
-<span class="nc" id="L165">      medSprite.setTexture(medHovered);</span>
+<span class="nc" id="L164">      medSprite.setTexture(medHovered);</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
-<span class="nc" id="L168">        System.out.println(&quot;med&quot;);</span>
-<span class="nc" id="L169">        diffLevel = 2;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L167">        diffLevel = 2;</span>
       }
 
     } else {
-<span class="nc" id="L173">      medSprite.setTexture(med);</span>
+<span class="nc" id="L171">      medSprite.setTexture(med);</span>
     }
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">    if (easySprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">    if (easySprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
 
-<span class="nc" id="L178">      easySprite.setTexture(easyHovered);</span>
+<span class="nc" id="L176">      easySprite.setTexture(easyHovered);</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
-<span class="nc" id="L181">        System.out.println(&quot;esay&quot;);</span>
-<span class="nc" id="L182">        diffLevel = 1;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L179">        diffLevel = 1;</span>
       }
     } else {
-<span class="nc" id="L185">      easySprite.setTexture(easy);</span>
+<span class="nc" id="L182">      easySprite.setTexture(easy);</span>
     }   
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">    if (readySprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">    if (readySprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
 
-<span class="nc" id="L190">      readySprite.setTexture(readyHovered);</span>
+<span class="nc" id="L187">      readySprite.setTexture(readyHovered);</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
-<span class="nc" id="L193">        return 3;</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L190">        return 3;</span>
       }
     } else {
-<span class="nc" id="L196">      readySprite.setTexture(ready);</span>
+<span class="nc" id="L193">      readySprite.setTexture(ready);</span>
     }
-<span class="nc" id="L198">    return sceneId;</span>
+<span class="nc" id="L195">    return sceneId;</span>
   }
   
   /**
@@ -206,18 +203,18 @@ public class SceneDifficulty implements Scene {
    * @author Henry Overton
    */
   public void draw(SpriteBatch batch) {
-<span class="nc" id="L209">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
-<span class="nc" id="L210">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
-<span class="nc" id="L211">    batch.setProjectionMatrix(fillCamera.combined);</span>
-<span class="nc" id="L212">    batch.begin();</span>
-<span class="nc" id="L213">    bgSprite.draw(batch);</span>
-<span class="nc" id="L214">    hardSprite.draw(batch);</span>
-<span class="nc" id="L215">    medSprite.draw(batch);</span>
-<span class="nc" id="L216">    easySprite.draw(batch);</span>
-<span class="nc" id="L217">    readySprite.draw(batch);</span>
-<span class="nc" id="L218">    arrowSprite.draw(batch);</span>
-<span class="nc" id="L219">    batch.end();</span>
-<span class="nc" id="L220">  }</span>
+<span class="nc" id="L206">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L207">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L208">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L209">    batch.begin();</span>
+<span class="nc" id="L210">    bgSprite.draw(batch);</span>
+<span class="nc" id="L211">    hardSprite.draw(batch);</span>
+<span class="nc" id="L212">    medSprite.draw(batch);</span>
+<span class="nc" id="L213">    easySprite.draw(batch);</span>
+<span class="nc" id="L214">    readySprite.draw(batch);</span>
+<span class="nc" id="L215">    arrowSprite.draw(batch);</span>
+<span class="nc" id="L216">    batch.end();</span>
+<span class="nc" id="L217">  }</span>
 
   /**
    * Getter of diffLevel.
@@ -227,7 +224,7 @@ public class SceneDifficulty implements Scene {
    * @author Henry Overton
    */
   public int getdiffLevel() {
-<span class="nc" id="L230">    return diffLevel;</span>
+<span class="nc" id="L227">    return diffLevel;</span>
   }
 
   /**
@@ -238,8 +235,8 @@ public class SceneDifficulty implements Scene {
    * @author Henry Overton
    */
   public void resize(int width, int height) {
-<span class="nc" id="L241">    fillViewport.update(width, height);</span>
-<span class="nc" id="L242">    fillCamera.position.set(fillCamera.viewportWidth / 4, fillCamera.viewportHeight / 4, 0);</span>
-<span class="nc" id="L243">  }</span>
+<span class="nc" id="L238">    fillViewport.update(width, height);</span>
+<span class="nc" id="L239">    fillCamera.position.set(fillCamera.viewportWidth / 4, fillCamera.viewportHeight / 4, 0);</span>
+<span class="nc" id="L240">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -65,33 +65,32 @@ public class SceneGameOver implements Scene {
 <span class="nc" id="L65">      restartSprite.setTexture(restartHovered);</span>
 
 <span class="nc bnc" id="L67" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
-<span class="nc" id="L68">        System.out.println(&quot;restart&quot;);</span>
-<span class="nc" id="L69">        return 0;</span>
+<span class="nc" id="L68">        return 0;</span>
       }
     } else {
-<span class="nc" id="L72">      restartSprite.setTexture(restart);</span>
+<span class="nc" id="L71">      restartSprite.setTexture(restart);</span>
     }
 
-<span class="nc" id="L75">    return sceneId;</span>
+<span class="nc" id="L74">    return sceneId;</span>
   }
 
   /**
    * Draw the scene.
    */
   public void draw(SpriteBatch batch) {
-<span class="nc" id="L82">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
-<span class="nc" id="L83">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
-<span class="nc" id="L84">    batch.setProjectionMatrix(fillCamera.combined);</span>
-<span class="nc" id="L85">    batch.begin();</span>
-<span class="nc" id="L86">    bgSprite.draw(batch);</span>
-<span class="nc" id="L87">    restartSprite.draw(batch);</span>
-<span class="nc" id="L88">    batch.end();</span>
-<span class="nc" id="L89">  }</span>
+<span class="nc" id="L81">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L82">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L83">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L84">    batch.begin();</span>
+<span class="nc" id="L85">    bgSprite.draw(batch);</span>
+<span class="nc" id="L86">    restartSprite.draw(batch);</span>
+<span class="nc" id="L87">    batch.end();</span>
+<span class="nc" id="L88">  }</span>
 
   public void resize(int width, int height) {
-<span class="nc" id="L92">    fillViewport.update(width, height);</span>
-<span class="nc" id="L93">    fillCamera.position.set(fillCamera.viewportWidth / 4, fillCamera.viewportHeight / 4, 0);</span>
-<span class="nc" id="L94">  }</span>
+<span class="nc" id="L91">    fillViewport.update(width, height);</span>
+<span class="nc" id="L92">    fillCamera.position.set(fillCamera.viewportWidth / 4, fillCamera.viewportHeight / 4, 0);</span>
+<span class="nc" id="L93">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
