@@ -10,60 +10,126 @@
 
   <h1>Videos for Black Box Tests</h1>
   <ul>
-    <li>Test saving:
+    <li>Test saving: <br>
       <video width="320" height="240" controls>
         <source src="videos/blackboxsave.mp4" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
-    </li>
+      </video>
+      <br>
+      Results:
+    Test passes, all steps performed correctly and state properly restored.
 
-    <li>Test deleting saves:
+    </li>
+    <br>
+    <li>Test deleting saves: <br>
       <video width="320" height="240" controls>
         <source src="videos/blackboxdeletesave.mp4" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
-    </li>
+      </video>
+      <br>
+      Test passes, all steps performed correctly and the saved state properly deleted.
 
-    <li>Test easy difficulty:
+ 
+
+    </li>
+    <br>
+    <li>Test easy difficulty: <br>
       <video width="320" height="240" controls>
         <source src="videos/Easy.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
+      </video>
+      <br>
+      Results: (compared to medium and hard) <br>
+      Time to stamina depletion:6 sec <br>
+      Time to stamina refill: 9 sec <br>
+      Percentage loss of durability: 10%
     </li>
-
-    <li>Test medium difficulty:
+    <br>
+    <li>Test medium difficulty: <br>
       <video width="320" height="240" controls>
         <source src="videos/Medium.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
-    </li>
+      </video> <br>
+      Results: (compared to easy and hard) <br>
+      Time to stamina depletion:5.5 sec <br>
+      Time to stamina refill: 10 sec <br>
+      Percentage loss of durability: 15% <br>
+      Test medium passed
 
-    <li>Test hard diffculty:
+    </li>
+    <br>
+    <li>Test hard diffculty: <br>
       <video width="320" height="240" controls>
         <source src="videos/Hard.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
+      </video> <br>
+      Results: (compared to easy and medium) <br>
+      Time to stamina depletion:5 sec <br>
+      Time to stamina refill: 10.5 sec <br>
+      Percentage loss of durability:20% <br>
+      Test hard passed
     </li>
-
-    <li>Test game over 1:
+    <br>
+    <li>Test game over 1: <br>
       <video width="320" height="240" controls>
         <source src="videos/Kill_Oneself.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
+      </video> <br>
+      Results: Passed 
     </li>
-
-    <li>Test speed powerup:
+    <br>
+    <li>Test speed powerup: <br>
       <video width="320" height="240" controls>
         <source src="videos/Speed.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
-    </li>
+      </video> <br>
+      Results: <br>
+      Default Values (MaxSpeed = 15, Durability = 1) <br>
+      After Test (MaxSpeed = 18, Durability = 1) <br>
+      Speed Power-Up test Passes 
 
-    <li>Test energy powerup:
+    </li>
+    <br>
+    <li>Test Health powerup: <br>
+      <video width="320" height="240" controls>
+        <source src="videos/Health.m4v" type="video/mp4">
+      Your browser does not support the video tag.
+      </video> <br>
+      Results: <br>
+      Default Values (MaxSpeed = 15, Durability = 1) <br>
+      After Test (MaxSpeed = 15, Durability = 1) <br>
+      Durability Power-Up test Passes
+
+    </li>
+    <br>
+    <li>Test Energy powerup: <br>
       <video width="320" height="240" controls>
         <source src="videos/Stamina.m4v" type="video/mp4">
       Your browser does not support the video tag.
-      </video> 
+      </video> <br>
+      Results: <br>
+      Default Values (MaxSpeed = 15, Durability = 1, Stamina = 1) <br>
+      After Test (MaxSpeed = 15, Durability = 1, Stamina = 1) <br>
+      Energy Power-Up test Passes
+    </li>
+    <li>
+      Test game over 2 <br>
+      <img src="./videos/LoseScreen.png" alt="game over screen" width="40%"> <br>
+      Result: passes
+    </li>
+    <li>
+      Test game over 3 <br>
+      <img src="./videos/LoseScreen.png" alt="game over screen" width="40%"> <br>
+      Result: passes
+    </li>
+    <li>
+      Test Award Screen <br>
+      <img src="./videos/WinScreen.png" alt="win screen" width="40%"> <br>
+      Result: passes
+    </li>
+    <li>
+      Test TOP 3 <br>
+      Result: fails
     </li>
   </ul>
 
