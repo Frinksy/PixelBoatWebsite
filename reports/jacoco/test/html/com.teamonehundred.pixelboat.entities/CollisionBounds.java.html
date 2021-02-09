@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollisionBounds.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">CollisionBounds.java</span></div><h1>CollisionBounds.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Shape2D;
+import com.badlogic.gdx.math.Vector2;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents a CollisionBounds object.
+ *
+ * &lt;p&gt;Helps to control functionality for objects colliding by defining bounds
+ * that are used for identifying collisions.
+ *
+ * @author James Frost
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class CollisionBounds {
+
+  // Class attributes
+  protected List&lt;Shape2D&gt; bounds;  // shapes that represent the area of the object
+  protected float rotation; // the rotation of the sprite
+  protected Vector2 origin; // the centre coordinate of the sprite
+
+  /**
+   * Main constructor for CollisionBounds.
+   *
+   * &lt;p&gt;Initialises bounds list, rotation and coordinates.
+   */
+<span class="nc" id="L32">  CollisionBounds() {</span>
+<span class="nc" id="L33">    this.bounds = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L34">    rotation = 0;</span>
+<span class="nc" id="L35">    origin = new Vector2();</span>
+<span class="nc" id="L36">  }</span>
+
+  /**
+   * Getter for the bounds for the object that represent its area.
+   *
+   * @return List of Shape2D which represent bounds for the object.
+   */
+  public List&lt;Shape2D&gt; getShapes() {
+<span class="nc" id="L44">    return bounds;</span>
+  }
+
+
+  /**
+   * Returns polygon for CollisionBounds.
+   *
+   * @param r1   Rectangle representing shape of object
+   * @param rot1 float for rotation of object
+   * @param o1   Vector2 position vector
+   * @return polygon for CollisionBounds of object.
+   */
+  private Polygon getPolygon(Rectangle r1, float rot1, Vector2 o1) {
+    //get all points from rectangle 1
+<span class="nc" id="L58">    Vector2[] r1Prime = new Vector2[4];</span>
+<span class="nc" id="L59">    r1Prime[0] = (new Vector2(r1.x, r1.y));</span>
+<span class="nc" id="L60">    r1Prime[1] = (new Vector2(r1.x, r1.y + r1.height));</span>
+<span class="nc" id="L61">    r1Prime[2] = (new Vector2(r1.x + r1.width, r1.y));</span>
+<span class="nc" id="L62">    r1Prime[3] = (new Vector2(r1.x + r1.width, r1.y + r1.height));</span>
+
+    // rotate all points about their sprite's origin
+<span class="nc bnc" id="L65" title="All 2 branches missed.">    for (Vector2 p : r1Prime) {</span>
+<span class="nc" id="L66">      p.rotateAround(o1, rot1);</span>
+    }
+
+<span class="nc" id="L69">    Polygon pr1 = new Polygon(new float[]{</span>
+        r1Prime[0].x, r1Prime[0].y,
+        r1Prime[1].x, r1Prime[1].y,
+        r1Prime[2].x, r1Prime[2].y,
+        r1Prime[3].x, r1Prime[3].y});
+
+<span class="nc" id="L75">    return pr1;</span>
+  }
+
+  /**
+   * Returns the list of polygons.
+   */
+  public List&lt;Polygon&gt; getPolygons() {
+<span class="nc" id="L82">    List&lt;Polygon&gt; ret = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    for (Shape2D myBound : bounds) {</span>
+<span class="nc" id="L85">      ret.add(getPolygon((Rectangle) myBound, rotation, origin));</span>
+<span class="nc" id="L86">    }</span>
+
+<span class="nc" id="L88">    return ret;</span>
+  }
+
+
+  /**
+   * Gets the rotation attribute of the sprite.
+   *
+   * @return float
+   */
+  public float getRotation() {
+<span class="nc" id="L98">    return rotation;</span>
+  }
+
+  /**
+   * Sets the rotation attribute of the sprite to the new rotation passed in.
+   *
+   * @param newRotation float that is set to be the new rotation of the sprite.
+   */
+  public void setRotation(float newRotation) {
+<span class="nc" id="L107">    this.rotation = newRotation;</span>
+<span class="nc" id="L108">  }</span>
+
+  /**
+   * Gets the centre coordinate of the sprite.
+   *
+   * @return Vector2
+   */
+  public Vector2 getOrigin() {
+<span class="nc" id="L116">    return origin;</span>
+  }
+
+  /**
+   * Sets the centre coordinate of the sprite with the vector passed in.
+   *
+   * @param o Vector2 that is set to be the new centre coordinate of the sprite.
+   */
+  public void setOrigin(Vector2 o) {
+<span class="nc" id="L125">    origin = o;</span>
+<span class="nc" id="L126">  }</span>
+
+  /**
+   * Adds new bound to the list of bounds.
+   *
+   * @param newBound Shape2D that will be used to represent the area of the object.
+   */
+  public void addBound(Shape2D newBound) {
+<span class="nc" id="L134">    bounds.add(newBound);</span>
+<span class="nc" id="L135">  }</span>
+
+  /**
+   * Returns true if objects have collided according to their collision boundaries.
+   *
+   * &lt;p&gt;Note: only works for rectangles, but could be expanded to check for other shape types
+   *
+   * @param collider CollisionBounds to be checked to see if there is a collision.
+   * @return boolean if objects colliding
+   */
+  public boolean isColliding(CollisionBounds collider) {
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">    for (Shape2D myBound : bounds) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">      for (Shape2D theirBound : collider.getShapes()) {</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">        if (myBound instanceof Rectangle &amp;&amp; theirBound instanceof Rectangle) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">          if (rectOnRectCollides(</span>
+              (Rectangle) myBound,
+              rotation, origin,
+              (Rectangle) theirBound,
+<span class="nc" id="L154">              collider.getRotation(),</span>
+<span class="nc" id="L155">              collider.getOrigin())) {</span>
+
+<span class="nc" id="L157">            return true;</span>
+          }
+        }
+<span class="nc" id="L160">      }</span>
+<span class="nc" id="L161">    }</span>
+
+<span class="nc" id="L163">    return false;</span>
+  }
+
+  /**
+   * Returns true if objects have collided according to their
+   * collision boundaries overlapping rectangle upon rectangle.
+   *
+   * @param r1   Rectangle area of the sprite
+   * @param rot1 float rotation of the sprite
+   * @param o1   Vector2 centre coordinate of the sprite
+   * @param r2   Rectangle area of the second sprite
+   * @param rot2 float rotation of the second sprite
+   * @param o2   Vector2 centre coordinate of the second sprite
+   * @return boolean
+   */
+  public boolean rectOnRectCollides(Rectangle r1, float rot1,
+                                    Vector2 o1, Rectangle r2, float rot2, Vector2 o2) {
+<span class="nc" id="L180">    Polygon pr1 = getPolygon(r1, rot1, o1);</span>
+<span class="nc" id="L181">    Polygon pr2 = getPolygon(r2, rot2, o2);</span>
+
+<span class="nc" id="L183">    return Intersector.overlapConvexPolygons(pr1, pr2);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

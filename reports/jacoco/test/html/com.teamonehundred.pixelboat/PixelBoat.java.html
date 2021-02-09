@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PixelBoat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat</a> &gt; <span class="el_source">PixelBoat.java</span></div><h1>PixelBoat.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat;
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.teamonehundred.pixelboat.scenes.Scene;
+import com.teamonehundred.pixelboat.scenes.SceneBoatSelection;
+import com.teamonehundred.pixelboat.scenes.SceneDifficulty;
+import com.teamonehundred.pixelboat.scenes.SceneLoadScreen;
+import com.teamonehundred.pixelboat.scenes.SceneMainGame;
+import com.teamonehundred.pixelboat.scenes.SceneOptionsMenu;
+import com.teamonehundred.pixelboat.scenes.SceneResultsScreen;
+import com.teamonehundred.pixelboat.scenes.SceneSaveScreen;
+import com.teamonehundred.pixelboat.scenes.SceneStartScreen;
+import com.teamonehundred.pixelboat.scenes.SceneTutorial;
+
+
+/**
+ * Main class for the PixelBoat game.
+ *
+ * &lt;p&gt;Extends Libgdx ApplicationAdapter.
+ *
+ * @author William Walton
+ * @author James Frost
+ * @author Umer Fakher JavaDoc by Umer Fakher
+ */
+<span class="nc" id="L27">public class PixelBoat extends ApplicationAdapter {</span>
+
+
+  public Scene[] allScenes;  // stores all game scenes and their data
+  protected SpriteBatch batch;  // thing that draws the sprites
+
+  // id of current game state
+  // 0 = start menu
+  // 1 = game
+  // 2 = options
+  // 3 = tutorial
+  // 4 = results
+  // 5 =boat selection
+  // 6 = difficulty options
+<span class="nc" id="L41">  protected int sceneId = 0;</span>
+
+<span class="nc" id="L43">  public static int MAIN_MENU = 0;</span>
+<span class="nc" id="L44">  public static int GAME_SCENE = 1;</span>
+<span class="nc" id="L45">  public static int OPTIONS_SCENE = 2;</span>
+<span class="nc" id="L46">  public static int TUTORIAL_SCENE = 3;</span>
+<span class="nc" id="L47">  public static int RESULTS_SCENE = 4;</span>
+<span class="nc" id="L48">  public static int BOAT_SELECT = 5;</span>
+<span class="nc" id="L49">  public static int DIFFICULTY_SELECT = 6;</span>
+<span class="nc" id="L50">  public static int LOAD_SCENE = 7;</span>
+<span class="nc" id="L51">  public static int SAVE_SCENE = 8;</span>
+
+  /**
+   * Create method runs when the game starts.
+   *
+   * &lt;p&gt;Runs every scene in Game.
+   */
+  @Override
+  public void create() {
+<span class="nc" id="L60">    allScenes = new Scene[9];</span>
+<span class="nc" id="L61">    allScenes[MAIN_MENU] = new SceneStartScreen();</span>
+<span class="nc" id="L62">    allScenes[GAME_SCENE] = new SceneMainGame();</span>
+<span class="nc" id="L63">    allScenes[OPTIONS_SCENE] = new SceneOptionsMenu();</span>
+<span class="nc" id="L64">    allScenes[TUTORIAL_SCENE] = new SceneTutorial();</span>
+<span class="nc" id="L65">    allScenes[RESULTS_SCENE] = new SceneResultsScreen();</span>
+<span class="nc" id="L66">    allScenes[BOAT_SELECT] = new SceneBoatSelection();</span>
+<span class="nc" id="L67">    allScenes[DIFFICULTY_SELECT] = new SceneDifficulty();</span>
+<span class="nc" id="L68">    allScenes[LOAD_SCENE] = new SceneLoadScreen(this);</span>
+<span class="nc" id="L69">    allScenes[SAVE_SCENE] = new SceneSaveScreen(this);</span>
+<span class="nc" id="L70">    batch = new SpriteBatch();</span>
+<span class="nc" id="L71">  }</span>
+
+  /**
+   * Render function runs every frame.
+   *
+   * &lt;p&gt;Controls functionality of frame switching.
+   */
+  @Override
+  public void render() {
+    // run the current scene
+<span class="nc" id="L81">    int newSceneId = allScenes[sceneId].update();</span>
+<span class="nc" id="L82">    allScenes[sceneId].draw(batch);</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (sceneId != newSceneId) {</span>
+      // special case updates
+<span class="nc bnc" id="L86" title="All 2 branches missed.">      if (newSceneId == RESULTS_SCENE) {</span>
+<span class="nc" id="L87">        ((SceneResultsScreen) allScenes[RESULTS_SCENE]).setBoats(</span>
+<span class="nc" id="L88">            ((SceneMainGame) allScenes[GAME_SCENE]).getAllBoats());</span>
+<span class="nc bnc" id="L89" title="All 4 branches missed.">      } else if (newSceneId == TUTORIAL_SCENE &amp;&amp; sceneId == DIFFICULTY_SELECT) {</span>
+<span class="nc" id="L90">        ((SceneMainGame) allScenes[GAME_SCENE]).setPlayerStats(</span>
+<span class="nc" id="L91">            ((SceneBoatSelection) allScenes[BOAT_SELECT]).getSpecId(),</span>
+<span class="nc" id="L92">            ((SceneDifficulty) allScenes[DIFFICULTY_SELECT]).getdiffLevel());</span>
+<span class="nc" id="L93">        ((SceneMainGame) allScenes[GAME_SCENE]).initialize();</span>
+      }
+
+
+      // check if we need to change scene
+<span class="nc" id="L98">      sceneId = newSceneId;</span>
+    }
+<span class="nc" id="L100">  }</span>
+
+  /**
+   * Disposes unneeded SpriteBatch and exits application.
+   *
+   * &lt;p&gt;Runs when the game needs to close.
+   */
+  @Override
+  public void dispose() {
+<span class="nc" id="L109">    batch.dispose();</span>
+
+<span class="nc" id="L111">    Gdx.app.exit();</span>
+<span class="nc" id="L112">    System.exit(0);</span>
+<span class="nc" id="L113">  }</span>
+
+  /**
+   * Resize used and passed to resize method of each scene based on width and height attributes.
+   *
+   * @param width  int for scene
+   * @param height int for scene
+   */
+  @Override
+  public void resize(int width, int height) {
+<span class="nc" id="L123">    allScenes[sceneId].resize(width, height);</span>
+<span class="nc" id="L124">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

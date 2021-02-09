@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerUpEnergy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">PowerUpEnergy.java</span></div><h1>PowerUpEnergy.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * Represents the Energy power up.
+ *
+ * @author Ben Dunbar
+ */
+public class PowerUpEnergy extends PowerUp {
+
+  /**
+   * A constructor for an PowerUp taking its position (x and y).
+   *
+   * &lt;p&gt;A power up image is taken by default from C:\...\ENG1-Team-12\Implementation\core\assets.
+   * Rotation is set.
+   *
+   * @author Ben Dunbar
+   */
+  public PowerUpEnergy(float x, float y) {
+<span class="fc" id="L22">    super(x, y, 60, 60, &quot;power_up_energy.png&quot;);</span>
+<span class="fc" id="L23">    sprite.setRotation(0);</span>
+<span class="fc" id="L24">  }</span>
+
+  /**
+   * Returns a new collision bounds object for the energy power-up.
+   *
+   * &lt;p&gt;Creates a new collision bounds object representing the current position of this power up.
+   * See the collision bounds visualisation folder in assets for a visual representation.
+   *
+   * @return CollisionBounds of power up object
+   * @author Ben Dunbar
+   */
+  @Override
+  public CollisionBounds getBounds() {
+<span class="nc" id="L37">    CollisionBounds myBounds = new CollisionBounds();</span>
+<span class="nc" id="L38">    Rectangle mainRect = new Rectangle(</span>
+<span class="nc" id="L39">        sprite.getX() + (0.31f * sprite.getWidth()),</span>
+<span class="nc" id="L40">        sprite.getY() + (0.06f * sprite.getHeight()),</span>
+<span class="nc" id="L41">        0.31f * sprite.getWidth(),</span>
+<span class="nc" id="L42">        0.88f * sprite.getHeight());</span>
+<span class="nc" id="L43">    myBounds.addBound(mainRect);</span>
+
+<span class="nc" id="L45">    myBounds.setOrigin(new Vector2(</span>
+<span class="nc" id="L46">        sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L47">        sprite.getY() + (sprite.getHeight() / 2)));</span>
+<span class="nc" id="L48">    myBounds.setRotation(sprite.getRotation());</span>
+
+<span class="nc" id="L50">    return myBounds;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

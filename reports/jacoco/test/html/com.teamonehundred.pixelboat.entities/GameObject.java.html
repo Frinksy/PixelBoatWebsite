@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameObject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">GameObject.java</span></div><h1>GameObject.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+
+/**
+ * Represents a game object.
+ *
+ * &lt;p&gt;The GameObject class that everything visible in the game is derived from.
+ * Contains texture and positional information.
+ *
+ * @author James Frost
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public abstract class GameObject {
+  /* ################################### //
+           ATTRIBUTES
+  // ################################### */
+
+  // coordinates are world coordinates relative to the bottom left of object
+  // rotation is in degrees
+  // width, height, x, y, and rotation are stored in sprite
+
+  /**
+   * Stores the image rendered when the object is shown.
+   */
+  protected Texture texture;
+  /**
+   * Stores the texture of the object and positional
+   * information (x and y coordinates, width and height, rotation).
+   */
+  public Sprite sprite;
+  /**
+   * Used to determine if the object should be rendered or not. Also used in collision detection
+   */
+  public Boolean isShown;
+
+  // set to null if not animated
+  /**
+   * The array of frames used for animations, stored as TextureRegion s.
+   */
+  protected TextureRegion[] animationRegions;
+
+  /* ################################### //
+          CONSTRUCTORS
+  // ################################### */
+
+  /**
+   * A constructor for GameObject for static textures.
+   *
+   * @param x      float for horizontal position of object
+   * @param y      float for vertical position of object
+   * @param w      int for width of object
+   * @param h      int for height of object
+   * @param texturePath String of object's file path
+   */
+<span class="fc" id="L59">  GameObject(float x, float y, int w, int h, final String texturePath) {</span>
+<span class="fc" id="L60">    initialise(x, y, w, h, texturePath);</span>
+
+<span class="fc" id="L62">    animationRegions = null;</span>
+
+<span class="fc" id="L64">    sprite = new Sprite(texture);</span>
+<span class="fc" id="L65">    sprite.setPosition(x, y);</span>
+<span class="fc" id="L66">    sprite.setSize(w, h);</span>
+<span class="fc" id="L67">    sprite.setOriginCenter();</span>
+<span class="fc" id="L68">  }</span>
+
+  // animation
+
+  /**
+   * A constructor for GameObject for animation textures.
+   *
+   * @param x      int for horizontal position of object
+   * @param y      int for vertical position of object
+   * @param w      int for width of object
+   * @param h      int for height of object
+   * @param t String of object's file path
+   * @param frameCount  int frame count
+   */
+<span class="fc" id="L82">  GameObject(float x, float y, int w, int h, final String texturePath, int frameCount) {</span>
+<span class="fc" id="L83">    initialise(x, y, w, h, texturePath);</span>
+
+<span class="fc" id="L85">    animationRegions = new TextureRegion[frameCount];</span>
+<span class="fc" id="L86">    float textureWidth = 1f / (frameCount);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    for (int i = 0; i &lt; frameCount; i++) {</span>
+<span class="fc" id="L88">      animationRegions[i] = new TextureRegion(texture,</span>
+                                              i * textureWidth, 0f, (i + 1) * textureWidth, 1f);
+    }
+
+<span class="fc" id="L92">    sprite = new Sprite(animationRegions[0]);</span>
+<span class="fc" id="L93">    sprite.setPosition(x, y);</span>
+<span class="fc" id="L94">    sprite.setSize(w, h);</span>
+<span class="fc" id="L95">    sprite.setOriginCenter();</span>
+<span class="fc" id="L96">  }</span>
+
+  /**
+   * A constructor for GameObject.
+   *
+   * @param x       int for horizontal position of object
+   * @param y       int for vertical position of object
+   * @param w       int for width of object
+   * @param h       int for height of object
+   * @param texture   Direct Texture
+   * @param frameCount int frame count
+   */
+<span class="fc" id="L108">  GameObject(float x, float y, int w, int h, Texture texture, int frameCount) {</span>
+<span class="fc" id="L109">    this.texture = texture;</span>
+<span class="fc" id="L110">    isShown = true;</span>
+
+<span class="fc" id="L112">    animationRegions = new TextureRegion[frameCount];</span>
+<span class="fc" id="L113">    float textureWidth = 1f / (frameCount);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    for (int i = 0; i &lt; frameCount; i++) {</span>
+<span class="fc" id="L115">      animationRegions[i] = new TextureRegion(texture,</span>
+                                              i * textureWidth, 0f, (i + 1) * textureWidth, 1f);
+    }
+
+<span class="fc" id="L119">    sprite = new Sprite(animationRegions[0]);</span>
+<span class="fc" id="L120">    sprite.setPosition(x, y);</span>
+<span class="fc" id="L121">    sprite.setSize(w, h);</span>
+<span class="fc" id="L122">    sprite.setOriginCenter();</span>
+<span class="fc" id="L123">  }</span>
+
+  /**
+   * A constructor for GameObject.
+   *
+   * @param x      int for horizontal position of object
+   * @param y      int for vertical position of object
+   * @param w      int for width of object
+   * @param h      int for height of object
+   * @param texturePath String of object's file path
+   */
+  void initialise(float x, float y, int w, int h, final String texturePath) {
+<span class="fc" id="L135">    texture = new Texture(texturePath);</span>
+<span class="fc" id="L136">    isShown = true;</span>
+<span class="fc" id="L137">  }</span>
+
+  /*
+   * Destructor disposes of this texture once it is no longer referenced.
+   */
+  // protected void finalize() {
+  //   texture.dispose();
+  // }
+
+  /* ################################### //
+          METHODS
+  // ################################### */
+
+  /**
+   * Returns true if GameObject should be shown otherwise false.
+   *
+   * @return is_shown boolean
+   */
+  public boolean isShown() {
+<span class="fc" id="L156">    return isShown;</span>
+  }
+
+  /**
+   * Getter for GameObject sprite.
+   *
+   * @return Sprite
+   */
+  public Sprite getSprite() {
+<span class="fc" id="L165">    return sprite;</span>
+  }
+
+  /**
+   * Returns a new collision bounds object for the GameObject.
+   *
+   * &lt;p&gt;Creates a new collision bounds object representing the current position of this GameObject.
+   * See the collision bounds visualisation folder in assets for a visual representation.
+   *
+   * @return CollisionBounds object of GameObject
+   * @author James Frost
+   * @author William Walton
+   */
+  public CollisionBounds getBounds() {
+<span class="nc" id="L179">    CollisionBounds myBounds = new CollisionBounds();</span>
+<span class="nc" id="L180">    Rectangle mainRect = sprite.getBoundingRectangle();  // default is to use whole sprite</span>
+<span class="nc" id="L181">    myBounds.addBound(mainRect);</span>
+<span class="nc" id="L182">    return myBounds;</span>
+  }
+
+  /**
+   * Sets GameObject sprite's animation region according to integer passed
+   * in as long as the animation regions is not null.
+   *
+   * @param i int
+   */
+  public void setAnimationFrame(int i) {
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">    if (animationRegions != null) {</span>
+<span class="fc" id="L193">      sprite.setRegion(animationRegions[i % animationRegions.length]);</span>
+    }
+<span class="fc" id="L195">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

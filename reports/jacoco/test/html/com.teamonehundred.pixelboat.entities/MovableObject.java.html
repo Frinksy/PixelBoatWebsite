@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MovableObject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">MovableObject.java</span></div><h1>MovableObject.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.graphics.Texture;
+
+/**
+ * Represents the movable object as an abstract class that extends from game object.
+ *
+ * @author James Frost
+ * @author William Walton JavaDoc by Umer Fakher
+ */
+public abstract class MovableObject extends GameObject {
+  /* ################################### //
+           ATTRIBUTES
+  // ################################### */
+
+<span class="fc" id="L16">  public float maxSpeed = 15;</span>
+<span class="fc" id="L17">  public float speed = 0;</span>
+<span class="fc" id="L18">  public float drag = .04f;  // amount speed is reduced by every frame naturally</span>
+<span class="fc" id="L19">  protected float acceleration = .2f;</span>
+<span class="fc" id="L20">  public float rotationSpeed = 2.f;</span>
+
+  /* ################################### //
+          CONSTRUCTORS
+  // ################################### */
+
+  /**
+   * A constructor for MovableObject.
+   *
+   * @param x      float for horizontal position of object
+   * @param y      float for vertical position of object
+   * @param w      int for width of object
+   * @param h      int for height of object
+   * @param texturePath String of object's file path
+   */
+  MovableObject(float x, float y, int w, int h, String texturePath) {
+<span class="fc" id="L36">    super(x, y, w, h, texturePath);</span>
+<span class="fc" id="L37">  }</span>
+
+
+  /**
+   * A constructor for MovableObject.
+   *
+   * @param x      float for horizontal position of object
+   * @param y      float for vertical position of object
+   * @param w      int for width of object
+   * @param h      int for height of object
+   * @param t String of object's file path
+   * @param frameCount  int frame count
+   */
+  MovableObject(float x, float y, int w, int h, String texturePath, int frameCount) {
+<span class="fc" id="L51">    super(x, y, w, h, texturePath, frameCount);</span>
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * A constructor for MovableObject.
+   *
+   * @param x       float for horizontal position of object
+   * @param y       float for vertical position of object
+   * @param w       int for width of object
+   * @param h       int for height of object
+   * @param t       Direct Texture
+   * @param frameCount int frame count
+   */
+  MovableObject(float x, float y, int w, int h, Texture t, int frameCount) {
+<span class="fc" id="L65">    super(x, y, w, h, t, frameCount);</span>
+<span class="fc" id="L66">  }</span>
+
+  /* ################################### //
+          METHODS
+  // ################################### */
+
+  /**
+   * Rotates the Movable object by some given value.
+   *
+   * &lt;p&gt;Note: turn left (1) or right (-1)
+   *
+   * @param amount Integer value that dictates how much the movable object will be rotated
+   * @author James Frost
+   * @author William Walton
+   */
+  public void turn(int amount) {
+<span class="nc" id="L82">    sprite.rotate(amount * rotationSpeed);</span>
+<span class="nc" id="L83">  }</span>
+
+
+  /**
+   * Move forwards x, y in whatever direction currently facing.
+   *
+   * @param distance to be moved
+   * @author James Frost
+   * @author William Walton
+   */
+  private void move(float distance) {
+<span class="nc" id="L94">    double dy = Math.cos((Math.toRadians(sprite.getRotation()))) * distance;</span>
+<span class="nc" id="L95">    double dx = Math.sin((Math.toRadians(sprite.getRotation()))) * distance;</span>
+
+<span class="nc" id="L97">    sprite.translate((float) (-dx), (float) dy);</span>
+<span class="nc" id="L98">  }</span>
+
+  /**
+   * Updates position of movable object based on speed and decreases
+   * speed according to drag calculation.
+   *
+   * @author James Frost
+   * @author William Walton
+   */
+  public void updatePosition() {
+<span class="nc" id="L108">    move(speed);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    speed -= speed - drag &lt; 0 ? speed : drag;</span>
+<span class="nc" id="L110">  }</span>
+
+  /**
+   * Increase speed based on current acceleration attribute.
+   *
+   * &lt;p&gt;If max_speed (terminal velocity) is reached for the movable
+   * object then don't increase speed.
+   *
+   * @author James Frost
+   * @author William Walton
+   */
+  public void accelerate() {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">    speed += speed &gt;= maxSpeed ? 0 : acceleration;</span>
+<span class="nc" id="L123">  }</span>
+
+  /**
+   * Resets speed to 0 and rotation to 0.
+   */
+  public void reset_motion() {
+<span class="fc" id="L129">    speed = 0;</span>
+<span class="fc" id="L130">    sprite.setRotation(0);</span>
+<span class="fc" id="L131">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

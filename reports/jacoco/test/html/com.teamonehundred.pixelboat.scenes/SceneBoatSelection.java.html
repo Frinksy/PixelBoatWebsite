@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneBoatSelection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneBoatSelection.java</span></div><h1>SceneBoatSelection.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+/**
+ * Represents the Boat Selection Scene for when the player wants to select
+ * which boat to play with before the race starts.
+ *
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class SceneBoatSelection implements Scene {
+<span class="nc" id="L21">  protected int sceneId = 5;</span>
+
+<span class="nc" id="L23">  protected boolean isNewClick = false;</span>
+
+<span class="nc" id="L25">  protected int specId = 0;</span>
+<span class="nc" id="L26">  protected int numSpecs = 3;</span>
+
+  protected Texture bg;
+  protected Sprite bgSprite;
+
+  protected Texture[] boatOptions;
+  protected Sprite[] boatOptionSprites;
+
+  protected Viewport fillWiewport;
+  protected OrthographicCamera fillCamera;
+
+  /**
+   * Main constructor for a SceneBoatSelection.
+   *
+   * &lt;p&gt;Initialises a Scene textures for Boat Selection and camera.
+   *
+   * @author William Walton
+   */
+<span class="nc" id="L44">  public SceneBoatSelection() {</span>
+<span class="nc" id="L45">    fillCamera = new OrthographicCamera();</span>
+<span class="nc" id="L46">    fillWiewport = new FillViewport(1280, 720, fillCamera);</span>
+<span class="nc" id="L47">    fillWiewport.apply();</span>
+<span class="nc" id="L48">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L49">    fillWiewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+
+<span class="nc" id="L51">    bg = new Texture(&quot;boat_selection_screen.png&quot;);</span>
+<span class="nc" id="L52">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L53">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L54">    bgSprite.setSize(1280, 720);</span>
+
+<span class="nc" id="L56">    boatOptions = new Texture[numSpecs];</span>
+<span class="nc" id="L57">    boatOptionSprites = new Sprite[numSpecs];</span>
+
+<span class="nc" id="L59">    boatOptions[0] = new Texture(&quot;boat_selection_debug.png&quot;);</span>
+<span class="nc" id="L60">    boatOptions[1] = new Texture(&quot;boat_selection_default.png&quot;);</span>
+<span class="nc" id="L61">    boatOptions[2] = new Texture(&quot;boat_selection_fastlowdurability.png&quot;);</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">    for (int i = 0; i &lt; numSpecs; i++) {</span>
+<span class="nc" id="L64">      boatOptionSprites[i] = new Sprite(boatOptions[i]);</span>
+<span class="nc" id="L65">      boatOptionSprites[i].setSize(512 / 2, 256 / 2);</span>
+<span class="nc" id="L66">      boatOptionSprites[i].setPosition(</span>
+<span class="nc" id="L67">          (fillCamera.viewportWidth / 2) - (boatOptionSprites[i].getWidth() / 2),</span>
+<span class="nc" id="L68">          (fillCamera.viewportHeight / 2) + (boatOptionSprites[i].getHeight() / 2) - i</span>
+<span class="nc" id="L69">            * (boatOptionSprites[i].getHeight()));</span>
+    }
+<span class="nc" id="L71">  }</span>
+
+  /**
+   * Update function for SceneBoatSelection. Ends SceneBoatSelection based
+   * on user input otherwise stays in scene.
+   *
+   * &lt;p&gt;Returns an specified integer when you want to exit the screen else
+   * return scene_id if you want to stay in scene.
+   *
+   * @return the scene_id ofwhich screen is next (either this screen still or another)
+   * @author William Walton
+   */
+  public int update() {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L85">      isNewClick = true;</span>
+    }
+
+<span class="nc" id="L88">    Vector3 mousePos = fillCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">    for (int i = 0; i &lt; numSpecs; i++) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">      if (boatOptionSprites[i].getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) &amp;&amp; isNewClick) {</span>
+<span class="nc" id="L93">          isNewClick = false;</span>
+<span class="nc" id="L94">          specId = i;</span>
+<span class="nc" id="L95">          return 6;  // return 3 to exit</span>
+        }
+      }
+    }
+
+<span class="nc" id="L100">    return sceneId;</span>
+  }
+
+  /**
+   * Draw function for SceneBoatSelection.
+   *
+   * &lt;p&gt;Draws BoatSelection for the PixelBoat game.
+   *
+   * @param batch SpriteBatch used for drawing to screen.
+   * @author William Walton
+   */
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L112">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L113">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L115">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L116">    batch.begin();</span>
+<span class="nc" id="L117">    bgSprite.draw(batch);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">    for (int i = 0; i &lt; 3; i++) {</span>
+<span class="nc" id="L119">      boatOptionSprites[i].draw(batch);</span>
+    }
+<span class="nc" id="L121">    batch.end();</span>
+<span class="nc" id="L122">  }</span>
+
+  /**
+   * Temp resize method if needed for camera extension.
+   *
+   * @param width  Integer width to be resized to
+   * @param height Integer height to be resized to
+   * @author Umer Fakher
+   */
+  public void resize(int width, int height) {
+<span class="nc" id="L132">  }</span>
+
+  /**
+   * Getter method for the specified boat's spec_id.
+   *
+   * @return boat's spec id
+   * @author William Walton
+   */
+  public int getSpecId() {
+<span class="nc" id="L141">    return specId;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

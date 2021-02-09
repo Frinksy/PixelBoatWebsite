@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerBoat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">PlayerBoat.java</span></div><h1>PlayerBoat.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents the user player's boat.
+ *
+ * @author James Frost
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class PlayerBoat extends Boat {
+  /* ################################### //
+           ATTRIBUTES
+  // ################################### */
+
+  protected OrthographicCamera camera;
+
+  protected Texture staminaTexture;
+  protected Texture durabilityTexture;
+
+  protected Sprite staminaBar;
+  protected Sprite durabilityBar;
+
+<span class="pc" id="L30">  public int uiBarWidth = 500;</span>
+
+  /* ################################### //
+          CONSTRUCTORS
+  // ################################### */
+
+  /**
+   * Construct a PlayerBoat object at point (x,y) with default size, texture and animation.
+   *
+   * @param x float coordinate for the bottom left point of the boat
+   * @param y float coordinate for the bottom left point of the boat
+   * @author William Walton
+   */
+  public PlayerBoat(float x, float y) {
+<span class="fc" id="L44">    super(x, y);</span>
+
+<span class="fc" id="L46">    initialise();</span>
+<span class="fc" id="L47">  }</span>
+
+  /**
+   * Construct a PlayerBoat object with at point (x,y) with width and height and texture path
+   * with default stats (stamina usage, durability, etc).
+   *
+   * @param x      int coordinate for the bottom left point of the boat
+   * @param y      int coordinate for the bottom left point of the boat
+   * @param w      int width of the new boat
+   * @param h      int height of the new boat
+   * @param texturePath String relative path from the core/assets folder of the boats texture image
+   * @author William Walton
+   */
+  PlayerBoat(int x, int y, int w, int h, String texturePath) {
+<span class="nc" id="L61">    super(x, y, w, h, texturePath);</span>
+
+<span class="nc" id="L63">    initialise();</span>
+<span class="nc" id="L64">  }</span>
+
+  /**
+   * Construct a PlayerBoat object with all parameters specified.
+   *
+   * @param x          int coordinate for the bottom left point of the boat
+   * @param y          int coordinate for the bottom left point of the boat
+   * @param w          int width of the new boat
+   * @param h          int height of the new boat
+   * @param texturePath   relative path from the core/assets folder of the boats texture image
+   * @param durabilityPerHit float percentage (0-1) of the max durability taken each hit
+   * @param name         String of the boat seen when the game ends
+   * @param staminaRegen    float percentage of stamina regenerated each frame (0-1)
+   * @param staminaUsage    float percentage of stamina used each frame when accelerating (0-1)
+   * @author William Walton
+   */
+  PlayerBoat(int x, int y, int w, int h, String texturePath, String name,
+             float durabilityPerHit, float staminaUsage, float staminaRegen) {
+<span class="nc" id="L82">    super(x, y, w, h, texturePath, name, durabilityPerHit, staminaUsage, staminaRegen);</span>
+
+<span class="nc" id="L84">    initialise();</span>
+<span class="nc" id="L85">  }</span>
+
+  /*
+   * Destructor disposes of this texture once it is no longer referenced.
+   */
+  // protected void finalize() {
+  //   stamina_texture.dispose();
+  //   durability_texture.dispose();
+  // }
+
+  /* ################################### //
+          METHODS
+  // ################################### */
+
+  /**
+   * Shared initialisation functionality among all constructors.
+   *
+   * &lt;p&gt;Sets stamina bar and durability bar textures and sprites.
+   * Initialises the bars' size and position.
+   * Initialises camera position.
+   */
+  public void initialise() {
+<span class="fc" id="L107">    staminaTexture = new Texture(&quot;stamina_texture.png&quot;);</span>
+<span class="fc" id="L108">    durabilityTexture = new Texture(&quot;durability_texture.png&quot;);</span>
+
+<span class="fc" id="L110">    staminaBar = new Sprite(staminaTexture);</span>
+<span class="fc" id="L111">    durabilityBar = new Sprite(durabilityTexture);</span>
+
+<span class="fc" id="L113">    staminaBar.setSize(uiBarWidth, 10);</span>
+<span class="fc" id="L114">    durabilityBar.setSize(uiBarWidth, 10);</span>
+
+
+<span class="fc" id="L117">    staminaBar.setPosition(-uiBarWidth / 2, 5);</span>
+<span class="fc" id="L118">    durabilityBar.setPosition(-uiBarWidth / 2, 20);</span>
+
+<span class="fc" id="L120">    camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="fc" id="L121">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3 + sprite.getY(), 0);</span>
+<span class="fc" id="L122">    camera.update();</span>
+<span class="fc" id="L123">  }</span>
+
+  /**
+   * Sets the spec type of boat.
+   *
+   * &lt;p&gt;Can be in these states:
+   * - debug
+   * - default
+   * - fast low durability
+   *
+   * @param specId int for boat spec
+   */
+  public void setSpec(int specId) {
+<span class="nc bnc" id="L136" title="All 4 branches missed.">    switch (specId) {</span>
+      case 0:
+        // debug
+<span class="nc" id="L139">        staminaUsage = 0f;</span>
+<span class="nc" id="L140">        durabilityPerHit = 0f;</span>
+<span class="nc" id="L141">        break;</span>
+      case 1:
+        // default
+<span class="nc" id="L144">        break;</span>
+      case 2:
+        // fast low durability
+<span class="nc" id="L147">        maxSpeed = 20;</span>
+<span class="nc" id="L148">        durabilityPerHit = .2f;</span>
+<span class="nc" id="L149">        break;</span>
+      default:
+        break;
+    }
+<span class="nc" id="L153">  }</span>
+
+  /**
+   * Change player stats according to difficulty level.
+   *
+   * @param diffLevel difficulty level
+   */
+  public void setDiff(int diffLevel) {
+<span class="fc bfc" id="L161" title="All 2 branches covered.">    if (diffLevel == 2) {</span>
+<span class="fc" id="L162">      staminaRegen *= 0.7f; </span>
+<span class="fc" id="L163">      staminaUsage *= 1.3f; </span>
+<span class="fc" id="L164">      durabilityPerHit *= 2.0f; </span>
+    }
+<span class="fc bfc" id="L166" title="All 2 branches covered.">    if (diffLevel == 3) {</span>
+<span class="fc" id="L167">      staminaRegen *= 0.4f;</span>
+<span class="fc" id="L168">      staminaUsage *= 1.7f;</span>
+<span class="fc" id="L169">      durabilityPerHit *= 2.5f;</span>
+    }
+<span class="fc" id="L171">  }</span>
+
+  /**
+   * Updates the position based on the user's input.
+   *
+   * &lt;p&gt;'W' key accelerates the boat.
+   * 'A' Turns the boat to the left
+   * 'D' Turns the boat to the right
+   *
+   * &lt;p&gt;Updates the x and y position of the sprite with
+   * new x and y according to which input has been requested.
+   * The camera will follow the player's boat.
+   *
+   * @author William Walton
+   */
+  @Override
+  public void updatePosition() {
+<span class="nc bnc" id="L188" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.W)) {</span>
+<span class="nc" id="L189">      this.accelerate();</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {</span>
+      // nothing atm
+    }
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.A)) {</span>
+<span class="nc" id="L195">      this.turn(1);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">    } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {</span>
+<span class="nc" id="L197">      this.turn(-1);</span>
+    }
+
+<span class="nc" id="L200">    float oldX = sprite.getX();</span>
+<span class="nc" id="L201">    float oldY = sprite.getY();</span>
+
+<span class="nc" id="L203">    super.updatePosition();</span>
+
+    // only follow player in x axis if they go off screen
+<span class="nc bnc" id="L206" title="All 2 branches missed.">    float dx = Math.abs(sprite.getX()) &gt; Gdx.graphics.getWidth() / 3 ? sprite.getX() - oldX : 0;</span>
+<span class="nc" id="L207">    float dy = sprite.getY() - oldY;</span>
+
+    // move camera to follow player
+<span class="nc" id="L210">    camera.translate(dx, dy, 0);</span>
+<span class="nc" id="L211">  }</span>
+
+  /**
+   * Returns the all sprites for PlayerBoat UI.
+   *
+   * &lt;p&gt;This includes the stamina bar and durability bar.
+   *
+   * @return List of Sprites
+   */
+  public List&lt;Sprite&gt; getUiSprites() {
+<span class="nc" id="L221">    updateUiSprites();  // TODO: probably move this to only when they change rather than every frame</span>
+
+<span class="nc" id="L223">    List&lt;Sprite&gt; ret = new ArrayList&lt;Sprite&gt;();</span>
+<span class="nc" id="L224">    ret.add(staminaBar);</span>
+<span class="nc" id="L225">    ret.add(durabilityBar);</span>
+<span class="nc" id="L226">    return ret;</span>
+  }
+
+  /**
+   * Getter for PlayerBoat Camera.
+   *
+   * @return OrthographicCamera
+   */
+  public OrthographicCamera getCamera() {
+<span class="nc" id="L235">    return camera;</span>
+  }
+
+  /**
+   * Resets PlayerBoat Camera position.
+   */
+  public void resetCameraPos() {
+<span class="fc" id="L242">    camera.position.set(sprite.getX(), Gdx.graphics.getHeight() / 3, 0);</span>
+<span class="fc" id="L243">    camera.update();</span>
+<span class="fc" id="L244">  }</span>
+
+  /**
+   * Update the position and size of the UI elements
+   * (e.g. stamina bar and durability bar) according to their values.
+   *
+   * &lt;p&gt;The stamina decreases as player requests the boat to row and move.
+   * It increases when this is not the case.
+   * Durability decreases according to the collisions with other obstacles.
+   * Dynamically updates the size of the stamina bar and durability bar
+   * based on the PlayerBoat attributes as they change.
+   */
+  private void updateUiSprites() {
+<span class="nc" id="L257">    staminaBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
+<span class="nc" id="L258">                           -50 + sprite.getY());</span>
+<span class="nc" id="L259">    durabilityBar.setPosition(-uiBarWidth / 2 + sprite.getX() + sprite.getWidth() / 2,</span>
+<span class="nc" id="L260">                              -35 + sprite.getY());</span>
+
+<span class="nc" id="L262">    staminaBar.setSize((int) (uiBarWidth * stamina), 10);</span>
+<span class="nc" id="L263">    durabilityBar.setSize((int) (uiBarWidth * durability), 10);</span>
+<span class="nc" id="L264">  }</span>
+
+  /**
+   * getter for staminaRegain.
+   *
+   * @return staminaRegain
+   */
+  public float getStaminaRegain() {
+<span class="fc" id="L272">    return staminaRegen;</span>
+  }
+
+  /**
+   * Getter for staminaUsage.
+   *
+   * @return staminaUsage
+   */
+  public float getStaminaUsage() {
+<span class="fc" id="L281">    return staminaUsage;</span>
+  }
+
+  /**
+   * Getter for durabilityPerHit.
+   *
+   * @return durabilityPerHit
+   */
+  public float getDurabilityPerHit() {
+<span class="fc" id="L290">    return durabilityPerHit;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

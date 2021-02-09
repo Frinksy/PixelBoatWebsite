@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneOptionsMenu.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneOptionsMenu.java</span></div><h1>SceneOptionsMenu.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+/**
+ * Represents the Options Menu Scene for when the player wants
+ * to select/edit the options before the race starts.
+ *
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class SceneOptionsMenu implements Scene {
+<span class="nc" id="L21">  protected int sceneId = 2;</span>
+
+<span class="nc" id="L23">  protected boolean isFullscreen = false;</span>
+
+  protected Texture bg;
+  protected Sprite bgSprite;
+
+  protected Texture full;
+  protected Sprite fullSprite;
+  protected Texture fullCheckYes;
+  protected Texture fullCheckNo;
+  protected Sprite fullCheckSprite;
+
+  protected Texture accel;
+  protected Sprite accelSprite;
+
+  protected Texture left;
+  protected Sprite leftSprite;
+
+  protected Texture right;
+  protected Sprite rightSprite;
+
+  protected Texture back;
+  protected Texture backHovered;
+  protected Sprite backSprite;
+
+  protected Viewport fillViewPort;
+  protected OrthographicCamera fillCamera;
+
+  /**
+   * Main constructor for a SceneOptionsMenu.
+   *
+   * &lt;p&gt;Initialises a Scene textures for Options Menu and camera.
+   * When options are hovered over they will change texture indicating
+   * what the user is about to select.
+   *
+   * @author William Walton
+   */
+<span class="nc" id="L59">  public SceneOptionsMenu() {</span>
+<span class="nc" id="L60">    fillCamera = new OrthographicCamera();</span>
+<span class="nc" id="L61">    fillViewPort = new FillViewport(1280, 720, fillCamera);</span>
+<span class="nc" id="L62">    fillViewPort.apply();</span>
+<span class="nc" id="L63">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L64">    fillViewPort.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+
+<span class="nc" id="L66">    bg = new Texture(&quot;start_screen.png&quot;);</span>
+<span class="nc" id="L67">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L68">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L69">    bgSprite.setSize(1280, 720);</span>
+
+<span class="nc" id="L71">    full = new Texture(&quot;options_menu_fullscreen.png&quot;);</span>
+<span class="nc" id="L72">    fullCheckYes = new Texture(&quot;options_menu_checkbox_yes.png&quot;);</span>
+<span class="nc" id="L73">    fullCheckNo = new Texture(&quot;options_menu_checkbox_no.png&quot;);</span>
+<span class="nc" id="L74">    full = new Texture(&quot;options_menu_fullscreen.png&quot;);</span>
+<span class="nc" id="L75">    fullSprite = new Sprite(full);</span>
+<span class="nc" id="L76">    fullCheckSprite = new Sprite(fullCheckNo);</span>
+<span class="nc" id="L77">    fullSprite.setSize(512 / 2, 128 / 2);</span>
+<span class="nc" id="L78">    fullSprite.setPosition((fillCamera.viewportWidth / 2) - (fullSprite.getWidth()),</span>
+<span class="nc" id="L79">                           (Gdx.graphics.getHeight() / 2) + (fullSprite.getHeight() * 1.5f));</span>
+<span class="nc" id="L80">    fullCheckSprite.setSize(128 / 2, 128 / 2);</span>
+<span class="nc" id="L81">    fullCheckSprite.setPosition((fillCamera.viewportWidth / 2) + (fullSprite.getWidth() / 2),</span>
+<span class="nc" id="L82">                                (Gdx.graphics.getHeight() / 2) + (fullSprite.getHeight() * 1.5f));</span>
+
+<span class="nc" id="L84">    accel = new Texture(&quot;options_menu_fullscreen.png&quot;);</span>
+<span class="nc" id="L85">    accelSprite = new Sprite(accel);</span>
+<span class="nc" id="L86">    accelSprite.setSize(512 / 2, 128 / 2);</span>
+<span class="nc" id="L87">    accelSprite.setPosition((fillCamera.viewportWidth / 2) - (fullSprite.getWidth()),</span>
+<span class="nc" id="L88">                            (Gdx.graphics.getHeight() / 2) + (fullSprite.getHeight() * .5f));</span>
+
+<span class="nc" id="L90">    left = new Texture(&quot;options_menu_fullscreen.png&quot;);</span>
+<span class="nc" id="L91">    leftSprite = new Sprite(left);</span>
+<span class="nc" id="L92">    leftSprite.setSize(512 / 2, 128 / 2);</span>
+<span class="nc" id="L93">    leftSprite.setPosition((fillCamera.viewportWidth / 2) - (fullSprite.getWidth()),</span>
+<span class="nc" id="L94">                           (Gdx.graphics.getHeight() / 2) - (fullSprite.getHeight() * .5f));</span>
+
+<span class="nc" id="L96">    right = new Texture(&quot;options_menu_fullscreen.png&quot;);</span>
+<span class="nc" id="L97">    rightSprite = new Sprite(right);</span>
+<span class="nc" id="L98">    rightSprite.setSize(512 / 2, 128 / 2);</span>
+<span class="nc" id="L99">    rightSprite.setPosition((fillCamera.viewportWidth / 2) - (fullSprite.getWidth()),</span>
+<span class="nc" id="L100">                            (Gdx.graphics.getHeight() / 2) - (fullSprite.getHeight() * 1.5f));</span>
+
+<span class="nc" id="L102">    back = new Texture(&quot;options_menu_back.png&quot;);</span>
+<span class="nc" id="L103">    backHovered = new Texture(&quot;options_menu_back_hovered.png&quot;);</span>
+<span class="nc" id="L104">    backSprite = new Sprite(back);</span>
+<span class="nc" id="L105">    backSprite.setSize(512 / 2, 128 / 2);</span>
+<span class="nc" id="L106">    backSprite.setPosition((fillCamera.viewportWidth / 2) - (fullSprite.getWidth()), 70);</span>
+<span class="nc" id="L107">  }</span>
+
+  /**
+   * Draw function for SceneOptionsMenu.
+   *
+   * &lt;p&gt;Draws Options Menu for the PixelBoat game.
+   *
+   * @param batch SpriteBatch used for drawing to screen.
+   * @author William Walton
+   */
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L118">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L119">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L121">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L122">    batch.begin();</span>
+<span class="nc" id="L123">    bgSprite.draw(batch);</span>
+<span class="nc" id="L124">    fullSprite.draw(batch);</span>
+<span class="nc" id="L125">    accelSprite.draw(batch);</span>
+<span class="nc" id="L126">    leftSprite.draw(batch);</span>
+<span class="nc" id="L127">    rightSprite.draw(batch);</span>
+<span class="nc" id="L128">    backSprite.draw(batch);</span>
+<span class="nc" id="L129">    fullCheckSprite.draw(batch);</span>
+<span class="nc" id="L130">    batch.end();</span>
+<span class="nc" id="L131">  }</span>
+
+  /**
+   * Update function for SceneOptionsMenu.
+   * Ends SceneOptionsMenu based on user input otherwise stays in scene.
+   *
+   * &lt;p&gt;Returns an specified integer when you want to exit the screen else return scene_id
+   * if you want to stay in scene.
+   * In this case left clicking with the mouse on  the back button will stop the Options Menu Scene
+   * and continue with the Main Menu Scene.
+   *
+   * @return the scene_id of which screen is next (either this screen still or another)
+   * @author William Walton
+   */
+  public int update() {
+<span class="nc" id="L146">    Vector3 mousePos = fillCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">    if (backSprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+<span class="nc" id="L149">      backSprite.setTexture(backHovered);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc" id="L151">        return 0;</span>
+      }
+    } else {
+<span class="nc" id="L154">      backSprite.setTexture(back);</span>
+    }
+
+    // todo add single click detection to stop this changing every frame
+<span class="nc bnc" id="L158" title="All 2 branches missed.">    if (fullCheckSprite.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {</span>
+      //full_check_sprite.setTexture(full_check_);
+<span class="nc bnc" id="L160" title="All 2 branches missed.">      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (isFullscreen) {</span>
+<span class="nc" id="L162">          fullCheckSprite.setTexture(fullCheckNo);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">          isFullscreen = !isFullscreen;</span>
+        } else {
+<span class="nc" id="L165">          fullCheckSprite.setTexture(fullCheckYes);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">          isFullscreen = !isFullscreen;</span>
+        }
+      }
+    }
+
+<span class="nc" id="L171">    return sceneId;</span>
+  }
+
+  /**
+   * Temp resize method if needed for camera extension.
+   *
+   * @param width  Integer width to be resized to
+   * @param height Integer height to be resized to
+   * @author William Walton
+   */
+  public void resize(int width, int height) {
+<span class="nc" id="L182">    fillViewPort.update(width, height);</span>
+<span class="nc" id="L183">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L184">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

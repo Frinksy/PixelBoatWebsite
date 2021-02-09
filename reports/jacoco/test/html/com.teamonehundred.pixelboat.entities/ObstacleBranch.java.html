@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObstacleBranch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.entities</a> &gt; <span class="el_source">ObstacleBranch.java</span></div><h1>ObstacleBranch.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.entities;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * Represents the simple branch obstacle.
+ *
+ * @author James Frost
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class ObstacleBranch extends Obstacle {
+
+  /**
+   * A constructor for an Obstacle taking its position (x and y).
+   *
+   * &lt;p&gt;Branch image is taken by default from C:\...\ENG1-Team-12\Implementation\core\assets.
+   * Random rotation is set.
+   *
+   * @author James Frost
+   * @author William Walton
+   */
+  public ObstacleBranch(float x, float y) {
+<span class="fc" id="L24">    super(x, y, 60, 60, &quot;obstacle_branch.png&quot;);</span>
+<span class="fc" id="L25">    sprite.setRotation(-90 + (float) Math.random() * 180);</span>
+<span class="fc" id="L26">  }</span>
+
+  /**
+   * Returns a new collision bounds object for the branch obstacle.
+   *
+   * &lt;p&gt;Creates a new collision bounds object representing the current position of this branch.
+   * See the collision bounds visualisation folder in assets for a visual representation.
+   *
+   * @return CollisionBounds of branch obstacle
+   * @author James Frost
+   * @author William Walton
+   */
+  @Override
+  public CollisionBounds getBounds() {
+<span class="nc" id="L40">    CollisionBounds myBounds = new CollisionBounds();</span>
+<span class="nc" id="L41">    Rectangle mainRect = new Rectangle(</span>
+<span class="nc" id="L42">        sprite.getX() + (0.31f * sprite.getWidth()),</span>
+<span class="nc" id="L43">        sprite.getY() + (0.06f * sprite.getHeight()),</span>
+<span class="nc" id="L44">        0.31f * sprite.getWidth(),</span>
+<span class="nc" id="L45">        0.88f * sprite.getHeight());</span>
+<span class="nc" id="L46">    myBounds.addBound(mainRect);</span>
+
+<span class="nc" id="L48">    myBounds.setOrigin(new Vector2(</span>
+<span class="nc" id="L49">        sprite.getX() + (sprite.getWidth() / 2),</span>
+<span class="nc" id="L50">        sprite.getY() + (sprite.getHeight() / 2)));</span>
+<span class="nc" id="L51">    myBounds.setRotation(sprite.getRotation());</span>
+
+<span class="nc" id="L53">    return myBounds;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

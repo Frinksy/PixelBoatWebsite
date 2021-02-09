@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneLoadScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneLoadScreen.java</span></div><h1>SceneLoadScreen.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.teamonehundred.pixelboat.PixelBoat;
+import java.io.IOException;
+
+/**
+ * SceneLoadScreen.
+ */
+public class SceneLoadScreen implements Scene {
+
+  Stage stage;
+<span class="nc" id="L27">  boolean shouldGoToMenu = false;</span>
+<span class="nc" id="L28">  boolean shouldInitialize = true;</span>
+<span class="nc" id="L29">  boolean shouldLoadGame = false;</span>
+<span class="nc" id="L30">  boolean shouldDelete = false;</span>
+  PixelBoat parent;
+  SelectBox&lt;String&gt; choose;
+  Preferences prefs;
+  Table layout;
+  protected Texture bg;
+  protected Sprite bgSprite;
+
+  /**
+   * Create a SceneLoadScreen.
+   */
+<span class="nc" id="L41">  public SceneLoadScreen(PixelBoat parent) {</span>
+<span class="nc" id="L42">    this.parent = parent;</span>
+
+<span class="nc" id="L44">  }</span>
+
+  private void initialize() {
+    
+    
+    // Load the preferences containing the saves
+<span class="nc" id="L50">    prefs = Gdx.app.getPreferences(&quot;Saves&quot;);</span>
+    
+    // Generate all the UI items (save selector, load, delete and return buttons)
+<span class="nc" id="L53">    stage = new Stage(new ScreenViewport());</span>
+
+<span class="nc" id="L55">    Skin skin = new Skin(Gdx.files.internal(&quot;clean-crispy/clean-crispy-ui.json&quot;));</span>
+<span class="nc" id="L56">    choose = new SelectBox&lt;String&gt;(skin);</span>
+<span class="nc" id="L57">    choose.setItems((String[]) prefs.get().keySet().toArray(new String[prefs.get().size()]));</span>
+    
+<span class="nc" id="L59">    final TextButton returnButton = new TextButton(&quot;Back to menu&quot;, skin);</span>
+<span class="nc" id="L60">    returnButton.addListener(new ChangeListener() {</span>
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L63">        shouldGoToMenu = true;</span>
+<span class="nc" id="L64">      }</span>
+    });
+
+<span class="nc" id="L67">    final TextButton loadButton = new TextButton(&quot;Load Selected&quot;, skin);</span>
+<span class="nc" id="L68">    loadButton.addListener(new ChangeListener() {</span>
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L71">        shouldLoadGame = true;</span>
+<span class="nc" id="L72">      }</span>
+    });
+
+<span class="nc" id="L75">    final TextButton deleteButton = new TextButton(&quot;Delete Selected&quot;, skin);</span>
+<span class="nc" id="L76">    deleteButton.addListener(new ChangeListener() {</span>
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L79">        shouldDelete = true;</span>
+<span class="nc" id="L80">      }</span>
+
+    });
+
+    // Set up screen with items
+<span class="nc" id="L85">    layout = new Table();</span>
+<span class="nc" id="L86">    layout.setFillParent(true);</span>
+
+<span class="nc" id="L88">    layout.add(choose).colspan(4);</span>
+<span class="nc" id="L89">    layout.row().pad(20, 50, 0, 50);</span>
+<span class="nc" id="L90">    layout.add(returnButton).colspan(4);</span>
+<span class="nc" id="L91">    layout.row().pad(20, 50, 0, 50);</span>
+<span class="nc" id="L92">    layout.add(loadButton).colspan(4);</span>
+<span class="nc" id="L93">    layout.row().pad(20, 50, 0, 50);</span>
+<span class="nc" id="L94">    layout.add(deleteButton).colspan(4);</span>
+
+<span class="nc" id="L96">    stage.addActor(layout);</span>
+<span class="nc" id="L97">    Gdx.input.setInputProcessor(stage);</span>
+
+    // Load background
+<span class="nc" id="L100">    bg = new Texture(&quot;start_screen.png&quot;);</span>
+<span class="nc" id="L101">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L102">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L103">    bgSprite.setSize(1280, 720);</span>
+
+<span class="nc" id="L105">  }</span>
+
+  @Override
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L109">    Gdx.gl.glClearColor(1f, 1f, 1f, 1);</span>
+<span class="nc" id="L110">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L111">    batch.begin();</span>
+<span class="nc" id="L112">    bgSprite.draw(batch);</span>
+<span class="nc" id="L113">    batch.end();</span>
+
+<span class="nc" id="L115">    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));</span>
+<span class="nc" id="L116">    stage.draw();</span>
+
+<span class="nc" id="L118">  }</span>
+
+  @Override
+  public int update() {
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">    if (shouldGoToMenu) {</span>
+
+<span class="nc" id="L125">      shouldInitialize = true;</span>
+<span class="nc" id="L126">      shouldGoToMenu = false;</span>
+
+      // reset the race in case something failed to load
+      // eg. IOException during loading a save
+<span class="nc" id="L130">      ((SceneMainGame) parent.allScenes[PixelBoat.GAME_SCENE]).initialize();</span>
+<span class="nc" id="L131">      return PixelBoat.MAIN_MENU;</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">    } else if (shouldInitialize) {</span>
+
+<span class="nc" id="L135">      shouldInitialize = false;</span>
+<span class="nc" id="L136">      initialize();</span>
+<span class="nc" id="L137">      return PixelBoat.LOAD_SCENE;</span>
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">    } else if (shouldLoadGame) {</span>
+<span class="nc" id="L140">      shouldLoadGame = false;</span>
+<span class="nc" id="L141">      shouldInitialize = true;</span>
+      
+      try {
+<span class="nc" id="L144">        String saveName = choose.getSelected();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (saveName == null) {</span>
+<span class="nc" id="L146">          shouldInitialize = false;</span>
+<span class="nc" id="L147">          return PixelBoat.LOAD_SCENE;</span>
+        }
+<span class="nc" id="L149">        ((SceneMainGame) parent.allScenes[1]).restoreGame(saveName, prefs);</span>
+<span class="nc" id="L150">      } catch (IOException e) {</span>
+        // If it fails then do not initialize
+<span class="nc" id="L152">        shouldInitialize = false;</span>
+<span class="nc" id="L153">        return PixelBoat.LOAD_SCENE;</span>
+<span class="nc" id="L154">      }</span>
+
+      // Exit to the game, stop listening for inputs
+<span class="nc" id="L157">      shouldLoadGame = false;</span>
+<span class="nc" id="L158">      Gdx.input.setInputProcessor(null);</span>
+<span class="nc" id="L159">      return PixelBoat.GAME_SCENE;</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">    } else if (shouldDelete) {</span>
+<span class="nc" id="L162">      shouldDelete = false;</span>
+
+      // Don't do anything if the selection is empty
+<span class="nc bnc" id="L165" title="All 2 branches missed.">      if (choose.getSelected() == null) {</span>
+<span class="nc" id="L166">        return PixelBoat.LOAD_SCENE;</span>
+      }
+
+      // Delete selected save from the preferenes
+<span class="nc" id="L170">      prefs.remove(choose.getSelected());</span>
+<span class="nc" id="L171">      prefs.flush();</span>
+
+<span class="nc" id="L173">      initialize();</span>
+
+<span class="nc" id="L175">      return PixelBoat.LOAD_SCENE;</span>
+
+
+    }
+
+<span class="nc" id="L180">    return PixelBoat.LOAD_SCENE;</span>
+
+  }
+
+  @Override
+  public void resize(int width, int height) {
+     
+<span class="nc" id="L187">    Viewport viewport = stage.getViewport();</span>
+<span class="nc" id="L188">    viewport.setScreenSize(width, height);</span>
+<span class="nc" id="L189">    stage.setViewport(viewport);</span>
+<span class="nc" id="L190">  }</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

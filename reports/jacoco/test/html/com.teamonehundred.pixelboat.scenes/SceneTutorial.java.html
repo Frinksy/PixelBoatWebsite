@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneTutorial.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneTutorial.java</span></div><h1>SceneTutorial.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+/**
+ * Represents the Tutorial Scene for when the player wants
+ * to see the controls and learn the purpose of UI elements
+ * before the race starts.
+ *
+ * @author William Walton, JavaDoc by Umer Fakher
+ */
+public class SceneTutorial implements Scene {
+<span class="nc" id="L21">  protected int sceneId = 3;</span>
+
+  protected Texture bg;
+  protected Sprite bgSprite;
+
+  protected Viewport fillViewport;
+  protected OrthographicCamera fillCamera;
+
+  /**
+   * Main constructor for a Tutorial Scene.
+   *
+   * &lt;p&gt;Initialises a Scene textures for Tutorial Screen Overlay and camera.
+   *
+   * @author William Walton
+   */
+<span class="nc" id="L36">  public SceneTutorial() {</span>
+<span class="nc" id="L37">    fillCamera = new OrthographicCamera();</span>
+<span class="nc" id="L38">    fillViewport = new FillViewport(1280, 720, fillCamera);</span>
+<span class="nc" id="L39">    fillViewport.apply();</span>
+<span class="nc" id="L40">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L41">    fillViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+
+<span class="nc" id="L43">    bg = new Texture(&quot;tutorial_screen.png&quot;);</span>
+<span class="nc" id="L44">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L45">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L46">    bgSprite.setSize(1280, 720);</span>
+<span class="nc" id="L47">  }</span>
+
+  /*
+   * Destructor disposes of this texture once it is no longer referenced.
+   */
+  // protected void finalize() {
+  //   bg.dispose();
+  // }
+
+  /**
+   * Draw function for SceneTutorial.
+   *
+   * &lt;p&gt;Draws SceneTutorial for the PixelBoat game.
+   *
+   * @param batch SpriteBatch used for drawing to screen.
+   * @author William Walton
+   */
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L65">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L66">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L68">    batch.setProjectionMatrix(fillCamera.combined);</span>
+<span class="nc" id="L69">    batch.begin();</span>
+<span class="nc" id="L70">    bgSprite.draw(batch);</span>
+<span class="nc" id="L71">    batch.end();</span>
+<span class="nc" id="L72">  }</span>
+
+  /**
+   * Update function for SceneTutorial. Ends SceneTutorial based on user input
+   * otherwise stays in scene.
+   *
+   * &lt;p&gt;Returns an specified integer when you want to exit the screen
+   * else return scene_id if you want to stay in scene.
+   * In this case any key pressed on the keyboard will stop
+   * the Tutorial Scene and continue with the main game.
+   *
+   * @return the scene_id of which screen is next(either this screen still or another)
+   * @author William Walton
+   */
+  public int update() {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {</span>
+<span class="nc" id="L88">      return 1; // Move onto next Scene (Back to main game)</span>
+    }
+
+<span class="nc" id="L91">    return sceneId; // Stay on current Tutorial Scene.</span>
+  }
+
+  /**
+   * Temp resize method if needed for camera extension.
+   *
+   * @param width  Integer width to be resized to
+   * @param height Integer height to be resized to
+   * @author Umer Fakher
+   */
+  public void resize(int width, int height) {
+<span class="nc" id="L102">    fillViewport.update(width, height);</span>
+<span class="nc" id="L103">    fillCamera.position.set(fillCamera.viewportWidth / 2, fillCamera.viewportHeight / 2, 0);</span>
+<span class="nc" id="L104">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneMainGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneMainGame.java</span></div><h1>SceneMainGame.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.teamonehundred.pixelboat.BoatRace;
+import com.teamonehundred.pixelboat.GameState;
+import com.teamonehundred.pixelboat.PixelBoat;
+import com.teamonehundred.pixelboat.entities.AiBoat;
+import com.teamonehundred.pixelboat.entities.Boat;
+import com.teamonehundred.pixelboat.entities.CollisionObject;
+import com.teamonehundred.pixelboat.entities.PlayerBoat;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Represents the Main Game Scene for when the boat race starts.
+ *
+ * @author William Walton
+ * @author Umer Fakher JavaDoc by Umer Fakher
+ */
+public class SceneMainGame implements Scene {
+
+<span class="fc" id="L35">  protected int sceneId = 1;</span>
+
+<span class="fc" id="L37">  protected int legNumber = 0;</span>
+
+<span class="fc" id="L39">  protected int boatsPerRace = 7;</span>
+<span class="fc" id="L40">  protected int groupsPerGame = 3;</span>
+
+  protected PlayerBoat player;
+  protected List&lt;Boat&gt; allBoats;
+
+  protected Texture bg;
+
+  protected BoatRace race;
+  protected SceneResultsScreen results;
+  protected SceneBoatSelection boatSelection;
+
+<span class="fc" id="L51">  protected boolean lastRun = false;</span>
+
+  protected PixelBoat parent;
+
+  /**
+   * Main constructor for a SceneMainGame.
+   * 
+   * &lt;p&gt;Initialises a BoatRace, player's boat, AI boats and scene textures.
+   *
+   * @author William Walton
+   */
+<span class="fc" id="L62">  public SceneMainGame() {</span>
+<span class="fc" id="L63">    initialize();</span>
+<span class="fc" id="L64">  }</span>
+
+  /**
+   * Initialize SceneMainGame and all its elements.
+   */
+  public void initialize() {
+<span class="fc" id="L70">    player = new PlayerBoat(-15, 0);</span>
+<span class="fc" id="L71">    player.setName(&quot;Player&quot;);</span>
+<span class="fc" id="L72">    allBoats = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L74">    allBoats.add(player);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">    for (int i = 0; i &lt; (boatsPerRace * groupsPerGame) - 1; i++) {</span>
+<span class="fc" id="L76">      allBoats.add(new AiBoat(0, 40));</span>
+<span class="fc" id="L77">      allBoats.get(allBoats.size() - 1).setName(&quot;AI Boat &quot; + Integer.toString(i));</span>
+    }
+<span class="fc" id="L79">    Collections.swap(allBoats, 0, 3); // move player to middle of first group</span>
+
+<span class="fc" id="L81">    bg = new Texture(&quot;water_background.png&quot;);</span>
+<span class="fc" id="L82">    bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);</span>
+
+<span class="fc" id="L84">    race = new BoatRace(allBoats.subList(0, boatsPerRace));</span>
+<span class="fc" id="L85">    legNumber++;</span>
+<span class="fc" id="L86">  }</span>
+
+  /*
+   * Destructor disposes of this texture once it is no longer referenced.
+   */
+  // protected void finalize() {
+  //   bg.dispose();
+  // }
+
+  /**
+   * Draws SpriteBatch on display along with updating player camera and player
+   * overlay Using BoatRace.
+   *
+   * @param batch Spritebatch passed for drawing graphic objects onto screen.
+   * @author William Walton
+   */
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L103">    Gdx.gl.glClearColor(.25f, .25f, .25f, 1);</span>
+<span class="nc" id="L104">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L106">    player.getCamera().update();</span>
+<span class="nc" id="L107">    batch.setProjectionMatrix(player.getCamera().combined);</span>
+
+<span class="nc" id="L109">    batch.begin();</span>
+
+<span class="nc" id="L111">    batch.draw(bg, -10000, -2000, 0, 0, 1000000, 10000000);</span>
+<span class="nc" id="L112">    race.draw(batch);</span>
+
+<span class="nc" id="L114">    batch.end();</span>
+<span class="nc" id="L115">  }</span>
+
+  /**
+   * Calls main runStep method for BoatRace which is repeatedly called for
+   * updating the game state.
+   * 
+   * &lt;p&gt;The BoatRace runStep method checks for started or finished boats in a leg,
+   * calls update methods for the movements for player boat and AI boats obstacles
+   * as well as checking for collisions.
+   *
+   * @author William Walton
+   */
+  public int update() {
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">    if (Gdx.input.isKeyPressed(Input.Keys.P)) {</span>
+      try {
+<span class="nc" id="L131">        saveGame(&quot;save&quot;);</span>
+<span class="nc" id="L132">        return PixelBoat.SAVE_SCENE;</span>
+<span class="nc" id="L133">      } catch (IOException e) {</span>
+        // TODO Auto-generated catch block
+<span class="nc" id="L135">        e.printStackTrace();</span>
+      }
+
+    }
+
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">    if (player.hasFinishedLeg()) {</span>
+      // while (!race.isFinished()) race.runStep();
+<span class="nc" id="L143">      race.estimateEndTimes();</span>
+    }
+<span class="nc bnc" id="L145" title="All 2 branches missed.">    if (!race.isFinished()) {</span>
+<span class="nc" id="L146">      race.runStep();</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">    } else if (legNumber &lt; 3) { // only run 3 guaranteed legs</span>
+<span class="nc" id="L148">      race = new BoatRace(allBoats.subList(0, boatsPerRace));</span>
+
+<span class="nc" id="L150">      legNumber++;</span>
+
+      // generate some &quot;realistic&quot; times for all boats not shown
+<span class="nc bnc" id="L153" title="All 2 branches missed.">      for (int i = boatsPerRace; i &lt; allBoats.size(); i++) {</span>
+<span class="nc" id="L154">        allBoats.get(i).setStartTime(0);</span>
+<span class="nc" id="L155">        allBoats.get(i).setEndTime((long) (65000 + 10000 * Math.random()));</span>
+<span class="nc" id="L156">        allBoats.get(i).setLegTime();</span>
+      }
+
+<span class="nc" id="L159">      return 4;</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">    } else if (legNumber == 3) {</span>
+      // sort boats based on best time
+<span class="nc" id="L163">      Collections.sort(allBoats, new Comparator&lt;Boat&gt;() {</span>
+        @Override
+        public int compare(Boat b1, Boat b2) {
+<span class="nc" id="L166">          return (int) (b1.getBestTime() - b2.getBestTime());</span>
+        }
+      });
+
+<span class="nc" id="L170">      race = new BoatRace(allBoats.subList(0, boatsPerRace));</span>
+<span class="nc" id="L171">      lastRun = true;</span>
+<span class="nc" id="L172">      legNumber++;</span>
+
+<span class="nc" id="L174">      return 4;</span>
+    }
+
+    // stay in results after all legs done
+<span class="nc bnc" id="L178" title="All 4 branches missed.">    if (race.isFinished() &amp;&amp; legNumber &gt; 3) {</span>
+<span class="nc" id="L179">      return 4;</span>
+    }
+
+<span class="nc" id="L182">    return sceneId;</span>
+  }
+
+  /**
+   * Resize method if for camera extension.
+   *
+   * @param width  Integer width to be resized to
+   * @param height Integer height to be resized to
+   * @author Umer Fakher
+   */
+  public void resize(int width, int height) {
+<span class="nc" id="L193">    player.getCamera().viewportHeight = height;</span>
+<span class="nc" id="L194">    player.getCamera().viewportWidth = width;</span>
+<span class="nc" id="L195">  }</span>
+
+  /**
+   * Getter method for returning list of boats which contain all boats in scene.
+   *
+   * @return list of boats
+   * @author Umer Fakher
+   */
+  public List&lt;Boat&gt; getAllBoats() {
+<span class="fc" id="L204">    return allBoats;</span>
+  }
+
+  /**
+   * Setter method for player boat stats in the scene.
+   *
+   * @param spec Integer for player spec.
+   * @param diffLevel Integer for player difficulty level
+   * @author Umer Fakher 
+   * @author Henry Overton
+   */
+  public void setPlayerStats(int spec, int diffLevel) {
+<span class="nc" id="L216">    player.setSpec(spec);</span>
+<span class="nc" id="L217">    player.setDiff(diffLevel);</span>
+<span class="nc" id="L218">  }</span>
+
+  /**
+   * Saves the current state of the game to the filesystem.
+   *
+   * @param saveName the name of the save state
+   * @throws IOException if an ObjectOutputStream or a ByteArrayOutputStream cannot be created
+   */
+  private void saveGame(String saveName) throws IOException {
+    // Create GameState object
+<span class="nc" id="L228">    List&lt;CollisionObject&gt; objects = race.obstacles;</span>
+<span class="nc" id="L229">    GameState gameState = new GameState(allBoats, player, objects,</span>
+                                        race.powerups, legNumber,
+                                        lastRun, race.isFinished,
+                                        race.totalFrames);
+
+    // Serialize GameState object to a String
+<span class="nc" id="L235">    ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+
+<span class="nc" id="L237">    ObjectOutputStream objStream = new ObjectOutputStream(baos);</span>
+
+<span class="nc" id="L239">    objStream.writeObject(gameState);</span>
+
+<span class="nc" id="L241">    objStream.close();</span>
+
+<span class="nc" id="L243">    String serializedGameState = Base64.getEncoder().encodeToString(baos.toByteArray());</span>
+
+    // Add save to preferences for storage
+<span class="nc" id="L246">    Preferences prefs = Gdx.app.getPreferences(&quot;tempSaves&quot;);</span>
+
+<span class="nc" id="L248">    prefs.putString(saveName, serializedGameState);</span>
+    // Save preferences
+<span class="nc" id="L250">    prefs.flush();</span>
+
+    // reset self
+
+  
+<span class="nc" id="L255">  }</span>
+  
+  /**
+   * Restore the state of the game from the filesystem.
+   *
+   * @param saveName the name of the save state
+   * @throws IOException if an ByteArrayInputStream or ObjectInputStream cannot be created
+   */
+  public void restoreGame(String saveName, Preferences prefs) throws IOException {
+
+    // Get serialized object from preferences
+
+<span class="nc" id="L267">    String serializedGameState = prefs.getString(saveName);</span>
+
+    
+    // Decode serialize GameState
+<span class="nc" id="L271">    byte[] data = Base64.getDecoder().decode(serializedGameState);</span>
+
+<span class="nc" id="L273">    ByteArrayInputStream bais = new ByteArrayInputStream(data);</span>
+
+<span class="nc" id="L275">    ObjectInputStream objStream = new ObjectInputStream(bais);</span>
+
+<span class="nc" id="L277">    GameState gameState = null;</span>
+
+    try {
+<span class="nc" id="L280">      gameState = (GameState) objStream.readObject();</span>
+<span class="nc" id="L281">    } catch (ClassNotFoundException e) {</span>
+      // TODO Auto-generated catch block
+<span class="nc" id="L283">      e.printStackTrace();</span>
+<span class="nc" id="L284">    }</span>
+
+<span class="nc" id="L286">    List&lt;Boat&gt; boatList = gameState.getBoatList();</span>
+<span class="nc" id="L287">    PlayerBoat playerBoat = (PlayerBoat) boatList.get(gameState.getPlayerIndex());</span>
+    
+<span class="nc" id="L289">    this.allBoats = boatList;</span>
+<span class="nc" id="L290">    this.player = playerBoat;</span>
+    
+<span class="nc" id="L292">    this.legNumber = gameState.legNumber;</span>
+<span class="nc" id="L293">    this.lastRun = gameState.lastRun;</span>
+    
+<span class="nc" id="L295">    List&lt;CollisionObject&gt; obstacleList = gameState.getCollisionObjects();</span>
+<span class="nc" id="L296">    List&lt;CollisionObject&gt; powerupList = gameState.getPowerupsList();</span>
+    
+<span class="nc" id="L298">    this.race.boats = boatList.subList(0, boatsPerRace);</span>
+<span class="nc" id="L299">    this.race.obstacles = obstacleList;</span>
+<span class="nc" id="L300">    this.race.powerups = powerupList;</span>
+<span class="nc" id="L301">    this.race.isFinished = gameState.isFinished;</span>
+<span class="nc" id="L302">    this.race.totalFrames = gameState.totalFrames;</span>
+<span class="nc" id="L303">  }</span>
+
+  public void restoreState(GameState game) {
+
+<span class="nc" id="L307">  }</span>
+
+
+  /**
+   * RaceThread class for Multi-threading.
+   *
+   * @author William Walton JavaDoc by Umer Fakher
+   */
+  private class RaceThread extends Thread {
+    List&lt;Boat&gt; boats;
+    BoatRace race;
+
+<span class="nc" id="L319">    RaceThread(List&lt;Boat&gt; boats) {</span>
+<span class="nc" id="L320">      this.boats = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L321">      this.boats.addAll(boats);</span>
+<span class="nc" id="L322">      race = new BoatRace(this.boats);</span>
+<span class="nc" id="L323">    }</span>
+
+    /**
+     * Main run method for RaceThread class.
+     *
+     * &lt;p&gt;Runs race until it has finished.
+     *
+     * @author William Walton
+     */
+    public void run() {
+<span class="nc bnc" id="L333" title="All 2 branches missed.">      while (!race.isFinished()) {</span>
+<span class="nc" id="L334">        race.runStep();</span>
+      }
+
+      try {
+<span class="nc" id="L338">        Thread.sleep(1);</span>
+<span class="nc" id="L339">      } catch (InterruptedException e) {</span>
+        // TODO Auto-generated catch block
+<span class="nc" id="L341">        e.printStackTrace();</span>
+<span class="nc" id="L342">      }</span>
+<span class="nc" id="L343">    }</span>
+  }
+
+  /**
+   * Getter for sceneId.
+   *
+   * @return the sceneId.
+   */
+  public int getSceneId() {
+<span class="nc" id="L352">    return sceneId;</span>
+  }
+
+  /**
+   * Setter for sceneId.
+   *
+   * @param sceneId the sceneId to set.
+   */
+  public void setSceneId(int sceneId) {
+<span class="nc" id="L361">    this.sceneId = sceneId;</span>
+<span class="nc" id="L362">  }</span>
+
+  /**
+   * Getter for legNumber.
+   *
+   * @return the legNumber.
+   */
+  public int getLegNumber() {
+<span class="fc" id="L370">    return legNumber;</span>
+  }
+
+  /**
+   * Setter for legNumber.
+   *
+   * @param legNumber the legNumber to set.
+   */
+  public void setLegNumber(int legNumber) {
+<span class="nc" id="L379">    this.legNumber = legNumber;</span>
+<span class="nc" id="L380">  }</span>
+
+  /**
+   * Getter for boatsPerRace.
+   *
+   * @return the boatsPerRace.
+   */
+  public int getBoatsPerRace() {
+<span class="nc" id="L388">    return boatsPerRace;</span>
+  }
+
+  /**
+   * Setter for boatsPerRace.
+   *
+   * @param boatsPerRace the boatsPerRace to set.
+   */
+  public void setBoatsPerRace(int boatsPerRace) {
+<span class="nc" id="L397">    this.boatsPerRace = boatsPerRace;</span>
+<span class="nc" id="L398">  }</span>
+
+  /**
+   * Getter for groupsPerGame.
+   *
+   * @return the groupsPerGame.
+   */
+  public int getGroupsPerGame() {
+<span class="nc" id="L406">    return groupsPerGame;</span>
+  }
+
+  /**
+   * Setter for groupsPerGame.
+   *
+   * @param groupsPerGame the groupsPerGame to set.
+   */
+  public void setGroupsPerGame(int groupsPerGame) {
+<span class="nc" id="L415">    this.groupsPerGame = groupsPerGame;</span>
+<span class="nc" id="L416">  }</span>
+
+  /**
+   * Getter for player.
+   *
+   * @return the player.
+   */
+  public PlayerBoat getPlayer() {
+<span class="fc" id="L424">    return player;</span>
+  }
+
+  /**
+   * Setter for Player.
+   *
+   * @param player the player to set.
+   */
+  public void setPlayer(PlayerBoat player) {
+<span class="nc" id="L433">    this.player = player;</span>
+<span class="nc" id="L434">  }</span>
+
+  /**
+   * Setter for allBoats.
+   *
+   * @param allBoats the allBoats to set.
+   */
+  public void setAllBoats(List&lt;Boat&gt; allBoats) {
+<span class="nc" id="L442">    this.allBoats = allBoats;</span>
+<span class="nc" id="L443">  }</span>
+
+
+  /**
+   * Getter for race.
+   *
+   * @return the race.
+   */
+  public BoatRace getRace() {
+<span class="fc" id="L452">    return race;</span>
+  }
+
+  /**
+   * Setter for race.
+   *
+   * @param race the race to set.
+   */
+  public void setRace(BoatRace race) {
+<span class="nc" id="L461">    this.race = race;</span>
+<span class="nc" id="L462">  }</span>
+
+
+  /**
+   * Getter for lastRun.
+   *
+   * @return the lastRun.
+   */
+  public boolean isLastRun() {
+<span class="fc" id="L471">    return lastRun;</span>
+  }
+
+  /**
+   * Setter for lastRun.
+   *
+   * @param lastRun the lastRun to set.
+   */
+  public void setLastRun(boolean lastRun) {
+<span class="nc" id="L480">    this.lastRun = lastRun;</span>
+<span class="nc" id="L481">  }</span>
+
+  /**
+   * Getter for parent.
+   *
+   * @return the parent.
+   */
+  public PixelBoat getParent() {
+<span class="nc" id="L489">    return parent;</span>
+  }
+
+  /**
+   * Setter for parent.
+   *
+   * @param parent the parent to set.
+   */
+  public void setParent(PixelBoat parent) {
+<span class="nc" id="L498">    this.parent = parent;</span>
+<span class="nc" id="L499">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

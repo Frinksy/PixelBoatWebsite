@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SceneSaveScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.teamonehundred.pixelboat.scenes</a> &gt; <span class="el_source">SceneSaveScreen.java</span></div><h1>SceneSaveScreen.java</h1><pre class="source lang-java linenums">package com.teamonehundred.pixelboat.scenes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.teamonehundred.pixelboat.PixelBoat;
+import java.io.IOException;
+
+/**
+ * SceneSaveScreen.
+ */
+public class SceneSaveScreen implements Scene {
+
+  Stage stage;
+  Preferences prefs;
+  Texture bg;
+  Sprite bgSprite;
+  TextArea saveNameInput;
+  Table layout;
+
+<span class="nc" id="L33">  boolean shouldSave = false;</span>
+<span class="nc" id="L34">  boolean shouldCancel = false;</span>
+<span class="nc" id="L35">  boolean shouldInitialize = true;</span>
+
+  PixelBoat parent;
+
+<span class="nc" id="L39">  public SceneSaveScreen(PixelBoat parent) {</span>
+<span class="nc" id="L40">    this.parent = parent;</span>
+<span class="nc" id="L41">  }</span>
+
+  private void initialize() {
+
+<span class="nc" id="L45">    stage = new Stage(new ScreenViewport());</span>
+
+    // Get the saves
+<span class="nc" id="L48">    prefs = Gdx.app.getPreferences(&quot;Saves&quot;);</span>
+
+<span class="nc" id="L50">    Skin skin = new Skin(Gdx.files.internal(&quot;clean-crispy/clean-crispy-ui.json&quot;));</span>
+
+<span class="nc" id="L52">    saveNameInput = new TextArea(&quot;Default Save Name&quot;, skin);</span>
+
+<span class="nc" id="L54">    TextButton saveButton = new TextButton(&quot;Save Game&quot;, skin);</span>
+<span class="nc" id="L55">    saveButton.addListener(new ChangeListener() {</span>
+
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L59">        shouldSave = true;</span>
+<span class="nc" id="L60">      }</span>
+
+    });
+
+<span class="nc" id="L64">    TextButton cancelButton = new TextButton(&quot;Cancel&quot;, skin);</span>
+<span class="nc" id="L65">    cancelButton.addListener(new ChangeListener() {</span>
+
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L69">        shouldCancel = true;</span>
+<span class="nc" id="L70">      }</span>
+
+    });
+
+<span class="nc" id="L74">    layout = new Table();</span>
+<span class="nc" id="L75">    layout.setFillParent(true);</span>
+
+<span class="nc" id="L77">    layout.add(saveNameInput).colspan(4);</span>
+<span class="nc" id="L78">    layout.row().pad(20, 50, 0, 50);</span>
+<span class="nc" id="L79">    layout.add(saveButton).colspan(4);</span>
+<span class="nc" id="L80">    layout.row().pad(20, 50, 0, 50);</span>
+<span class="nc" id="L81">    layout.add(cancelButton).colspan(4);</span>
+
+<span class="nc" id="L83">    stage.addActor(layout);</span>
+<span class="nc" id="L84">    Gdx.input.setInputProcessor(stage);</span>
+
+<span class="nc" id="L86">    bg = new Texture(&quot;start_screen.png&quot;);</span>
+<span class="nc" id="L87">    bgSprite = new Sprite(bg);</span>
+<span class="nc" id="L88">    bgSprite.setPosition(0, 0);</span>
+<span class="nc" id="L89">    bgSprite.setSize(1280, 720);</span>
+
+<span class="nc" id="L91">  }</span>
+
+  @Override
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L95">    Gdx.gl.glClearColor(1f, 1f, 1f, 1);</span>
+<span class="nc" id="L96">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L97">    batch.begin();</span>
+<span class="nc" id="L98">    bgSprite.draw(batch);</span>
+<span class="nc" id="L99">    batch.end();</span>
+
+<span class="nc" id="L101">    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));</span>
+<span class="nc" id="L102">    stage.draw();</span>
+
+<span class="nc" id="L104">  }</span>
+
+  @Override
+  public int update() {
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    if (shouldCancel) {</span>
+<span class="nc" id="L110">      shouldCancel = false;</span>
+<span class="nc" id="L111">      shouldInitialize = true;</span>
+
+      // Reload the save
+<span class="nc" id="L114">      Preferences tempPrefs = Gdx.app.getPreferences(&quot;tempSaves&quot;);</span>
+      try {
+<span class="nc" id="L116">        ((SceneMainGame) parent.allScenes[1]).restoreGame(&quot;save&quot;, tempPrefs);</span>
+<span class="nc" id="L117">      } catch (IOException e) {</span>
+        // If it fails then don't do anything
+<span class="nc" id="L119">        e.printStackTrace();</span>
+<span class="nc" id="L120">      }</span>
+
+      // Return ID of SceneMainGame and stop getting inputs
+<span class="nc" id="L123">      Gdx.input.setInputProcessor(null);</span>
+<span class="nc" id="L124">      return 1;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    } else if (shouldSave) {</span>
+<span class="nc" id="L126">      shouldSave = false;</span>
+
+      // Check if there is actually a save name
+<span class="nc bnc" id="L129" title="All 2 branches missed.">      if (saveNameInput.getText().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L130">        return 8;</span>
+      }
+
+      // Save the game to the specified name
+
+<span class="nc" id="L135">      Preferences tempPrefs = Gdx.app.getPreferences(&quot;tempSaves&quot;);</span>
+<span class="nc" id="L136">      prefs.putString(saveNameInput.getText(), tempPrefs.getString(&quot;save&quot;));</span>
+<span class="nc" id="L137">      prefs.flush();</span>
+
+<span class="nc" id="L139">      shouldInitialize = true;</span>
+
+      // Return ID of start screen and stop receiving inputs
+<span class="nc" id="L142">      Gdx.input.setInputProcessor(null);</span>
+<span class="nc" id="L143">      return 0;</span>
+      
+<span class="nc bnc" id="L145" title="All 2 branches missed.">    } else if (shouldInitialize) {</span>
+<span class="nc" id="L146">      shouldInitialize = false;</span>
+
+<span class="nc" id="L148">      initialize();</span>
+
+<span class="nc" id="L150">      return 8;</span>
+
+    }
+
+
+
+<span class="nc" id="L156">    return 8;</span>
+  }
+
+  @Override
+  public void resize(int width, int height) {
+<span class="nc" id="L161">    Viewport viewport = stage.getViewport();</span>
+<span class="nc" id="L162">    viewport.setScreenSize(width, height);</span>
+<span class="nc" id="L163">    stage.setViewport(viewport);</span>
+
+<span class="nc" id="L165">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
