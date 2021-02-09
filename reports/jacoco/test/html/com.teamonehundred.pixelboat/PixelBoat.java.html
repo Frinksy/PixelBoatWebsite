@@ -107,13 +107,15 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
 <span class="nc" id="L107">            ((SceneBoatSelection) allScenes[BOAT_SELECT]).getSpecId(),</span>
 <span class="nc" id="L108">            ((SceneDifficulty) allScenes[DIFFICULTY_SELECT]).getdiffLevel());</span>
 <span class="nc" id="L109">        ((SceneMainGame) allScenes[GAME_SCENE]).initialize();</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">      } else if (newSceneId == MAIN_MENU &amp;&amp; sceneId == GAME_OVER_SCENE) {</span>
+<span class="nc" id="L111">        allScenes[GAME_SCENE] = new SceneMainGame(this);</span>
       }
 
 
       // check if we need to change scene
-<span class="nc" id="L114">      sceneId = newSceneId;</span>
+<span class="nc" id="L116">      sceneId = newSceneId;</span>
     }
-<span class="nc" id="L116">  }</span>
+<span class="nc" id="L118">  }</span>
 
   /**
    * Disposes unneeded SpriteBatch and exits application.
@@ -122,12 +124,12 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
    */
   @Override
   public void dispose() {
-<span class="nc" id="L125">    batch.dispose();</span>
-<span class="nc" id="L126">    assets.dispose();</span>
+<span class="nc" id="L127">    batch.dispose();</span>
+<span class="nc" id="L128">    assets.dispose();</span>
 
-<span class="nc" id="L128">    Gdx.app.exit();</span>
-<span class="nc" id="L129">    System.exit(0);</span>
-<span class="nc" id="L130">  }</span>
+<span class="nc" id="L130">    Gdx.app.exit();</span>
+<span class="nc" id="L131">    System.exit(0);</span>
+<span class="nc" id="L132">  }</span>
 
   /**
    * Resize used and passed to resize method of each scene based on width and height attributes.
@@ -137,63 +139,63 @@ import com.teamonehundred.pixelboat.scenes.SceneTutorial;
    */
   @Override
   public void resize(int width, int height) {
-<span class="nc" id="L140">    allScenes[sceneId].resize(width, height);</span>
-<span class="nc" id="L141">  }</span>
+<span class="nc" id="L142">    allScenes[sceneId].resize(width, height);</span>
+<span class="nc" id="L143">  }</span>
 
   private void loadAssets() {
 
     // Load textures
-<span class="nc" id="L146">    assets.load(&quot;bleachers_l.png&quot;, Texture.class);</span>
-<span class="nc" id="L147">    assets.load(&quot;bleachers_r.png&quot;, Texture.class);</span>
-<span class="nc" id="L148">    assets.load(&quot;boat_body.png&quot;, Texture.class);</span>
-<span class="nc" id="L149">    assets.load(&quot;boat_people.png&quot;, Texture.class);</span>
-<span class="nc" id="L150">    assets.load(&quot;boat_selection_debug.png&quot;, Texture.class);</span>
-<span class="nc" id="L151">    assets.load(&quot;boat_selection_default.png&quot;, Texture.class);</span>
-<span class="nc" id="L152">    assets.load(&quot;boat_selection_fastlowdurability.png&quot;, Texture.class);</span>
-<span class="nc" id="L153">    assets.load(&quot;boat_selection_screen.png&quot;, Texture.class);</span>
-<span class="nc" id="L154">    assets.load(&quot;boat.png&quot;, Texture.class);</span>
-<span class="nc" id="L155">    assets.load(&quot;difficulty_options_screen.png&quot;, Texture.class);</span>
-<span class="nc" id="L156">    assets.load(&quot;durability_texture.png&quot;, Texture.class);</span>
-<span class="nc" id="L157">    assets.load(&quot;easy_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L158">    assets.load(&quot;easy.png&quot;, Texture.class);</span>
-<span class="nc" id="L159">    assets.load(&quot;easyButton.png&quot;, Texture.class);</span>
-<span class="nc" id="L160">    assets.load(&quot;hard_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L161">    assets.load(&quot;hard.png&quot;, Texture.class);</span>
-<span class="nc" id="L162">    assets.load(&quot;lane_buoy.png&quot;, Texture.class);</span>
-<span class="nc" id="L163">    assets.load(&quot;load_game_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L164">    assets.load(&quot;load_game.png&quot;, Texture.class);</span>
-<span class="nc" id="L165">    assets.load(&quot;medium_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L166">    assets.load(&quot;medium.png&quot;, Texture.class);</span>
-<span class="nc" id="L167">    assets.load(&quot;object_placeholder.png&quot;, Texture.class);</span>
-<span class="nc" id="L168">    assets.load(&quot;obstacle_branch.png&quot;, Texture.class);</span>
-<span class="nc" id="L169">    assets.load(&quot;obstacle_duck.png&quot;, Texture.class);</span>
-<span class="nc" id="L170">    assets.load(&quot;obstacle.png&quot;, Texture.class);</span>
-<span class="nc" id="L171">    assets.load(&quot;options_menu_back_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L172">    assets.load(&quot;options_menu_back.png&quot;, Texture.class);</span>
-<span class="nc" id="L173">    assets.load(&quot;options_menu_checkbox_no.png&quot;, Texture.class);</span>
-<span class="nc" id="L174">    assets.load(&quot;options_menu_checkbox_yes.png&quot;, Texture.class);</span>
-<span class="nc" id="L175">    assets.load(&quot;options_menu_fullscreen.png&quot;, Texture.class);</span>
-<span class="nc" id="L176">    assets.load(&quot;power_up_drag.png&quot;, Texture.class);</span>
-<span class="nc" id="L177">    assets.load(&quot;power_up_energy.png&quot;, Texture.class);</span>
-<span class="nc" id="L178">    assets.load(&quot;power_up_health.png&quot;, Texture.class);</span>
-<span class="nc" id="L179">    assets.load(&quot;power_up_rotation.png&quot;, Texture.class);</span>
-<span class="nc" id="L180">    assets.load(&quot;power_up_speed.png&quot;, Texture.class);</span>
-<span class="nc" id="L181">    assets.load(&quot;ready_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L182">    assets.load(&quot;ready.png&quot;, Texture.class);</span>
-<span class="nc" id="L183">    assets.load(&quot;readyButton.png&quot;, Texture.class);</span>
-<span class="nc" id="L184">    assets.load(&quot;select_arrow.png&quot;, Texture.class);</span>
-<span class="nc" id="L185">    assets.load(&quot;stamina_texture.png&quot;, Texture.class);</span>
-<span class="nc" id="L186">    assets.load(&quot;start_banner.png&quot;, Texture.class);</span>
-<span class="nc" id="L187">    assets.load(&quot;start_menu_options_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L188">    assets.load(&quot;start_menu_options.png&quot;, Texture.class);</span>
-<span class="nc" id="L189">    assets.load(&quot;start_menu_play_hovered.png&quot;, Texture.class);</span>
-<span class="nc" id="L190">    assets.load(&quot;start_menu_play.png&quot;, Texture.class);</span>
-<span class="nc" id="L191">    assets.load(&quot;start_screen.png&quot;, Texture.class);</span>
-<span class="nc" id="L192">    assets.load(&quot;temp_background.png&quot;, Texture.class);</span>
-<span class="nc" id="L193">    assets.load(&quot;tutorial_screen.png&quot;, Texture.class);</span>
-<span class="nc" id="L194">    assets.load(&quot;water_background.png&quot;, Texture.class);</span>
+<span class="nc" id="L148">    assets.load(&quot;bleachers_l.png&quot;, Texture.class);</span>
+<span class="nc" id="L149">    assets.load(&quot;bleachers_r.png&quot;, Texture.class);</span>
+<span class="nc" id="L150">    assets.load(&quot;boat_body.png&quot;, Texture.class);</span>
+<span class="nc" id="L151">    assets.load(&quot;boat_people.png&quot;, Texture.class);</span>
+<span class="nc" id="L152">    assets.load(&quot;boat_selection_debug.png&quot;, Texture.class);</span>
+<span class="nc" id="L153">    assets.load(&quot;boat_selection_default.png&quot;, Texture.class);</span>
+<span class="nc" id="L154">    assets.load(&quot;boat_selection_fastlowdurability.png&quot;, Texture.class);</span>
+<span class="nc" id="L155">    assets.load(&quot;boat_selection_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L156">    assets.load(&quot;boat.png&quot;, Texture.class);</span>
+<span class="nc" id="L157">    assets.load(&quot;difficulty_options_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L158">    assets.load(&quot;durability_texture.png&quot;, Texture.class);</span>
+<span class="nc" id="L159">    assets.load(&quot;easy_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L160">    assets.load(&quot;easy.png&quot;, Texture.class);</span>
+<span class="nc" id="L161">    assets.load(&quot;easyButton.png&quot;, Texture.class);</span>
+<span class="nc" id="L162">    assets.load(&quot;hard_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L163">    assets.load(&quot;hard.png&quot;, Texture.class);</span>
+<span class="nc" id="L164">    assets.load(&quot;lane_buoy.png&quot;, Texture.class);</span>
+<span class="nc" id="L165">    assets.load(&quot;load_game_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L166">    assets.load(&quot;load_game.png&quot;, Texture.class);</span>
+<span class="nc" id="L167">    assets.load(&quot;medium_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L168">    assets.load(&quot;medium.png&quot;, Texture.class);</span>
+<span class="nc" id="L169">    assets.load(&quot;object_placeholder.png&quot;, Texture.class);</span>
+<span class="nc" id="L170">    assets.load(&quot;obstacle_branch.png&quot;, Texture.class);</span>
+<span class="nc" id="L171">    assets.load(&quot;obstacle_duck.png&quot;, Texture.class);</span>
+<span class="nc" id="L172">    assets.load(&quot;obstacle.png&quot;, Texture.class);</span>
+<span class="nc" id="L173">    assets.load(&quot;options_menu_back_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L174">    assets.load(&quot;options_menu_back.png&quot;, Texture.class);</span>
+<span class="nc" id="L175">    assets.load(&quot;options_menu_checkbox_no.png&quot;, Texture.class);</span>
+<span class="nc" id="L176">    assets.load(&quot;options_menu_checkbox_yes.png&quot;, Texture.class);</span>
+<span class="nc" id="L177">    assets.load(&quot;options_menu_fullscreen.png&quot;, Texture.class);</span>
+<span class="nc" id="L178">    assets.load(&quot;power_up_drag.png&quot;, Texture.class);</span>
+<span class="nc" id="L179">    assets.load(&quot;power_up_energy.png&quot;, Texture.class);</span>
+<span class="nc" id="L180">    assets.load(&quot;power_up_health.png&quot;, Texture.class);</span>
+<span class="nc" id="L181">    assets.load(&quot;power_up_rotation.png&quot;, Texture.class);</span>
+<span class="nc" id="L182">    assets.load(&quot;power_up_speed.png&quot;, Texture.class);</span>
+<span class="nc" id="L183">    assets.load(&quot;ready_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L184">    assets.load(&quot;ready.png&quot;, Texture.class);</span>
+<span class="nc" id="L185">    assets.load(&quot;readyButton.png&quot;, Texture.class);</span>
+<span class="nc" id="L186">    assets.load(&quot;select_arrow.png&quot;, Texture.class);</span>
+<span class="nc" id="L187">    assets.load(&quot;stamina_texture.png&quot;, Texture.class);</span>
+<span class="nc" id="L188">    assets.load(&quot;start_banner.png&quot;, Texture.class);</span>
+<span class="nc" id="L189">    assets.load(&quot;start_menu_options_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L190">    assets.load(&quot;start_menu_options.png&quot;, Texture.class);</span>
+<span class="nc" id="L191">    assets.load(&quot;start_menu_play_hovered.png&quot;, Texture.class);</span>
+<span class="nc" id="L192">    assets.load(&quot;start_menu_play.png&quot;, Texture.class);</span>
+<span class="nc" id="L193">    assets.load(&quot;start_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L194">    assets.load(&quot;temp_background.png&quot;, Texture.class);</span>
+<span class="nc" id="L195">    assets.load(&quot;tutorial_screen.png&quot;, Texture.class);</span>
+<span class="nc" id="L196">    assets.load(&quot;water_background.png&quot;, Texture.class);</span>
 
-<span class="nc" id="L196">  }</span>
+<span class="nc" id="L198">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

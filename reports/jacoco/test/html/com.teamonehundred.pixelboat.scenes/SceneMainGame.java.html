@@ -79,7 +79,7 @@ public class SceneMainGame implements Scene {
 <span class="fc" id="L79">      allBoats.add(new AiBoat(0, 40, boatTexture));</span>
 <span class="fc" id="L80">      allBoats.get(allBoats.size() - 1).setName(&quot;AI Boat &quot; + Integer.toString(i));</span>
     }
-<span class="fc" id="L82">    Collections.swap(allBoats, 0, 3); // move player to middle of first group</span>
+<span class="fc" id="L82">    Collections.swap(allBoats, 0, 2); // move player to middle of first group</span>
 
 <span class="fc" id="L84">    bg = new Texture(&quot;water_background.png&quot;);</span>
 <span class="fc" id="L85">    bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);</span>
@@ -146,46 +146,56 @@ public class SceneMainGame implements Scene {
 
 <span class="nc bnc" id="L147" title="All 2 branches missed.">    if (player.hasFinishedLeg()) {</span>
       // while (!race.isFinished()) race.runStep();
-<span class="nc" id="L149">      race.estimateEndTimes();</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">      if (!race.isFinished) {</span>
+<span class="nc" id="L150">        race.estimateEndTimes();</span>
+      }
     }
-<span class="nc bnc" id="L151" title="All 2 branches missed.">    if (!race.isFinished()) {</span>
-<span class="nc" id="L152">      race.runStep();</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">    } else if (legNumber &lt; 3) { // only run 3 guaranteed legs</span>
-<span class="nc" id="L154">      race = new BoatRace(allBoats.subList(0, boatsPerRace), this.parent);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">    if (!race.isFinished()) {</span>
+<span class="nc" id="L154">      race.runStep();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">    } else if (legNumber &lt; 4) { // only run 3 guaranteed legs</span>
+<span class="nc" id="L156">      race = new BoatRace(allBoats.subList(0, boatsPerRace), this.parent);</span>
 
-<span class="nc" id="L156">      legNumber++;</span>
+<span class="nc" id="L158">      legNumber++;</span>
 
       // generate some &quot;realistic&quot; times for all boats not shown
-<span class="nc bnc" id="L159" title="All 2 branches missed.">      for (int i = boatsPerRace; i &lt; allBoats.size(); i++) {</span>
-<span class="nc" id="L160">        allBoats.get(i).setStartTime(0);</span>
-<span class="nc" id="L161">        allBoats.get(i).setEndTime((long) (65000 + 10000 * Math.random()));</span>
-<span class="nc" id="L162">        allBoats.get(i).setLegTime();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">      for (int i = boatsPerRace; i &lt; allBoats.size(); i++) {</span>
+<span class="nc" id="L162">        allBoats.get(i).setStartTime(0);</span>
+<span class="nc" id="L163">        allBoats.get(i).setEndTime((long) (65000 + 10000 * Math.random()));</span>
+<span class="nc" id="L164">        allBoats.get(i).setLegTime();</span>
       }
 
-<span class="nc" id="L165">      return 4;</span>
+<span class="nc" id="L167">      return 4;</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">    } else if (legNumber == 3) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">    } else if (legNumber == 4) {</span>
       // sort boats based on best time
-<span class="nc" id="L169">      Collections.sort(allBoats, new Comparator&lt;Boat&gt;() {</span>
+<span class="nc" id="L171">      Collections.sort(allBoats, new Comparator&lt;Boat&gt;() {</span>
         @Override
         public int compare(Boat b1, Boat b2) {
-<span class="nc" id="L172">          return (int) (b1.getBestTime() - b2.getBestTime());</span>
+<span class="nc" id="L174">          return (int) (b1.getBestTime() - b2.getBestTime());</span>
         }
       });
 
-<span class="nc" id="L176">      race = new BoatRace(allBoats.subList(0, boatsPerRace), this.parent);</span>
-<span class="nc" id="L177">      lastRun = true;</span>
-<span class="nc" id="L178">      legNumber++;</span>
+      // Get index of Player
+<span class="nc" id="L179">      allBoats = allBoats.subList(0, 3);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">      if (!allBoats.contains(player)) {</span>
+<span class="nc" id="L181">        return PixelBoat.GAME_OVER_SCENE;</span>
+      }
+<span class="nc" id="L183">      int playerIndex = allBoats.indexOf(player);</span>
+<span class="nc" id="L184">      Collections.swap(allBoats, playerIndex, 1);</span>
+      
+<span class="nc" id="L186">      race = new BoatRace(allBoats.subList(0, 3), this.parent);</span>
+<span class="nc" id="L187">      lastRun = true;</span>
+<span class="nc" id="L188">      legNumber++;</span>
 
-<span class="nc" id="L180">      return 4;</span>
+<span class="nc" id="L190">      return 4;</span>
     }
 
     // stay in results after all legs done
-<span class="nc bnc" id="L184" title="All 4 branches missed.">    if (race.isFinished() &amp;&amp; legNumber &gt; 3) {</span>
-<span class="nc" id="L185">      return 4;</span>
+<span class="nc bnc" id="L194" title="All 4 branches missed.">    if (race.isFinished() &amp;&amp; legNumber &gt; 4) {</span>
+<span class="nc" id="L195">      return 4;</span>
     }
 
-<span class="nc" id="L188">    return sceneId;</span>
+<span class="nc" id="L198">    return sceneId;</span>
   }
 
   /**
@@ -196,9 +206,9 @@ public class SceneMainGame implements Scene {
    * @author Umer Fakher
    */
   public void resize(int width, int height) {
-<span class="nc" id="L199">    player.getCamera().viewportHeight = height;</span>
-<span class="nc" id="L200">    player.getCamera().viewportWidth = width;</span>
-<span class="nc" id="L201">  }</span>
+<span class="nc" id="L209">    player.getCamera().viewportHeight = height;</span>
+<span class="nc" id="L210">    player.getCamera().viewportWidth = width;</span>
+<span class="nc" id="L211">  }</span>
 
   /**
    * Getter method for returning list of boats which contain all boats in scene.
@@ -207,7 +217,7 @@ public class SceneMainGame implements Scene {
    * @author Umer Fakher
    */
   public List&lt;Boat&gt; getAllBoats() {
-<span class="fc" id="L210">    return allBoats;</span>
+<span class="fc" id="L220">    return allBoats;</span>
   }
 
   /**
@@ -219,9 +229,9 @@ public class SceneMainGame implements Scene {
    * @author Henry Overton
    */
   public void setPlayerStats(int spec, int diffLevel) {
-<span class="nc" id="L222">    player.setSpec(spec);</span>
-<span class="nc" id="L223">    player.setDiff(diffLevel);</span>
-<span class="nc" id="L224">  }</span>
+<span class="nc" id="L232">    player.setSpec(spec);</span>
+<span class="nc" id="L233">    player.setDiff(diffLevel);</span>
+<span class="nc" id="L234">  }</span>
 
   /**
    * Saves the current state of the game to the filesystem.
@@ -231,34 +241,34 @@ public class SceneMainGame implements Scene {
    */
   private void saveGame(String saveName) throws IOException {
     // Create GameState object
-<span class="nc" id="L234">    List&lt;CollisionObject&gt; objects = race.obstacles;</span>
-<span class="nc" id="L235">    GameState gameState = new GameState(allBoats, player, objects,</span>
+<span class="nc" id="L244">    List&lt;CollisionObject&gt; objects = race.obstacles;</span>
+<span class="nc" id="L245">    GameState gameState = new GameState(allBoats, player, objects,</span>
                                         race.powerups, legNumber,
                                         lastRun, race.isFinished,
                                         race.totalFrames);
 
     // Serialize GameState object to a String
-<span class="nc" id="L241">    ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L251">    ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
 
-<span class="nc" id="L243">    ObjectOutputStream objStream = new ObjectOutputStream(baos);</span>
+<span class="nc" id="L253">    ObjectOutputStream objStream = new ObjectOutputStream(baos);</span>
 
-<span class="nc" id="L245">    objStream.writeObject(gameState);</span>
+<span class="nc" id="L255">    objStream.writeObject(gameState);</span>
 
-<span class="nc" id="L247">    objStream.close();</span>
+<span class="nc" id="L257">    objStream.close();</span>
 
-<span class="nc" id="L249">    String serializedGameState = Base64.getEncoder().encodeToString(baos.toByteArray());</span>
+<span class="nc" id="L259">    String serializedGameState = Base64.getEncoder().encodeToString(baos.toByteArray());</span>
 
     // Add save to preferences for storage
-<span class="nc" id="L252">    Preferences prefs = Gdx.app.getPreferences(&quot;tempSaves&quot;);</span>
+<span class="nc" id="L262">    Preferences prefs = Gdx.app.getPreferences(&quot;tempSaves&quot;);</span>
 
-<span class="nc" id="L254">    prefs.putString(saveName, serializedGameState);</span>
+<span class="nc" id="L264">    prefs.putString(saveName, serializedGameState);</span>
     // Save preferences
-<span class="nc" id="L256">    prefs.flush();</span>
+<span class="nc" id="L266">    prefs.flush();</span>
 
     // reset self
 
   
-<span class="nc" id="L261">  }</span>
+<span class="nc" id="L271">  }</span>
   
   /**
    * Restore the state of the game from the filesystem.
@@ -270,47 +280,47 @@ public class SceneMainGame implements Scene {
 
     // Get serialized object from preferences
 
-<span class="nc" id="L273">    String serializedGameState = prefs.getString(saveName);</span>
+<span class="nc" id="L283">    String serializedGameState = prefs.getString(saveName);</span>
 
     
     // Decode serialize GameState
-<span class="nc" id="L277">    byte[] data = Base64.getDecoder().decode(serializedGameState);</span>
+<span class="nc" id="L287">    byte[] data = Base64.getDecoder().decode(serializedGameState);</span>
 
-<span class="nc" id="L279">    ByteArrayInputStream bais = new ByteArrayInputStream(data);</span>
+<span class="nc" id="L289">    ByteArrayInputStream bais = new ByteArrayInputStream(data);</span>
 
-<span class="nc" id="L281">    ObjectInputStream objStream = new ObjectInputStream(bais);</span>
+<span class="nc" id="L291">    ObjectInputStream objStream = new ObjectInputStream(bais);</span>
 
-<span class="nc" id="L283">    GameState gameState = null;</span>
+<span class="nc" id="L293">    GameState gameState = null;</span>
 
     try {
-<span class="nc" id="L286">      gameState = (GameState) objStream.readObject();</span>
-<span class="nc" id="L287">    } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L296">      gameState = (GameState) objStream.readObject();</span>
+<span class="nc" id="L297">    } catch (ClassNotFoundException e) {</span>
       // TODO Auto-generated catch block
-<span class="nc" id="L289">      e.printStackTrace();</span>
-<span class="nc" id="L290">    }</span>
+<span class="nc" id="L299">      e.printStackTrace();</span>
+<span class="nc" id="L300">    }</span>
 
-<span class="nc" id="L292">    List&lt;Boat&gt; boatList = gameState.getBoatList(parent);</span>
-<span class="nc" id="L293">    PlayerBoat playerBoat = (PlayerBoat) boatList.get(gameState.getPlayerIndex());</span>
+<span class="nc" id="L302">    List&lt;Boat&gt; boatList = gameState.getBoatList(parent);</span>
+<span class="nc" id="L303">    PlayerBoat playerBoat = (PlayerBoat) boatList.get(gameState.getPlayerIndex());</span>
     
-<span class="nc" id="L295">    this.allBoats = boatList;</span>
-<span class="nc" id="L296">    this.player = playerBoat;</span>
+<span class="nc" id="L305">    this.allBoats = boatList;</span>
+<span class="nc" id="L306">    this.player = playerBoat;</span>
     
-<span class="nc" id="L298">    this.legNumber = gameState.legNumber;</span>
-<span class="nc" id="L299">    this.lastRun = gameState.lastRun;</span>
+<span class="nc" id="L308">    this.legNumber = gameState.legNumber;</span>
+<span class="nc" id="L309">    this.lastRun = gameState.lastRun;</span>
     
-<span class="nc" id="L301">    List&lt;CollisionObject&gt; obstacleList = gameState.getCollisionObjects(parent);</span>
-<span class="nc" id="L302">    List&lt;CollisionObject&gt; powerupList = gameState.getPowerupsList(parent);</span>
+<span class="nc" id="L311">    List&lt;CollisionObject&gt; obstacleList = gameState.getCollisionObjects(parent);</span>
+<span class="nc" id="L312">    List&lt;CollisionObject&gt; powerupList = gameState.getPowerupsList(parent);</span>
     
-<span class="nc" id="L304">    this.race.boats = boatList.subList(0, boatsPerRace);</span>
-<span class="nc" id="L305">    this.race.obstacles = obstacleList;</span>
-<span class="nc" id="L306">    this.race.powerups = powerupList;</span>
-<span class="nc" id="L307">    this.race.isFinished = gameState.isFinished;</span>
-<span class="nc" id="L308">    this.race.totalFrames = gameState.totalFrames;</span>
-<span class="nc" id="L309">  }</span>
+<span class="nc" id="L314">    this.race.boats = boatList.subList(0, boatsPerRace);</span>
+<span class="nc" id="L315">    this.race.obstacles = obstacleList;</span>
+<span class="nc" id="L316">    this.race.powerups = powerupList;</span>
+<span class="nc" id="L317">    this.race.isFinished = gameState.isFinished;</span>
+<span class="nc" id="L318">    this.race.totalFrames = gameState.totalFrames;</span>
+<span class="nc" id="L319">  }</span>
 
   public void restoreState(GameState game) {
 
-<span class="nc" id="L313">  }</span>
+<span class="nc" id="L323">  }</span>
 
 
   /**
@@ -319,7 +329,7 @@ public class SceneMainGame implements Scene {
    * @return the sceneId.
    */
   public int getSceneId() {
-<span class="nc" id="L322">    return sceneId;</span>
+<span class="nc" id="L332">    return sceneId;</span>
   }
 
   /**
@@ -328,8 +338,8 @@ public class SceneMainGame implements Scene {
    * @param sceneId the sceneId to set.
    */
   public void setSceneId(int sceneId) {
-<span class="nc" id="L331">    this.sceneId = sceneId;</span>
-<span class="nc" id="L332">  }</span>
+<span class="nc" id="L341">    this.sceneId = sceneId;</span>
+<span class="nc" id="L342">  }</span>
 
   /**
    * Getter for legNumber.
@@ -337,7 +347,7 @@ public class SceneMainGame implements Scene {
    * @return the legNumber.
    */
   public int getLegNumber() {
-<span class="fc" id="L340">    return legNumber;</span>
+<span class="fc" id="L350">    return legNumber;</span>
   }
 
   /**
@@ -346,8 +356,8 @@ public class SceneMainGame implements Scene {
    * @param legNumber the legNumber to set.
    */
   public void setLegNumber(int legNumber) {
-<span class="nc" id="L349">    this.legNumber = legNumber;</span>
-<span class="nc" id="L350">  }</span>
+<span class="nc" id="L359">    this.legNumber = legNumber;</span>
+<span class="nc" id="L360">  }</span>
 
   /**
    * Getter for boatsPerRace.
@@ -355,7 +365,7 @@ public class SceneMainGame implements Scene {
    * @return the boatsPerRace.
    */
   public int getBoatsPerRace() {
-<span class="nc" id="L358">    return boatsPerRace;</span>
+<span class="nc" id="L368">    return boatsPerRace;</span>
   }
 
   /**
@@ -364,8 +374,8 @@ public class SceneMainGame implements Scene {
    * @param boatsPerRace the boatsPerRace to set.
    */
   public void setBoatsPerRace(int boatsPerRace) {
-<span class="nc" id="L367">    this.boatsPerRace = boatsPerRace;</span>
-<span class="nc" id="L368">  }</span>
+<span class="nc" id="L377">    this.boatsPerRace = boatsPerRace;</span>
+<span class="nc" id="L378">  }</span>
 
   /**
    * Getter for groupsPerGame.
@@ -373,7 +383,7 @@ public class SceneMainGame implements Scene {
    * @return the groupsPerGame.
    */
   public int getGroupsPerGame() {
-<span class="nc" id="L376">    return groupsPerGame;</span>
+<span class="nc" id="L386">    return groupsPerGame;</span>
   }
 
   /**
@@ -382,8 +392,8 @@ public class SceneMainGame implements Scene {
    * @param groupsPerGame the groupsPerGame to set.
    */
   public void setGroupsPerGame(int groupsPerGame) {
-<span class="nc" id="L385">    this.groupsPerGame = groupsPerGame;</span>
-<span class="nc" id="L386">  }</span>
+<span class="nc" id="L395">    this.groupsPerGame = groupsPerGame;</span>
+<span class="nc" id="L396">  }</span>
 
   /**
    * Getter for player.
@@ -391,7 +401,7 @@ public class SceneMainGame implements Scene {
    * @return the player.
    */
   public PlayerBoat getPlayer() {
-<span class="fc" id="L394">    return player;</span>
+<span class="fc" id="L404">    return player;</span>
   }
 
   /**
@@ -400,8 +410,8 @@ public class SceneMainGame implements Scene {
    * @param player the player to set.
    */
   public void setPlayer(PlayerBoat player) {
-<span class="nc" id="L403">    this.player = player;</span>
-<span class="nc" id="L404">  }</span>
+<span class="nc" id="L413">    this.player = player;</span>
+<span class="nc" id="L414">  }</span>
 
   /**
    * Setter for allBoats.
@@ -409,8 +419,8 @@ public class SceneMainGame implements Scene {
    * @param allBoats the allBoats to set.
    */
   public void setAllBoats(List&lt;Boat&gt; allBoats) {
-<span class="nc" id="L412">    this.allBoats = allBoats;</span>
-<span class="nc" id="L413">  }</span>
+<span class="nc" id="L422">    this.allBoats = allBoats;</span>
+<span class="nc" id="L423">  }</span>
 
 
   /**
@@ -419,7 +429,7 @@ public class SceneMainGame implements Scene {
    * @return the race.
    */
   public BoatRace getRace() {
-<span class="fc" id="L422">    return race;</span>
+<span class="fc" id="L432">    return race;</span>
   }
 
   /**
@@ -428,8 +438,8 @@ public class SceneMainGame implements Scene {
    * @param race the race to set.
    */
   public void setRace(BoatRace race) {
-<span class="nc" id="L431">    this.race = race;</span>
-<span class="nc" id="L432">  }</span>
+<span class="nc" id="L441">    this.race = race;</span>
+<span class="nc" id="L442">  }</span>
 
 
   /**
@@ -438,7 +448,7 @@ public class SceneMainGame implements Scene {
    * @return the lastRun.
    */
   public boolean isLastRun() {
-<span class="fc" id="L441">    return lastRun;</span>
+<span class="fc" id="L451">    return lastRun;</span>
   }
 
   /**
@@ -447,8 +457,8 @@ public class SceneMainGame implements Scene {
    * @param lastRun the lastRun to set.
    */
   public void setLastRun(boolean lastRun) {
-<span class="nc" id="L450">    this.lastRun = lastRun;</span>
-<span class="nc" id="L451">  }</span>
+<span class="nc" id="L460">    this.lastRun = lastRun;</span>
+<span class="nc" id="L461">  }</span>
 
   /**
    * Getter for parent.
@@ -456,7 +466,7 @@ public class SceneMainGame implements Scene {
    * @return the parent.
    */
   public PixelBoat getParent() {
-<span class="nc" id="L459">    return parent;</span>
+<span class="nc" id="L469">    return parent;</span>
   }
 
   /**
@@ -465,7 +475,7 @@ public class SceneMainGame implements Scene {
    * @param parent the parent to set.
    */
   public void setParent(PixelBoat parent) {
-<span class="nc" id="L468">    this.parent = parent;</span>
-<span class="nc" id="L469">  }</span>
+<span class="nc" id="L478">    this.parent = parent;</span>
+<span class="nc" id="L479">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
